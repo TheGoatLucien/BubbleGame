@@ -9,6 +9,9 @@
 #include <string.h>
 #include <windows.h>
 
+#include "menu.h"
+#include "jeu.h"
+
 
 #define TEXTURE_PATH "..\\Ressources\\Textures\\"
 #define FONT_PATH "..\\Ressources\\Fonts\\"
@@ -16,6 +19,10 @@
 #define TILESET_PATH "..\\Ressources\\Tilesets\\"
 #define SOUND_PATH "..\\Ressources\\SoundsFX\\"
 #define MUSIC_PATH "..\\Ressources\\Musics\\"
+
+
+#define WINDOWS_WIDHT 800
+#define WINDOWS_HEIGHT 600
 
 
 typedef struct vector4f vector4f;
@@ -26,6 +33,13 @@ struct vector4f
 	float b;
 	float a;
 };
+
+typedef enum {
+	MENU,
+	GAME,
+	OPTION
+}GameState;
+GameState gameState;
 
 //-----------------------------------------------------------
 //	Fonction d'initialisation des tools
