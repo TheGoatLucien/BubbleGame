@@ -1,2 +1,6 @@
-﻿  menu.c
-  expl CSFML.vcxproj -> C:\Users\l.nzeutom\OneDrive\Tiedostot\GitHub\CSFML_RPG\BubbleGame\CSFML\x64\Debug-x64\expl CSFML.exe
+﻿  player.c
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\player.c(38,60): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\player.c(39,60): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\player.c(55,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\player.c(56,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  expl CSFML.vcxproj -> C:\Users\nzeut\Documents\BubbleGame\CSFML\x64\Debug-x64\expl CSFML.exe

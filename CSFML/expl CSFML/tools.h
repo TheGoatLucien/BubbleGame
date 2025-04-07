@@ -8,9 +8,13 @@
 #include <math.h>
 #include <string.h>
 #include <windows.h>
+#include <stdbool.h>
 
 #include "menu.h"
 #include "jeu.h"
+
+
+
 
 
 #define TEXTURE_PATH "..\\Ressources\\Textures\\"
@@ -21,8 +25,8 @@
 #define MUSIC_PATH "..\\Ressources\\Musics\\"
 
 
-#define WINDOWS_WIDHT 800
-#define WINDOWS_HEIGHT 600
+#define WINDOWS_WIDHT 1600
+#define WINDOWS_HEIGHT 900
 
 
 typedef struct vector4f vector4f;

@@ -1,6 +1,7 @@
 #include "tools.h"
 
-
+#include "bubble.h"
+#include "player.h"
 
 int main() {
     // Initialisation
@@ -10,6 +11,9 @@ int main() {
     sfRenderWindow* window = sfRenderWindow_create((sfVideoMode) { WINDOWS_WIDHT, WINDOWS_HEIGHT, 32 }, "BubleX", sfResize | sfClose, NULL);
     sfEvent event;
     gameState = 0;//init menu
+
+    player_t p1 = create_player((sfVector2f) { WINDOWS_WIDHT / 4, WINDOWS_HEIGHT - 50 });
+    player_t p2 = create_player((sfVector2f) { (3 * WINDOWS_WIDHT) / 4, WINDOWS_HEIGHT - 50 });
     sfVector2i mousePosition;
  
 
@@ -46,15 +50,21 @@ int main() {
             }
 
         }
+        
+        if (gameState == GAME) {
+            update_player(&p1, event, sfKeyQ, sfKeyD, sfKeySpace);
+            update_player(&p2, event, sfKeyLeft, sfKeyRight, sfKeyReturn);
 
-     
-        else if (gameState == GAME) {
+            update_bubbles(&p1);
+            update_bubbles(&p2);
+        }
+		else if (gameState == OPTION) {
+			//option
+		}
+		else {
+			//menu
 
         }
-        else {
-
-        }
-
 
 
 
@@ -67,6 +77,8 @@ int main() {
             displayButton(window);
         }
         else if (gameState == GAME) {
+                draw_player(&p1, window);
+                draw_player(&p2, window);
 
         }
         else { //option
