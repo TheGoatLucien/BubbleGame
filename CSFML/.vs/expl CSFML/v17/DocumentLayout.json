@@ -11,12 +11,12 @@
       "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\tools.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\tools.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\tools.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\jeu.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\jeu.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\menu.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -27,8 +27,8 @@
       "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\jeu.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\tools.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\tools.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\jeu.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\jeu.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -55,26 +55,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 2,
               "Title": "tools.h",
               "DocumentMoniker": "C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\tools.h",
               "RelativeDocumentMoniker": "expl CSFML\\tools.h",
               "ToolTip": "C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\tools.h",
               "RelativeToolTip": "expl CSFML\\tools.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAAGAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-01-15T08:08:31.113Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "main.c",
               "DocumentMoniker": "C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\main.c",
               "RelativeDocumentMoniker": "expl CSFML\\main.c",
               "ToolTip": "C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\main.c",
               "RelativeToolTip": "expl CSFML\\main.c",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEQAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2025-01-08T09:15:09.456Z",
               "EditorCaption": ""
@@ -100,22 +100,9 @@
               "RelativeDocumentMoniker": "expl CSFML\\menu.c",
               "ToolTip": "C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\menu.c",
               "RelativeToolTip": "expl CSFML\\menu.c",
-              "ViewState": "AgIAABcAAAAAAAAAAAAuwD0AAAA7AAAAAAAAAA==",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAAEMAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2025-04-07T12:26:17.091Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "jeu.c",
-              "DocumentMoniker": "C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\jeu.c",
-              "RelativeDocumentMoniker": "expl CSFML\\jeu.c",
-              "ToolTip": "C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\jeu.c",
-              "RelativeToolTip": "expl CSFML\\jeu.c",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-04-07T12:33:13.407Z",
               "EditorCaption": ""
             },
             {
@@ -129,6 +116,19 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-04-07T12:34:54.269Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "jeu.c",
+              "DocumentMoniker": "C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\jeu.c",
+              "RelativeDocumentMoniker": "expl CSFML\\jeu.c",
+              "ToolTip": "C:\\Users\\l.nzeutom\\OneDrive\\Tiedostot\\GitHub\\CSFML_RPG\\BubbleGame\\CSFML\\expl CSFML\\jeu.c",
+              "RelativeToolTip": "expl CSFML\\jeu.c",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-04-07T15:09:49.61Z",
               "EditorCaption": ""
             }
           ]

@@ -74,17 +74,17 @@ void updateLightBtn(sfRenderWindow* window, sfVector2i mousePosition) {
 }
 void updateButton(sfRenderWindow* window, sfVector2i mousePosition) { // ce qui sera appelé dans le while. il s'agit des conditions relatives aux boutons appuyé avec leurs conseq
 	if (mousePosition.x >= 300 && mousePosition.x <= 500) {
-		if (mousePosition.y >= 150 && mousePosition.y <= 190) {
+		if (mousePosition.y >= 200 && mousePosition.y <= 240) {
 			//music_stop(menuMusic);
 			//play_game(window); // Mode Jouer
 			gameState = GAME;
 
 		}
-		else if (mousePosition.y >= 250 && mousePosition.y <= 290) {
+		else if (mousePosition.y >= 300 && mousePosition.y <= 340) {
 			//music_stop(menuMusic);
 			gameState = OPTION;
 		}
-		else if (mousePosition.y >= 350 && mousePosition.y <= 390) {
+		else if (mousePosition.y >= 400 && mousePosition.y <= 440) {
 			sfRenderWindow_close(window);
 		}
 	}
