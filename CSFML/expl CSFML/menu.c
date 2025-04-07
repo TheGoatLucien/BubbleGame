@@ -8,6 +8,15 @@ sfText* jouer;
 sfText* option;
 sfText* quitter;
 sfText* level;
+sfSprite* Background;
+sfTexture* textureBck;
+sfSprite* Background;
+sfTexture* textureBck;
+sfSprite* title;
+sfTexture* titleBck;
+
+
+
 
 
 void initButton() { //ce qui sera appellé avant le while dans le main
@@ -22,35 +31,35 @@ void initButton() { //ce qui sera appellé avant le while dans le main
 	sfText_setString(jouer, "JOUER");
 	sfText_setFont(jouer, font);
 	sfText_setCharacterSize(jouer, 40);
-	sfText_setPosition(jouer, (sfVector2f) { 300, 150 });
+	sfText_setPosition(jouer, (sfVector2f) { 300, 200 });
 
 	sfText_setString(option, "OPTION");
 	sfText_setFont(option, font);
 	sfText_setCharacterSize(option, 40);
-	sfText_setPosition(option, (sfVector2f) { 300, 250 });
+	sfText_setPosition(option, (sfVector2f) { 300, 300 });
 
 	sfText_setString(quitter, "QUITTER");
 	sfText_setFont(quitter, font);
 	sfText_setCharacterSize(quitter, 40);
-	sfText_setPosition(quitter, (sfVector2f) { 300, 350 });
+	sfText_setPosition(quitter, (sfVector2f) { 300, 400 });
 }
 void updateLightBtn(sfRenderWindow* window, sfVector2i mousePosition) {
 	if (mousePosition.x >= 300 && mousePosition.x <= 500) {
-		if (mousePosition.y >= 150 && mousePosition.y <= 190) {
+		if (mousePosition.y >= 200 && mousePosition.y <= 240) {
 		
 			sfText_setColor(jouer, sfGreen);
 			sfText_setColor(option, sfWhite);
 			sfText_setColor(quitter, sfWhite);
 
 		}
-		else if (mousePosition.y >= 250 && mousePosition.y <= 290) {
+		else if (mousePosition.y >= 300 && mousePosition.y <= 340) {
 			
 			sfText_setColor(option, sfMagenta);
 			sfText_setColor(jouer, sfWhite);
 			sfText_setColor(quitter, sfWhite);
 
 		}
-		else if (mousePosition.y >= 350 && mousePosition.y <= 390) {
+		else if (mousePosition.y >= 400 && mousePosition.y <= 440) {
 			sfText_setColor(quitter, sfRed);
 			sfText_setColor(jouer, sfWhite);
 			sfText_setColor(option, sfWhite);
@@ -84,6 +93,22 @@ void updateButton(sfRenderWindow* window, sfVector2i mousePosition) { // ce qui 
 }
 void displayButton(sfRenderWindow* window) { // display dans le displqy window
 	if (gameState == MENU) {
+		Background = sfSprite_create();
+		textureBck = sfTexture_createFromFile("../Ressources/Textures/titlescreen.png",NULL);
+		sfSprite_setTexture(Background, textureBck,sfTrue);
+		sfSprite_setScale(Background, (sfVector2f){4,4});
+
+		title = sfSprite_create();
+		titleBck = sfTexture_createFromFile("../Ressources/Textures/title.png", NULL);
+		sfSprite_setTexture(title, titleBck, sfTrue);
+		sfSprite_setPosition(title, (sfVector2f) { 245, 10 });
+
+
+
+
+
+		sfRenderWindow_drawSprite(window, Background, NULL);
+		sfRenderWindow_drawSprite(window, title, NULL);
 		sfRenderWindow_drawText(window, jouer, NULL);
 		sfRenderWindow_drawText(window, level, NULL);
 		sfRenderWindow_drawText(window, option, NULL);
@@ -102,5 +127,7 @@ void destroyButton() { // apres la boucle while pour liberer l'espace
 	sfText_destroy(option);
 	sfText_destroy(quitter);
 	sfFont_destroy(font);
+	sfSprite_destroy(Background);
+	sfTexture_destroy(textureBck);
 }
 
