@@ -1,0 +1,7 @@
+﻿  tools.c
+C:\Users\l.nzeutom\Desktop\CSFML\expl CSFML\tools.c(18,8): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
+C:\Users\l.nzeutom\Desktop\CSFML\expl CSFML\tools.c(102,25): warning C4244: '=' : conversion de 'float' en 'sfUint8', perte possible de données
+C:\Users\l.nzeutom\Desktop\CSFML\expl CSFML\tools.c(103,25): warning C4244: '=' : conversion de 'float' en 'sfUint8', perte possible de données
+C:\Users\l.nzeutom\Desktop\CSFML\expl CSFML\tools.c(104,25): warning C4244: '=' : conversion de 'float' en 'sfUint8', perte possible de données
+C:\Users\l.nzeutom\Desktop\CSFML\expl CSFML\tools.c(105,25): warning C4244: '=' : conversion de 'float' en 'sfUint8', perte possible de données
+  expl CSFML.vcxproj -> C:\Users\l.nzeutom\Desktop\CSFML\x64\Debug-x64\expl CSFML.exe
