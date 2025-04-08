@@ -1,12 +1,12 @@
 #pragma once
 #include "tools.h"
-
 #include <SFML/Graphics.h>
 
 typedef struct bubble {
     sfVector2f pos;
     int color;
     int active;
+    int falling; // 0 : attachée, 1 : en chute
     struct bubble* next;
 } bubble_t;
 
