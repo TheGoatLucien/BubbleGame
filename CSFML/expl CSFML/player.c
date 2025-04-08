@@ -128,7 +128,7 @@ void draw_player(player_t* player, sfRenderWindow* window) {
     }
 }
 
-// === FILL ===
+//  FILL
 
 int flood_fill(bubble_t* grid[ROWS][COLS], int row, int col, int color, int visited[ROWS][COLS], bubble_t* cluster[ROWS * COLS]) {
     if (row < 0 || row >= ROWS || col < 0 || col >= COLS)
@@ -154,7 +154,7 @@ int flood_fill(bubble_t* grid[ROWS][COLS], int row, int col, int color, int visi
     return count;
 }
 
-// === COLLISION + ATTACHEMENT ===
+//  COLLISION + ATTACHEMENT 
 
 void update_bubbles(player_t* player) {
     if (!player->current) return;
@@ -184,7 +184,7 @@ attach_bubble:;
         player->grid[row][col]->pos.y = row * 28 + 16;
         player->current = NULL;
 
-        // === GRAPPE : check et explosion ===
+        //  GRAPPE : check et explosion 
         int visited[ROWS][COLS] = { 0 };
         bubble_t* cluster[ROWS * COLS] = { 0 };
         int count = flood_fill(player->grid, row, col, player->grid[row][col]->color, visited, cluster);
@@ -208,7 +208,7 @@ attach_bubble:;
         player->current = NULL;
     }
 
-    // === CONDITION DE DÉFAITE ===
+    // CONDITION DE DÉFAITE 
     for (int col = 0; col < COLS; col++) {
         if (player->grid[ROWS - 1][col]) {
             player->defeat = 1;
