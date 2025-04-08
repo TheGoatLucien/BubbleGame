@@ -198,6 +198,11 @@ void displayFrameRate(sfRenderWindow* _window, sfText* _text)
 	sfText_setString(_text, frameRate);
 	sfRenderWindow_drawText(_window, _text, NULL);
 }
+int fClamp(int value, int min, int max) {
+	if (value < min) return min;
+	if (value > max) return max;
+	return value;
+}
 
 void screenshot(sfRenderWindow* _window)
 {

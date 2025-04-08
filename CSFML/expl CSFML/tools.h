@@ -45,6 +45,8 @@ typedef enum {
 }GameState;
 GameState gameState;
 
+
+int fClamp(int value, int min, int max);
 //-----------------------------------------------------------
 //	Fonction d'initialisation des tools
 //	à mettre obligatoirement dans votre init 
