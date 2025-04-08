@@ -1,4 +1,5 @@
-﻿  main.c
+﻿  bubble.c
+  main.c
 C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\main.c(20,40): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
   player.c
 C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(21,20): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
