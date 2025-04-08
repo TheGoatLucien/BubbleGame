@@ -8,21 +8,31 @@ void send_grey_bubbles(player_t* sender, player_t* receiver) {
 
     for (int i = 0; i < amount; i++) {
         int col = rand() % COLS;
-        for (int row = ROWS - 1; row >= 0; row--) {
-            if (!receiver->grid[row][col]) {
-                bubble_t* grey = malloc(sizeof(bubble_t));
-                grey->color = 0;
-                grey->active = 0;
-                grey->next = NULL;
 
-                float grid_origin_x = receiver->launcher_pos.x - (COLS * 32) / 2;
-                grey->pos.x = grid_origin_x + col * 32 + 16;
-                grey->pos.y = row * 28 + 16;
-
-                receiver->grid[row][col] = grey;
-                break;
+        // Pousser toutes les bulles de la colonne vers le bas
+        for (int row = ROWS - 1; row > 0; row--) {
+            if (receiver->grid[row - 1][col]) {
+                receiver->grid[row][col] = receiver->grid[row - 1][col];
+                if (receiver->grid[row][col]) {
+                    receiver->grid[row][col]->pos.y = row * 28 + 16;
+                }
+            }
+            else {
+                receiver->grid[row][col] = NULL;
             }
         }
+
+        // Ajouter la bulle grise en haut de la colonne
+        bubble_t* grey = malloc(sizeof(bubble_t));
+        grey->color = 0;
+        grey->active = 0;
+        grey->next = NULL;
+
+        float grid_origin_x = receiver->launcher_pos.x - (COLS * 32) / 2;
+        grey->pos.x = grid_origin_x + col * 32 + 16;
+        grey->pos.y = 16; // row = 0
+
+        receiver->grid[0][col] = grey;
     }
 
     sender->score = 0;
@@ -89,7 +99,7 @@ int main() {
             draw_player(&p1, window);
             draw_player(&p2, window);
 
-            //  Condition de défaite 
+            // Condition de défaite
             if (p1.defeat || p2.defeat) {
                 sfFont* font = getDefaultFont();
                 sfText* text = sfText_create();
@@ -111,7 +121,7 @@ int main() {
                 sfSleep(sfSeconds(4));
 
                 sfText_destroy(text);
-                sfFont_destroy(font);
+              
 
                 gameState = MENU;
                 p1 = create_player((sfVector2f) { WINDOWS_WIDHT / 4, WINDOWS_HEIGHT - 50 });

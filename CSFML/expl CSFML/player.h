@@ -2,7 +2,7 @@
 #include "tools.h"
 #include "bubble.h" // Add this include to resolve the bubble_t type
 
-#define ROWS 12
+#define ROWS 29
 #define COLS 8
 
 typedef struct player {
