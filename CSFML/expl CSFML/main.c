@@ -1,16 +1,15 @@
-
 #include "tools.h"
 #include "bubble.h"
 #include "player.h"
 
 void send_grey_bubbles(player_t* sender, player_t* receiver) {
-    int amount = sender->score / 3;
+    int amount = sender->score / 10; // Réduire le nombre de bulles envoyées (diviser par 10 au lieu de 3)
     if (amount <= 0) return;
+    if (amount > 3) amount = 3; // Limiter à un maximum de 3 bulles par envoi
 
     for (int i = 0; i < amount; i++) {
         int col = rand() % COLS;
 
-        // Trouver la première position libre en partant du haut
         int first_empty_row = -1;
         for (int row = 0; row < ROWS; row++) {
             if (!receiver->grid[row][col]) {
@@ -19,13 +18,11 @@ void send_grey_bubbles(player_t* sender, player_t* receiver) {
             }
         }
 
-        // Si aucune position libre n'est trouvée, la colonne est pleine
         if (first_empty_row == -1) {
-            receiver->defeat = 1; // Déclencher la défaite
+            receiver->defeat = 1;
             return;
         }
 
-        // Pousser toutes les bulles vers le bas à partir de first_empty_row
         for (int row = ROWS - 1; row > first_empty_row; row--) {
             receiver->grid[row][col] = receiver->grid[row - 1][col];
             if (receiver->grid[row][col]) {
@@ -33,20 +30,19 @@ void send_grey_bubbles(player_t* sender, player_t* receiver) {
             }
         }
 
-        // Ajouter la bulle grise à la position first_empty_row
-        bubble_t* grey = malloc(sizeof(bubble_t));
-        grey->color = 0;
-        grey->active = 0;
-        grey->next = NULL;
+        bubble_t* new_bubble = malloc(sizeof(bubble_t));
+        new_bubble->color = rand() % 4 + 1;
+        new_bubble->active = 0;
+        new_bubble->next = NULL;
 
         float grid_origin_x = receiver->launcher_pos.x - (COLS * 32) / 2;
-        grey->pos.x = grid_origin_x + col * 32 + 16;
-        grey->pos.y = first_empty_row * 28 + 16;
+        new_bubble->pos.x = grid_origin_x + col * 32 + 16;
+        new_bubble->pos.y = first_empty_row * 28 + 16;
 
-        receiver->grid[first_empty_row][col] = grey;
+        receiver->grid[first_empty_row][col] = new_bubble;
     }
 
-    sender->score = 0;
+    sender->score = 0; // Réinitialiser le score après l'envoi
 }
 
 int main() {
@@ -110,7 +106,6 @@ int main() {
             draw_player(&p1, window);
             draw_player(&p2, window);
 
-            // Condition de défaite
             if (p1.defeat || p2.defeat) {
                 sfFont* font = getDefaultFont();
                 sfText* text = sfText_create();
@@ -132,7 +127,6 @@ int main() {
                 sfSleep(sfSeconds(4));
 
                 sfText_destroy(text);
-
 
                 gameState = MENU;
                 p1 = create_player((sfVector2f) { WINDOWS_WIDHT / 4, WINDOWS_HEIGHT - 50 });
