@@ -89,7 +89,7 @@ int main() {
             draw_player(&p1, window);
             draw_player(&p2, window);
 
-            // === Condition de défaite ===
+            //  Condition de défaite 
             if (p1.defeat || p2.defeat) {
                 sfFont* font = getDefaultFont();
                 sfText* text = sfText_create();
