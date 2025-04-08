@@ -3,13 +3,13 @@
 #include "player.h"
 
 void send_grey_bubbles(player_t* sender, player_t* receiver) {
-    int amount = sender->score / 10; // Réduire le nombre de bulles envoyées (diviser par 10 au lieu de 3)
+    int amount = sender->score / 3;
     if (amount <= 0) return;
-    if (amount > 3) amount = 3; // Limiter à un maximum de 3 bulles par envoi
 
     for (int i = 0; i < amount; i++) {
         int col = rand() % COLS;
 
+        // Trouver la première position libre en partant du haut
         int first_empty_row = -1;
         for (int row = 0; row < ROWS; row++) {
             if (!receiver->grid[row][col]) {
@@ -18,32 +18,36 @@ void send_grey_bubbles(player_t* sender, player_t* receiver) {
             }
         }
 
+        // Si la colonne est pleine, on déclare la défaite
         if (first_empty_row == -1) {
             receiver->defeat = 1;
             return;
         }
 
+        // Pousser les bulles vers le bas
         for (int row = ROWS - 1; row > first_empty_row; row--) {
             receiver->grid[row][col] = receiver->grid[row - 1][col];
-            if (receiver->grid[row][col]) {
-                receiver->grid[row][col]->pos.y = row * 28 + 16;
-            }
+            if (receiver->grid[row][col])
+                receiver->grid[row][col]->pos.y = row * V_SPACING + BUBBLE_RADIUS;
         }
 
-        bubble_t* new_bubble = malloc(sizeof(bubble_t));
-        new_bubble->color = rand() % 4 + 1;
-        new_bubble->active = 0;
-        new_bubble->next = NULL;
+        // Crée la bulle envoyée avec une couleur valide (1 à 4)
+        bubble_t* adversaryBubble = malloc(sizeof(bubble_t));
+        adversaryBubble->color = rand() % 4 + 1;  // couleur jouable
+        adversaryBubble->active = 0;
+        adversaryBubble->next = NULL;
 
-        float grid_origin_x = receiver->launcher_pos.x - (COLS * 32) / 2;
-        new_bubble->pos.x = grid_origin_x + col * 32 + 16;
-        new_bubble->pos.y = first_empty_row * 28 + 16;
+        float gridOriginX = receiver->launcher_pos.x - (COLS * H_SPACING) / 2;
+        float offsetX = (first_empty_row % 2 == 0) ? 0 : H_SPACING / 2;
+        adversaryBubble->pos.x = gridOriginX + offsetX + col * H_SPACING + BUBBLE_RADIUS;
+        adversaryBubble->pos.y = first_empty_row * V_SPACING + BUBBLE_RADIUS;
 
-        receiver->grid[first_empty_row][col] = new_bubble;
+        receiver->grid[first_empty_row][col] = adversaryBubble;
     }
 
-    sender->score = 0; // Réinitialiser le score après l'envoi
+    sender->score = 0;
 }
+
 
 int main() {
     initTools();

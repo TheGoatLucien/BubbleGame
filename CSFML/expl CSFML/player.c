@@ -3,10 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BUBBLE_RADIUS 16
-#define GRID_CELL_WIDTH 32
-#define GRID_CELL_HEIGHT 28
-
 player_t create_player(sfVector2f pos) {
     player_t player = { 0 };
     player.launcher_pos = pos;
@@ -14,26 +10,30 @@ player_t create_player(sfVector2f pos) {
     player.score = 0;
     player.defeat = 0;
     player.current = NULL;
-    player.next_bubble = create_bubble(pos, 0);
-    player.combo_count = 0;
+    player.next_bubble = create_bubble(pos, 0); // création de la prochaine bulle
 
-    for (int i = 0; i < 5; i++) {
+    // Calcul de la position d'origine de la grille :
+    float gridOriginX = player.launcher_pos.x - (COLS * H_SPACING) / 2;
+    float gridOriginY = 16.0f;  // on positionne en haut
+
+    // On initialise les premières lignes en quinconce
+    for (int i = 0; i < INIT_ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             bubble_t* b = malloc(sizeof(bubble_t));
-            b->color = rand() % 4 + 1;
-            b->pos = (sfVector2f){
-                player.launcher_pos.x - (COLS * 32) / 2 + j * 32 + (i % 2 == 1 ? 16 : 0),
-                50 + i * 28
-            };
+            if (!b) continue;
+            b->color = rand() % 4 + 1; // couleur jouable entre 1 et 4
+            // Pour les lignes impaires, décaler horizontalement de H_SPACING/2 
+            float offsetX = (i % 2 == 0) ? 0 : H_SPACING / 2;
+            b->pos.x = gridOriginX + offsetX + j * H_SPACING + BUBBLE_RADIUS;
+            b->pos.y = gridOriginY + i * V_SPACING;
             b->active = 0;
             b->next = NULL;
             player.grid[i][j] = b;
         }
     }
-
-    check_initial_matches(&player);
     return player;
 }
+
 
 void update_player(player_t* player, sfEvent event, int left, int right, int shoot) {
     float delta = getDeltaTime();
@@ -48,19 +48,21 @@ void update_player(player_t* player, sfEvent event, int left, int right, int sho
     if (sfKeyboard_isKeyPressed(shoot) && player->current == NULL) {
         player->current = player->next_bubble;
         player->current->active = 1;
-        player->next_bubble = create_bubble(player->launcher_pos, 0);
+        player->next_bubble = create_bubble(player->launcher_pos, 0); // Générer une nouvelle bulle
     }
 
     if (player->current != NULL) {
         player->current->pos.x += cos(player->angle) * 800 * delta;
         player->current->pos.y += sin(player->angle) * 800 * delta;
 
+        // Rebond mur gauche/droit
         if (player->current->pos.x <= 0 || player->current->pos.x >= WINDOWS_WIDHT) {
             float dx = cos(player->angle);
             float dy = sin(player->angle);
             player->angle = atan2(dy, -dx);
         }
 
+        // Rebond mur central
         float centerX = WINDOWS_WIDHT / 2;
         float margin = 10;
 
@@ -75,10 +77,11 @@ void update_player(player_t* player, sfEvent event, int left, int right, int sho
                 player->current->pos.x = centerX + margin;
         }
 
+        // Plafond
         if (player->current->pos.y < 0) {
             destroy_bubble(player->current);
             player->current = NULL;
-            player->next_bubble = create_bubble(player->launcher_pos, 0);
+            player->next_bubble = create_bubble(player->launcher_pos, 0); // Nouvelle bulle après destruction
         }
     }
 }
@@ -130,6 +133,7 @@ void draw_player(player_t* player, sfRenderWindow* window) {
         sfCircleShape_setOrigin(preview, (sfVector2f) { 16, 16 });
         sfCircleShape_setPosition(preview, player->launcher_pos);
 
+        // Utiliser la couleur de la prochaine bulle
         sfColor color;
         switch (player->next_bubble->color) {
         case 0: color = sfColor_fromRGB(128, 128, 128); break;
@@ -145,203 +149,115 @@ void draw_player(player_t* player, sfRenderWindow* window) {
     }
 }
 
-int flood_fill(bubble_t* grid[ROWS][COLS], int row, int col, int color, int visited[ROWS][COLS], bubble_t* cluster[ROWS * COLS]) {
+int flood_fill(bubble_t* grid[ROWS][COLS], int row, int col, int color, int visited[ROWS][COLS], bubble_t** cluster, int* count) {
+    // Vérification des limites et conditions de correspondance
     if (row < 0 || row >= ROWS || col < 0 || col >= COLS)
         return 0;
-    if (visited[row][col] || !grid[row][col])
-        return 0;
-    if (color != -1 && grid[row][col]->color != color) // -1 utilisé pour detect_floating_bubbles
+    if (visited[row][col] || !grid[row][col] || grid[row][col]->color != color)
         return 0;
 
     visited[row][col] = 1;
-    int cluster_index = 0;
-    for (int i = 0; i < ROWS * COLS; i++) {
-        if (cluster[i] == NULL) {
-            cluster_index = i;
-            break;
-        }
-    }
-    cluster[cluster_index] = grid[row][col];
-    int count = 1;
+    cluster[(*count)++] = grid[row][col];
 
-    int dx[6] = { -1, 1, 0, 0, -1, 1 };
-    int dy[6] = { 0, 0, -1, 1, 1, -1 };
-    if (row % 2 == 0) { // Ajustement pour grille hexagonale
-        dx[4] = -1; dx[5] = 1;
-    }
-    else {
-        dx[4] = 0; dx[5] = 0;
+    // Dépendant de la parité de la ligne, les voisins diffèrent :
+    // Pour les lignes paires (index 0, 2, 4, …)
+    int offsetsEven[6][2] = {
+        {0, -1},   // Gauche
+        {0, 1},    // Droite
+        {-1, 0},   // Haut
+        {-1, -1},  // Haut gauche
+        {1, 0},    // Bas
+        {1, -1}    // Bas gauche
+    };
+    // Pour les lignes impaires (index 1, 3, 5, …)
+    int offsetsOdd[6][2] = {
+        {0, -1},   // Gauche
+        {0, 1},    // Droite
+        {-1, 0},   // Haut
+        {-1, 1},   // Haut droite
+        {1, 0},    // Bas
+        {1, 1}     // Bas droite
+    };
+
+    int (*offsets)[2] = (row % 2 == 0) ? offsetsEven : offsetsOdd;
+
+    for (int i = 0; i < 6; i++) {
+        int newRow = row + offsets[i][0];
+        int newCol = col + offsets[i][1];
+        flood_fill(grid, newRow, newCol, color, visited, cluster, count);
     }
 
-    for (int d = 0; d < 6; d++) {
-        int new_row = row + dx[d];
-        int new_col = col + dy[d];
-        if (new_row < 0 || new_row >= ROWS || new_col < 0 || new_col >= COLS)
-            continue;
-        if (!visited[new_row][new_col] && grid[new_row][new_col]) {
-            int subcount = flood_fill(grid, new_row, new_col, color, visited, cluster);
-            count += subcount;
-        }
-    }
-
-    return count;
+    return *count;
 }
 
-void check_initial_matches(player_t* player) {
-    int visited[ROWS][COLS] = { 0 };
-    bubble_t* cluster[ROWS * COLS] = { 0 };
-
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            if (player->grid[i][j] && !visited[i][j]) {
-                int count = flood_fill(player->grid, i, j, player->grid[i][j]->color, visited, cluster);
-                if (count >= 3) {
-                    for (int k = 0; k < ROWS * COLS; k++) {
-                        if (cluster[k]) {
-                            for (int r = 0; r < ROWS; r++) {
-                                for (int c = 0; c < COLS; c++) {
-                                    if (player->grid[r][c] == cluster[k]) {
-                                        destroy_bubble(player->grid[r][c]);
-                                        player->grid[r][c] = NULL;
-                                    }
-                                }
-                            }
-                            cluster[k] = NULL;
-                        }
-                    }
-                }
-                memset(cluster, 0, sizeof(bubble_t*) * ROWS * COLS);
-            }
-        }
-    }
-}
-
-void snap_to_grid(player_t* player, bubble_t* bubble, float grid_origin_x) {
-    int row = round(bubble->pos.y / GRID_CELL_HEIGHT);
-    if (row < 0) row = 0;
-    if (row >= ROWS) row = ROWS - 1;
-
-    float offset_x = (row % 2 == 1) ? GRID_CELL_WIDTH / 2 : 0;
-    int col = round((bubble->pos.x - grid_origin_x - offset_x) / GRID_CELL_WIDTH);
-    if (col < 0) col = 0;
-    if (col >= COLS) col = COLS - 1;
-
-    float best_dist = 999999.0f;
-    int best_row = row;
-    int best_col = col;
-
-    for (int r = row - 1; r <= row + 1; r++) {
-        if (r < 0 || r >= ROWS) continue;
-        for (int c = col - 1; c <= col + 1; c++) {
-            if (c < 0 || c >= COLS) continue;
-            if (player->grid[r][c]) continue;
-
-            float offset = (r % 2 == 1) ? GRID_CELL_WIDTH / 2 : 0;
-            float grid_x = grid_origin_x + c * GRID_CELL_WIDTH + offset + BUBBLE_RADIUS;
-            float grid_y = r * GRID_CELL_HEIGHT + BUBBLE_RADIUS;
-            float dist = sqrt(pow(bubble->pos.x - grid_x, 2) + pow(bubble->pos.y - grid_y, 2));
-
-            if (dist < best_dist) {
-                best_dist = dist;
-                best_row = r;
-                best_col = c;
-            }
-        }
-    }
-
-    float final_offset = (best_row % 2 == 1) ? GRID_CELL_WIDTH / 2 : 0;
-    bubble->pos.x = grid_origin_x + best_col * GRID_CELL_WIDTH + final_offset + BUBBLE_RADIUS;
-    bubble->pos.y = best_row * GRID_CELL_HEIGHT + BUBBLE_RADIUS;
-
-    player->grid[best_row][best_col] = bubble;
-}
-
-void detect_floating_bubbles(player_t* player) {
-    int visited[ROWS][COLS] = { 0 };
-    bubble_t* cluster[ROWS * COLS] = { 0 };
-
-    for (int col = 0; col < COLS; col++) {
-        if (player->grid[0][col] && !visited[0][col]) {
-            flood_fill(player->grid, 0, col, -1, visited, cluster);
-            memset(cluster, 0, sizeof(bubble_t*) * ROWS * COLS);
-        }
-    }
-
-    int floating_count = 0;
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            if (player->grid[i][j] && !visited[i][j]) {
-                destroy_bubble(player->grid[i][j]);
-                player->grid[i][j] = NULL;
-                floating_count++;
-            }
-        }
-    }
-
-    if (floating_count > 0) {
-        player->combo_count++;
-        player->score += floating_count * 10 * player->combo_count;
-    }
-}
 
 void update_bubbles(player_t* player) {
     if (!player->current) return;
 
-    if (player->current->pos.y <= 0) goto attach_bubble;
+    // On vérifie si la bulle frappe le plafond
+    if (player->current->pos.y <= 0)
+        goto attach_bubble;
 
+    // Vérification de collision sur la grille
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             if (player->grid[i][j] &&
-                Circle_Collision(player->current->pos, player->grid[i][j]->pos, 16, 16)) {
+                Circle_Collision(player->current->pos, player->grid[i][j]->pos, BUBBLE_RADIUS, BUBBLE_RADIUS)) {
                 goto attach_bubble;
             }
         }
     }
-
     return;
 
 attach_bubble:;
-    float grid_origin_x = player->launcher_pos.x - (COLS * 32) / 2;
-    snap_to_grid(player, player->current, grid_origin_x);
-    player->current = NULL;
+    float gridOriginX = player->launcher_pos.x - (COLS * H_SPACING) / 2;
 
-    player->combo_count = 0;
+    // Déterminer la ligne d’attache en se basant sur l’ordonnée
+    int row = fClamp(player->current->pos.y / V_SPACING, 0, ROWS - 1);
+    int col;
+    if (row % 2 == 0)
+        col = fClamp((player->current->pos.x - gridOriginX) / H_SPACING, 0, COLS - 1);
+    else
+        col = fClamp((player->current->pos.x - (gridOriginX + H_SPACING / 2)) / H_SPACING, 0, COLS - 1);
 
-    int visited[ROWS][COLS] = { 0 };
-    bubble_t* cluster[ROWS * COLS] = { 0 };
-    int did_match = 0;
+    // Position ajustée pour respecter le quinconce
+    float offsetX = (row % 2 == 0) ? 0 : H_SPACING / 2;
+    player->current->pos.x = gridOriginX + offsetX + col * H_SPACING + BUBBLE_RADIUS;
+    player->current->pos.y = row * V_SPACING + BUBBLE_RADIUS;
 
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            if (player->grid[i][j] && !visited[i][j]) {
-                int count = flood_fill(player->grid, i, j, player->grid[i][j]->color, visited, cluster);
-                if (count >= 3) {
-                    did_match = 1;
-                    player->combo_count++;
-                    for (int k = 0; k < ROWS * COLS; k++) {
-                        if (cluster[k]) {
-                            for (int r = 0; r < ROWS; r++) {
-                                for (int c = 0; c < COLS; c++) {
-                                    if (player->grid[r][c] == cluster[k]) {
-                                        destroy_bubble(player->grid[r][c]);
-                                        player->grid[r][c] = NULL;
-                                    }
-                                }
-                            }
-                            cluster[k] = NULL;
+    if (!player->grid[row][col]) {
+        player->grid[row][col] = player->current;
+        player->current = NULL;
+
+        // Détection de cluster avec la fonction refaite.
+        int visited[ROWS][COLS] = { 0 };
+        bubble_t* cluster[ROWS * COLS] = { 0 };
+        int count = 0;
+        count = flood_fill(player->grid, row, col, player->grid[row][col]->color, visited, cluster, &count);
+
+        if (count >= 3) {
+            for (int i = 0; i < count; i++) {
+                // On parcourt toute la grille pour détruire les bulles du cluster
+                for (int r = 0; r < ROWS; r++) {
+                    for (int c = 0; c < COLS; c++) {
+                        if (player->grid[r][c] == cluster[i]) {
+                            destroy_bubble(player->grid[r][c]);
+                            player->grid[r][c] = NULL;
                         }
                     }
-                    player->score += count * 10 * player->combo_count;
                 }
-                memset(cluster, 0, sizeof(bubble_t*) * ROWS * COLS);
             }
+            player->score += count;
         }
     }
-
-    if (did_match) {
-        detect_floating_bubbles(player);
+    else {
+        // Si la case est déjà occupée, on supprime la bulle tirée et en regénère une nouvelle
+        destroy_bubble(player->current);
+        player->current = NULL;
+        player->next_bubble = create_bubble(player->launcher_pos, 0);
     }
 
+    // Vérification de la défaite (bulles trop proches du bas)
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             if (player->grid[i][j] && player->grid[i][j]->pos.y >= WINDOWS_HEIGHT - 100) {
