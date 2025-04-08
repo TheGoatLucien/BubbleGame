@@ -1,6 +1,6 @@
 #pragma once
 #include "tools.h"
-#include "bubble.h" // Add this include to resolve the bubble_t type
+#include "bubble.h"
 
 #define ROWS 29
 #define COLS 8
@@ -8,6 +8,7 @@
 typedef struct player {
     bubble_t* grid[ROWS][COLS];
     bubble_t* current;
+    bubble_t* next_bubble; // Ajout pour stocker la prochaine bulle
     float angle;
     int score;
     int defeat;

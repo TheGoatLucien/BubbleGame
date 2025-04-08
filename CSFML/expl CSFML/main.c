@@ -1,3 +1,4 @@
+
 #include "tools.h"
 #include "bubble.h"
 #include "player.h"
@@ -9,20 +10,30 @@ void send_grey_bubbles(player_t* sender, player_t* receiver) {
     for (int i = 0; i < amount; i++) {
         int col = rand() % COLS;
 
-        // Pousser toutes les bulles de la colonne vers le bas
-        for (int row = ROWS - 1; row > 0; row--) {
-            if (receiver->grid[row - 1][col]) {
-                receiver->grid[row][col] = receiver->grid[row - 1][col];
-                if (receiver->grid[row][col]) {
-                    receiver->grid[row][col]->pos.y = row * 28 + 16;
-                }
-            }
-            else {
-                receiver->grid[row][col] = NULL;
+        // Trouver la première position libre en partant du haut
+        int first_empty_row = -1;
+        for (int row = 0; row < ROWS; row++) {
+            if (!receiver->grid[row][col]) {
+                first_empty_row = row;
+                break;
             }
         }
 
-        // Ajouter la bulle grise en haut de la colonne
+        // Si aucune position libre n'est trouvée, la colonne est pleine
+        if (first_empty_row == -1) {
+            receiver->defeat = 1; // Déclencher la défaite
+            return;
+        }
+
+        // Pousser toutes les bulles vers le bas à partir de first_empty_row
+        for (int row = ROWS - 1; row > first_empty_row; row--) {
+            receiver->grid[row][col] = receiver->grid[row - 1][col];
+            if (receiver->grid[row][col]) {
+                receiver->grid[row][col]->pos.y = row * 28 + 16;
+            }
+        }
+
+        // Ajouter la bulle grise à la position first_empty_row
         bubble_t* grey = malloc(sizeof(bubble_t));
         grey->color = 0;
         grey->active = 0;
@@ -30,9 +41,9 @@ void send_grey_bubbles(player_t* sender, player_t* receiver) {
 
         float grid_origin_x = receiver->launcher_pos.x - (COLS * 32) / 2;
         grey->pos.x = grid_origin_x + col * 32 + 16;
-        grey->pos.y = 16; // row = 0
+        grey->pos.y = first_empty_row * 28 + 16;
 
-        receiver->grid[0][col] = grey;
+        receiver->grid[first_empty_row][col] = grey;
     }
 
     sender->score = 0;
@@ -121,7 +132,7 @@ int main() {
                 sfSleep(sfSeconds(4));
 
                 sfText_destroy(text);
-              
+
 
                 gameState = MENU;
                 p1 = create_player((sfVector2f) { WINDOWS_WIDHT / 4, WINDOWS_HEIGHT - 50 });

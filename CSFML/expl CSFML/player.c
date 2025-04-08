@@ -10,6 +10,7 @@ player_t create_player(sfVector2f pos) {
     player.score = 0;
     player.defeat = 0;
     player.current = NULL;
+    player.next_bubble = create_bubble(pos, 0); // Initialisation de la prochaine bulle
 
     // Init grille
     for (int i = 0; i < 5; i++) {
@@ -39,8 +40,11 @@ void update_player(player_t* player, sfEvent event, int left, int right, int sho
     if (player->angle < -2.5f) player->angle = -2.5f;
     if (player->angle > -0.6f) player->angle = -0.6f;
 
-    if (sfKeyboard_isKeyPressed(shoot) && player->current == NULL)
-        player->current = create_bubble(player->launcher_pos, player->angle);
+    if (sfKeyboard_isKeyPressed(shoot) && player->current == NULL) {
+        player->current = player->next_bubble;
+        player->current->active = 1;
+        player->next_bubble = create_bubble(player->launcher_pos, 0); // Générer une nouvelle bulle
+    }
 
     if (player->current != NULL) {
         player->current->pos.x += cos(player->angle) * 800 * delta;
@@ -72,6 +76,7 @@ void update_player(player_t* player, sfEvent event, int left, int right, int sho
         if (player->current->pos.y < 0) {
             destroy_bubble(player->current);
             player->current = NULL;
+            player->next_bubble = create_bubble(player->launcher_pos, 0); // Nouvelle bulle après destruction
         }
     }
 }
@@ -122,7 +127,18 @@ void draw_player(player_t* player, sfRenderWindow* window) {
         sfCircleShape_setRadius(preview, 16);
         sfCircleShape_setOrigin(preview, (sfVector2f) { 16, 16 });
         sfCircleShape_setPosition(preview, player->launcher_pos);
-        sfCircleShape_setFillColor(preview, sfCyan);
+
+        // Utiliser la couleur de la prochaine bulle
+        sfColor color;
+        switch (player->next_bubble->color) {
+        case 0: color = sfColor_fromRGB(128, 128, 128); break;
+        case 1: color = sfRed; break;
+        case 2: color = sfBlue; break;
+        case 3: color = sfGreen; break;
+        case 4: color = sfYellow; break;
+        default: color = sfWhite; break;
+        }
+        sfCircleShape_setFillColor(preview, color);
         sfRenderWindow_drawCircleShape(window, preview, NULL);
         sfCircleShape_destroy(preview);
     }
@@ -202,6 +218,7 @@ attach_bubble:;
     else {
         destroy_bubble(player->current);
         player->current = NULL;
+        player->next_bubble = create_bubble(player->launcher_pos, 0); // Nouvelle bulle après destruction
     }
 
     // Condition de défaite : bulles trop proches du joueur
