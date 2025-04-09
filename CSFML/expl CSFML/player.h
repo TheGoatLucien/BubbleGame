@@ -28,3 +28,4 @@ void update_player(player_t* player, sfEvent event, int left, int right, int sho
 void draw_player(player_t* player, sfRenderWindow* window);
 void update_bubbles(player_t* player);
 void add_random_bubble_line(player_t* player);
+

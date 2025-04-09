@@ -3,6 +3,69 @@
 #include <stdlib.h>
 #include <string.h>
 
+void update_attachment_status(bubble_t* grid[ROWS][COLS], int attach[ROWS][COLS]) {
+    // Initialiser attach à -1
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            attach[i][j] = -1;
+        }
+    }
+
+    // Pour chaque colonne de la première ligne, si une bulle existe, on la marque comme attachée (0)
+    for (int j = 0; j < COLS; j++) {
+        if (grid[0][j] != NULL) {
+            attach[0][j] = 0;
+        }
+    }
+
+    // Maintenant, en utilisant un flood fill 'iteratif' ou récursif, propage la marque 0 aux voisins.
+    // On définit les offsets pour les voisins (selon la parité des lignes)
+    int offsetsEven[6][2] = { {0,-1}, {0,1}, {-1,0}, {-1,-1}, {1,0}, {1,-1} };
+    int offsetsOdd[6][2] = { {0,-1}, {0,1}, {-1,0}, {-1,1}, {1,0}, {1,1} };
+
+    int changed = 1;
+    while (changed) {
+        changed = 0;
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                // Si cette cellule est marquée (== 0) et a une bulle
+                if (attach[i][j] == 0 && grid[i][j] != NULL) {
+                    // Choisir offsets en fonction de la parité
+                    int (*offsets)[2] = (i % 2 == 0) ? offsetsEven : offsetsOdd;
+
+                    // Pour chaque voisin
+                    for (int k = 0; k < 6; k++) {
+                        int newRow = i + offsets[k][0];
+                        int newCol = j + offsets[k][1];
+                        if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS) {
+                            // Si le voisin contient une bulle et n'est pas encore marqué
+                            if (grid[newRow][newCol] != NULL && attach[newRow][newCol] != 0) {
+                                attach[newRow][newCol] = 0;
+                                changed = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void apply_fall_logic_mathematically(player_t* player) {
+    int attach[ROWS][COLS];
+    update_attachment_status(player->grid, attach);
+
+    // Parcourir la grille, supprimer uniquement les bulles dont l'attachment reste à -1.
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            if (player->grid[i][j] != NULL && attach[i][j] == -1) {
+                destroy_bubble(player->grid[i][j]);
+                player->grid[i][j] = NULL;
+            }
+        }
+    }
+}
+
 void descend_bubbles(player_t* player) {
     // Descendre toutes les bulles existantes
     for (int row = ROWS - 1; row > 0; row--) {
@@ -251,20 +314,23 @@ void update_bubbles(player_t* player) {
     return;
 
 attach_bubble:;
+    // Déterminer la position d'origine horizontale ET verticale du grid.
     float gridOriginX = player->launcher_pos.x - (COLS * H_SPACING) / 2;
+    float gridOriginY = 16.0f; // Le même que celui utilisé dans create_player
 
-    // Déterminer la ligne d’attache en se basant sur l’ordonnée
-    int row = fClamp(player->current->pos.y / V_SPACING, 0, ROWS - 1);
-    int col;
-    if (row % 2 == 0)
-        col = fClamp((player->current->pos.x - gridOriginX) / H_SPACING, 0, COLS - 1);
-    else
-        col = fClamp((player->current->pos.x - (gridOriginX + H_SPACING / 2)) / H_SPACING, 0, COLS - 1);
+    // Calcul du rang (row) : on soustrait la position du toit (gridOriginY) et le rayon,
+    // puis on divise par l'espacement vertical ; on arrondit pour "snaper" correctement.
+    int row = fClamp((int)round((player->current->pos.y - gridOriginY - BUBBLE_RADIUS) / V_SPACING), 0, ROWS - 1);
 
-    // Position ajustée pour respecter le quinconce
+    // Choix de l'offset horizontal selon la parité de la ligne.
     float offsetX = (row % 2 == 0) ? 0 : H_SPACING / 2;
+    // Calcul du numéro de colonne avec arrondi. On soustrait gridOriginX et le rayon.
+    int col = fClamp((int)round((player->current->pos.x - gridOriginX - offsetX - BUBBLE_RADIUS) / H_SPACING), 0, COLS - 1);
+
+    // Positionne la bulle en "snappant" aux coordonnées de la grille.
     player->current->pos.x = gridOriginX + offsetX + col * H_SPACING + BUBBLE_RADIUS;
-    player->current->pos.y = row * V_SPACING + BUBBLE_RADIUS;
+    player->current->pos.y = gridOriginY + row * V_SPACING + BUBBLE_RADIUS;
+
 
     if (!player->grid[row][col]) {
         player->grid[row][col] = player->current;
@@ -278,7 +344,6 @@ attach_bubble:;
 
         if (count >= 3) {
             for (int i = 0; i < count; i++) {
-                // On parcourt toute la grille pour détruire les bulles du cluster
                 for (int r = 0; r < ROWS; r++) {
                     for (int c = 0; c < COLS; c++) {
                         if (player->grid[r][c] == cluster[i]) {
@@ -289,7 +354,11 @@ attach_bubble:;
                 }
             }
             player->score += count;
+
+            // Appliquer la gravité sur les bulles non attachées
+            apply_fall_logic_mathematically(player);
         }
+
     }
     else {
         // Si la case est déjà occupée, on supprime la bulle tirée et en regénère une nouvelle
