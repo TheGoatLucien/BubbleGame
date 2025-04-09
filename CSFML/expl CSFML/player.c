@@ -55,16 +55,21 @@ void apply_fall_logic_mathematically(player_t* player) {
     int attach[ROWS][COLS];
     update_attachment_status(player->grid, attach);
 
-    // Parcourir la grille, supprimer uniquement les bulles dont l'attachment reste à -1.
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
-            if (player->grid[i][j] != NULL && attach[i][j] == -1) {
-                destroy_bubble(player->grid[i][j]);
+            if (player->grid[i][j] && attach[i][j] == -1) {
+                // Ajouter à la liste des bulles en chute
+                player->grid[i][j]->falling = 1;
+                player->grid[i][j]->next = player->falling_bubbles;
+                player->falling_bubbles = player->grid[i][j];
+
+                // Retirer de la grille
                 player->grid[i][j] = NULL;
             }
         }
     }
 }
+
 
 void descend_bubbles(player_t* player) {
     // Descendre toutes les bulles existantes
@@ -293,6 +298,13 @@ void draw_player(player_t* player, sfRenderWindow* window) {
         sfRenderWindow_drawCircleShape(window, preview, NULL);
         sfCircleShape_destroy(preview);
     }
+    // Bulles en chute libre
+    bubble_t* fall = player->falling_bubbles;
+    while (fall) {
+        draw_bubble(fall, window);
+        fall = fall->next;
+    }
+
 }
 
 int flood_fill(bubble_t* grid[ROWS][COLS], int row, int col, int color, int visited[ROWS][COLS], bubble_t** cluster, int* count) {
@@ -389,7 +401,10 @@ attach_bubble:;
                 for (int r = 0; r < ROWS; r++) {
                     for (int c = 0; c < COLS; c++) {
                         if (player->grid[r][c] == cluster[i]) {
-                            destroy_bubble(player->grid[r][c]);
+                            // Ajoute à la chute au lieu de destroy
+                            player->grid[r][c]->falling = 1;
+                            player->grid[r][c]->next = player->falling_bubbles;
+                            player->falling_bubbles = player->grid[r][c];
                             player->grid[r][c] = NULL;
                         }
                     }
@@ -397,11 +412,12 @@ attach_bubble:;
             }
             player->score += count;
             *chrono += 10.0f;
-            if (*chrono > 60.0f) *chrono = 60.0f;  // pour ne pas dépasser 60s
+            if (*chrono > 60.0f) *chrono = 60.0f;
 
-            // Appliquer la gravité sur les bulles non attachées
+            // Et on applique aussi la chute pour les bulles suspendues :
             apply_fall_logic_mathematically(player);
         }
+
 
     }
     else {

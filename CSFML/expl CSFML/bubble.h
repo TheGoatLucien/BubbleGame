@@ -7,6 +7,7 @@ typedef struct bubble {
     sfVector2f pos;
     int color;
     int active;
+    int falling;       // 0 = non, 1 = tombe
     struct bubble* next;
 } bubble_t;
 
