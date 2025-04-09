@@ -25,8 +25,8 @@
 #define MUSIC_PATH "..\\Ressources\\Musics\\"
 
 
-#define WINDOWS_WIDHT 1600
-#define WINDOWS_HEIGHT 900
+#define WINDOWS_WIDHT 800
+#define WINDOWS_HEIGHT 500
 
 
 typedef struct vector4f vector4f;

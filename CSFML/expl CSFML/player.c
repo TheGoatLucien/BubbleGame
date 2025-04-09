@@ -3,6 +3,36 @@
 #include <stdlib.h>
 #include <string.h>
 
+void descend_bubbles(player_t* player) {
+    // Descendre toutes les bulles existantes
+    for (int row = ROWS - 1; row > 0; row--) {
+        for (int col = 0; col < COLS; col++) {
+            if (player->grid[row - 1][col]) {
+                player->grid[row][col] = player->grid[row - 1][col];
+                player->grid[row - 1][col] = NULL;
+                player->grid[row][col]->pos.y = row * V_SPACING + BUBBLE_RADIUS;
+            }
+        }
+    }
+}
+
+void add_random_bubble_line(player_t* player) {
+    // Vérifie si la grille est pleine au sommet
+ 
+
+    // Ajoute une nouvelle ligne au sommet
+    for (int col = 0; col < COLS; col++) {
+        bubble_t* new_bubble = malloc(sizeof(bubble_t));
+        if (!new_bubble) continue;
+        new_bubble->color = rand() % 4 + 1; // Couleurs aléatoires
+        new_bubble->active = 0;
+        new_bubble->pos.x = player->launcher_pos.x - (COLS * H_SPACING) / 2 + col * H_SPACING + BUBBLE_RADIUS;
+        new_bubble->pos.y = BUBBLE_RADIUS;
+        new_bubble->next = NULL;
+        player->grid[0][col] = new_bubble;
+    }
+}
+
 player_t create_player(sfVector2f pos) {
     player_t player = { 0 };
     player.launcher_pos = pos;
@@ -37,7 +67,7 @@ player_t create_player(sfVector2f pos) {
 
 void update_player(player_t* player, sfEvent event, int left, int right, int shoot) {
     float delta = getDeltaTime();
-    float rotationSpeed = 2.5f;
+    float rotationSpeed = 0.5f;
 
     if (sfKeyboard_isKeyPressed(left)) player->angle -= rotationSpeed * delta;
     if (sfKeyboard_isKeyPressed(right)) player->angle += rotationSpeed * delta;

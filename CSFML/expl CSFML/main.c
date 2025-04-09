@@ -64,7 +64,8 @@ int main() {
     player_t p1 = create_player((sfVector2f) { WINDOWS_WIDHT / 4, WINDOWS_HEIGHT - 50 });
     player_t p2 = create_player((sfVector2f) { (3 * WINDOWS_WIDHT) / 4, WINDOWS_HEIGHT - 50 });
     sfVector2i mousePosition;
-
+    float time_elapsed = 0;
+    float generation_interval = 5.0f; // Une nouvelle ligne toutes les 5 secondes
     while (sfRenderWindow_isOpen(window)) {
         restartClock();
 
@@ -91,6 +92,15 @@ int main() {
         }
 
         if (gameState == GAME) {
+            time_elapsed += getDeltaTime();
+
+            if (time_elapsed >= generation_interval) {
+                add_random_bubble_line(&p1);
+                descend_bubbles(&p1);
+                add_random_bubble_line(&p2);
+                descend_bubbles(&p2);
+                time_elapsed = 0; // Réinitialiser le timer
+            }
             update_player(&p1, event, sfKeyQ, sfKeyD, sfKeySpace);
             update_player(&p2, event, sfKeyLeft, sfKeyRight, sfKeyReturn);
 
