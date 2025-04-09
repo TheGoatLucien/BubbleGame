@@ -25,7 +25,7 @@
 #define MUSIC_PATH "..\\Ressources\\Musics\\"
 
 
-#define WINDOWS_WIDHT 800
+#define WINDOWS_WIDHT 1600
 #define WINDOWS_HEIGHT 500
 
 

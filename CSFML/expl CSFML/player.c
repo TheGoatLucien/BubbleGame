@@ -191,15 +191,57 @@ void update_player(player_t* player, sfEvent event, int left, int right, int sho
 }
 
 void draw_aim_line(sfVector2f origin, float angle, sfRenderWindow* window) {
-    sfVertex line[] = {
-        { origin, sfColor_fromRGBA(255, 255, 255, 80) },
-        { (sfVector2f) {
-            origin.x + cos(angle) * 800,
-            origin.y + sin(angle) * 800
-        }, sfColor_fromRGBA(255, 255, 255, 80) }
-    };
+    sfVector2f pos = origin;
+    float dx = cos(angle), dy = sin(angle);
+    int bounces = 0;
+    const int max_bounces = 3;
 
-    sfRenderWindow_drawPrimitives(window, line, 2, sfLines, NULL);
+    sfVertexArray* line = sfVertexArray_create();
+    sfVertexArray_setPrimitiveType(line, sfLinesStrip);
+    sfVertexArray_append(line, (sfVertex) { pos, sfColor_fromRGBA(255, 255, 255, 80) });
+
+    while (bounces < max_bounces) {
+        for (int i = 0; i < 100; i++) {
+            pos.x += dx * 5;
+            pos.y += dy * 5;
+
+            // Rebond gauche/droit
+            if (pos.x <= 0 || pos.x >= WINDOWS_WIDHT) {
+                dx = -dx;
+                bounces++;
+                break;
+            }
+
+            // Plafond : stop
+            if (pos.y <= 0) {
+                bounces = max_bounces;
+                break;
+            }
+        }
+
+        sfVertex v = { pos, sfColor_fromRGBA(255, 255, 255, 80) };
+        sfVertexArray_append(line, v);
+    }
+
+    sfRenderWindow_drawVertexArray(window, line, NULL);
+    sfVertexArray_destroy(line);
+}
+
+void update_falling_bubbles(player_t* player) {
+    bubble_t** current = &player->falling_bubbles;
+    float fallSpeed = 250.0f;
+
+    while (*current) {
+        (*current)->pos.y += fallSpeed * getDeltaTime();
+        if ((*current)->pos.y > WINDOWS_HEIGHT + BUBBLE_RADIUS) {
+            bubble_t* toDestroy = *current;
+            *current = (*current)->next;
+            destroy_bubble(toDestroy);
+        }
+        else {
+            current = &(*current)->next;
+        }
+    }
 }
 
 void draw_player(player_t* player, sfRenderWindow* window) {
@@ -295,7 +337,7 @@ int flood_fill(bubble_t* grid[ROWS][COLS], int row, int col, int color, int visi
 }
 
 
-void update_bubbles(player_t* player) {
+void update_bubbles(player_t* player, float* chrono) {
     if (!player->current) return;
 
     // On vérifie si la bulle frappe le plafond
@@ -354,6 +396,8 @@ attach_bubble:;
                 }
             }
             player->score += count;
+            *chrono += 10.0f;
+            if (*chrono > 60.0f) *chrono = 60.0f;  // pour ne pas dépasser 60s
 
             // Appliquer la gravité sur les bulles non attachées
             apply_fall_logic_mathematically(player);
