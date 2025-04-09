@@ -17,17 +17,28 @@ void descend_bubbles(player_t* player) {
 }
 
 void add_random_bubble_line(player_t* player) {
-    // Vérifie si la grille est pleine au sommet
- 
+    // Descendre toutes les bulles existantes avant d'ajouter une nouvelle ligne
+    for (int row = ROWS - 1; row > 0; row--) {
+        for (int col = 0; col < COLS; col++) {
+            if (player->grid[row - 1][col]) {
+                player->grid[row][col] = player->grid[row - 1][col];
+                player->grid[row - 1][col] = NULL;
+                player->grid[row][col]->pos.y = row * V_SPACING + BUBBLE_RADIUS;
+            }
+        }
+    }
 
-    // Ajoute une nouvelle ligne au sommet
+    // Ajoute une nouvelle ligne au sommet sans espace
     for (int col = 0; col < COLS; col++) {
         bubble_t* new_bubble = malloc(sizeof(bubble_t));
         if (!new_bubble) continue;
         new_bubble->color = rand() % 4 + 1; // Couleurs aléatoires
         new_bubble->active = 0;
-        new_bubble->pos.x = player->launcher_pos.x - (COLS * H_SPACING) / 2 + col * H_SPACING + BUBBLE_RADIUS;
-        new_bubble->pos.y = BUBBLE_RADIUS;
+
+        // Alignement au plafond
+        float gridOriginX = player->launcher_pos.x - (COLS * H_SPACING) / 2;
+        new_bubble->pos.x = gridOriginX + col * H_SPACING + BUBBLE_RADIUS;
+        new_bubble->pos.y = BUBBLE_RADIUS; // Pas de décalage vertical
         new_bubble->next = NULL;
         player->grid[0][col] = new_bubble;
     }

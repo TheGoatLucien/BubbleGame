@@ -95,10 +95,8 @@ int main() {
             time_elapsed += getDeltaTime();
 
             if (time_elapsed >= generation_interval) {
-                add_random_bubble_line(&p1);
-                descend_bubbles(&p1);
-                add_random_bubble_line(&p2);
-                descend_bubbles(&p2);
+                add_random_bubble_line(&p1); // Ajoute une ligne pour le joueur 1
+                add_random_bubble_line(&p2); // Ajoute une ligne pour le joueur 2
                 time_elapsed = 0; // Réinitialiser le timer
             }
             update_player(&p1, event, sfKeyQ, sfKeyD, sfKeySpace);
