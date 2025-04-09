@@ -69,9 +69,9 @@
               "Title": "player.c",
               "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\player.c",
               "RelativeDocumentMoniker": "expl CSFML\\player.c",
-              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\player.c*",
-              "RelativeToolTip": "expl CSFML\\player.c*",
-              "ViewState": "AgIAAIkBAAAAAAAAAAAiwJ0BAAARAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\player.c",
+              "RelativeToolTip": "expl CSFML\\player.c",
+              "ViewState": "AgIAAFMBAAAAAAAAAAAAAIwBAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2025-04-07T18:48:22.227Z",
               "EditorCaption": ""
@@ -86,8 +86,7 @@
               "RelativeToolTip": "expl CSFML\\player.h",
               "ViewState": "AgIAAAkAAAAAAAAAAAAAACEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-04-07T18:50:29.516Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-07T18:50:29.516Z"
             },
             {
               "$type": "Document",
@@ -99,8 +98,7 @@
               "RelativeToolTip": "expl CSFML\\tools.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-01-15T08:08:15.136Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-15T08:08:15.136Z"
             },
             {
               "$type": "Document",
@@ -112,8 +110,7 @@
               "RelativeToolTip": "expl CSFML\\tools.h",
               "ViewState": "AgIAABIAAAAAAAAAAAAAABsAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-01-15T08:08:31.113Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-15T08:08:31.113Z"
             },
             {
               "$type": "Document",
@@ -125,8 +122,7 @@
               "RelativeToolTip": "expl CSFML\\main.c",
               "ViewState": "AgIAALYAAAAAAAAAAAAiwNAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-01-08T09:15:09.456Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-08T09:15:09.456Z"
             },
             {
               "$type": "Document",
@@ -138,8 +134,7 @@
               "RelativeToolTip": "expl CSFML\\menu.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-04-07T12:29:01.768Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-07T12:29:01.768Z"
             },
             {
               "$type": "Document",
@@ -151,8 +146,7 @@
               "RelativeToolTip": "expl CSFML\\menu.c",
               "ViewState": "AgIAAGwAAAAAAAAAAAAYwHgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-04-07T12:26:17.091Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-07T12:26:17.091Z"
             },
             {
               "$type": "Document",
@@ -164,8 +158,7 @@
               "RelativeToolTip": "expl CSFML\\bubble.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-04-07T18:50:51.966Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-07T18:50:51.966Z"
             },
             {
               "$type": "Document",
@@ -177,8 +170,7 @@
               "RelativeToolTip": "expl CSFML\\bubble.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-04-07T18:51:13.598Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-07T18:51:13.598Z"
             },
             {
               "$type": "Document",

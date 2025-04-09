@@ -394,7 +394,7 @@ attach_bubble:;
         int visited[ROWS][COLS] = { 0 };
         bubble_t* cluster[ROWS * COLS] = { 0 };
         int count = 0;
-        count = flood_fill(player->grid, row, col, player->grid[row][col]->color, visited, cluster, &count);
+        flood_fill(player->grid, row, col, player->grid[row][col]->color, visited, cluster, &count);
 
         if (count >= 3) {
             for (int i = 0; i < count; i++) {
