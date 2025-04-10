@@ -138,6 +138,9 @@ int main() {
 
             update_falling_bubbles(&p1);
             update_falling_bubbles(&p2);
+
+            send_grey_bubbles(&p1, &p2);
+            send_grey_bubbles(&p2, &p1);
         }
 
         sfRenderWindow_clear(window, sfBlack);
@@ -189,7 +192,9 @@ int main() {
             //
             draw_player(&p1, window);
             draw_player(&p2, window);
-
+            //affichage visuel timer
+            update_bonus_animation(&p1, window);
+            update_bonus_animation(&p2, window);
             // Affichage chrono joueur 1
             char str_p1[64];
             sprintf(str_p1, "Temps P1: %.1f s", chrono_p1);

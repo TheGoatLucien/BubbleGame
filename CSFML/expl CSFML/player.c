@@ -126,6 +126,7 @@ player_t create_player(sfVector2f pos) {
     player.defeat = 0;
     player.current = NULL;
     player.next_bubble = create_bubble(pos, 0); // Create the next bubble
+    player.bonus_animation = NULL; // Initialisation du champ
 
     float gridOriginX = player.launcher_pos.x - (COLS * H_SPACING) / 2;
     float gridOriginY = 100.0f; // Start position for the top
@@ -151,7 +152,7 @@ player_t create_player(sfVector2f pos) {
 
 void update_player(player_t* player, sfEvent event, int left, int right, int shoot) {
     float delta = getDeltaTime();
-    float rotationSpeed = 0.8f;
+    float rotationSpeed = 1.0f;
 
     if (sfKeyboard_isKeyPressed(left)) player->angle -= rotationSpeed * delta;
     if (sfKeyboard_isKeyPressed(right)) player->angle += rotationSpeed * delta;
@@ -258,7 +259,7 @@ void draw_aim_line(sfVector2f origin, float angle, sfRenderWindow* window) {
 
 void update_falling_bubbles(player_t* player) {
     bubble_t** current = &player->falling_bubbles;
-    float fallSpeed = 250.0f;
+    float fallSpeed = 400.0f;
 
     while (*current) {
         (*current)->pos.y += fallSpeed * getDeltaTime();
@@ -302,7 +303,7 @@ void draw_player(player_t* player, sfRenderWindow* window) {
     if (player->current) {
         draw_bubble(player->current, window);
     }
-    else {
+    else {  
         sfCircleShape* preview = sfCircleShape_create();
         sfCircleShape_setRadius(preview, 16);
         sfCircleShape_setOrigin(preview, (sfVector2f) { 16, 16 });
@@ -372,6 +373,34 @@ int flood_fill(bubble_t* grid[ROWS][COLS], int row, int col, int color, int visi
     return *count;
 }
 
+void update_bonus_animation(player_t* player, sfRenderWindow* window) {
+    if (player->bonus_animation) {
+        bonus_animation_t* anim = player->bonus_animation;
+
+        // Réduire le temps restant
+        anim->timer -= getDeltaTime();
+        if (anim->timer > 0) {
+            // Calculer l'alpha en fonction du temps restant
+            anim->alpha = (int)(255 * (anim->timer / 2.0f)); // 2.0f = durée totale
+            if (anim->alpha < 0) anim->alpha = 0;
+
+            // Mettre à jour la couleur du texte avec le nouvel alpha
+            sfColor color = sfText_getFillColor(anim->text);
+            color.a = anim->alpha;
+            sfText_setFillColor(anim->text, color);
+
+            // Dessiner le texte
+            sfRenderWindow_drawText(window, anim->text, NULL);
+        }
+        else {
+            // Supprimer l'animation lorsque le temps est écoulé
+            sfText_destroy(anim->text);
+            free(anim);
+            player->bonus_animation = NULL;
+        }
+    }
+}
+
 
 void update_bubbles(player_t* player, float* chrono) {
     if (!player->current) return;
@@ -437,6 +466,20 @@ attach_bubble:;
             player->score += count;
             *chrono += 10.0f;
             if (*chrono > 60.0f) *chrono = 60.0f;
+            // Ajouter une animation de "+10s"
+            sfText* bonusText = sfText_create();
+            sfText_setFont(bonusText, getDefaultFont());
+            sfText_setString(bonusText, "+10s");
+            sfText_setCharacterSize(bonusText, 30);
+            sfText_setFillColor(bonusText, sfGreen);
+            sfText_setPosition(bonusText, (sfVector2f) { player->launcher_pos.x - 20, player->launcher_pos.y - 50 });
+
+            bonus_animation_t* anim = malloc(sizeof(bonus_animation_t));
+            anim->text = bonusText;
+            anim->position = (sfVector2f){ player->launcher_pos.x - 20, player->launcher_pos.y - 50 };
+            anim->timer = 2.0f; // L'animation dure 2 secondes
+            anim->alpha = 255;  // Départ à une opacité maximale
+            player->bonus_animation = anim;
 
             // Et on applique aussi la chute pour les bulles suspendues :
             apply_fall_logic_mathematically(player);

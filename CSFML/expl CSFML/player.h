@@ -11,6 +11,13 @@
 
 // Par exemple, définir le nombre de lignes pré-remplies
 #define INIT_ROWS 5
+typedef struct {
+    sfText* text;
+    sfVector2f position;
+    float timer; // Durée pendant laquelle le texte est visible
+    int alpha;   // Opacité actuelle (0-255)
+} bonus_animation_t;
+
 
 
 typedef struct player {
@@ -22,6 +29,7 @@ typedef struct player {
     int score;
     int defeat;
     sfVector2f launcher_pos;
+    bonus_animation_t* bonus_animation;
 } player_t;
 
 player_t create_player(sfVector2f pos);
@@ -30,4 +38,5 @@ void draw_player(player_t* player, sfRenderWindow* window);
 void update_bubbles(player_t* player, float* chrono);
 void add_random_bubble_line(player_t* player);
 void update_falling_bubbles(player_t* player);
+void update_bonus_animation(player_t* player, sfRenderWindow* window);
 
