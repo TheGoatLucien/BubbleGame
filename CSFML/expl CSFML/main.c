@@ -113,11 +113,13 @@ int main() {
 			// Génération de nouvelles lignes de bulles
              time_elapsed += getDeltaTime();
 
-     if (time_elapsed >= generation_interval) {
+     
+             if (time_elapsed >= generation_interval) {
          add_random_bubble_line(&p1); // Ajoute une ligne pour le joueur 1
          add_random_bubble_line(&p2); // Ajoute une ligne pour le joueur 2
          time_elapsed = 0; // Réinitialiser le timer
-     }
+     
+             }
 
             // Mise à jour des chronos
             chrono_p1 -= getDeltaTime();
@@ -125,6 +127,8 @@ int main() {
 
             if (chrono_p1 <= 0) p1.defeat = 1;
             if (chrono_p2 <= 0) p2.defeat = 1;
+            
+
 
             update_player(&p1, event, sfKeyQ, sfKeyD, sfKeySpace);
             update_player(&p2, event, sfKeyLeft, sfKeyRight, sfKeyReturn);
@@ -142,6 +146,40 @@ int main() {
             displayButton(window);
         }
         else if (gameState == GAME) {
+            //dessins du jeu
+            sfSprite* fondGaucheSprite;
+            fondGaucheSprite = sfSprite_create();
+            sfTexture* fondGaucheTexture;
+            fondGaucheTexture = sfTexture_createFromFile("..//Ressources//Textures//background.png", NULL);
+            if (!fondGaucheTexture) {
+                printf("Erreur : Impossible de charger la texture fg.png\n");
+            }
+
+            sfSprite_setTexture(fondGaucheSprite, fondGaucheTexture, sfTrue);
+            sfSprite_setPosition(fondGaucheSprite, (sfVector2f) { 0, 0 });
+            sfSprite_setScale(fondGaucheSprite, (sfVector2f) { 5, 3.8 });
+
+            sfRenderWindow_drawSprite(window, fondGaucheSprite, NULL);
+
+            sfSprite* fondDroiteSprite = sfSprite_create();
+            sfTexture* fondDroiteTexture = sfTexture_createFromFile("..//Ressources//Textures//backgroundd1.png", NULL);
+            sfSprite_setTexture(fondDroiteSprite, fondDroiteTexture, sfTrue);
+            sfSprite_setPosition(fondDroiteSprite, (sfVector2f) { 800, 0 });
+            sfSprite_setScale(fondDroiteSprite, (sfVector2f) { 5, 3.8 });
+
+            sfRenderWindow_drawSprite(window, fondDroiteSprite, NULL);
+
+            sfSprite* barre = sfSprite_create();
+            sfTexture* barreTexture = sfTexture_createFromFile("..//Ressources//Textures//barretimer.png", NULL);
+            sfSprite_setTexture(barre, barreTexture, sfTrue);
+            sfSprite_setPosition(barre, (sfVector2f) { 1400, 0 });
+            sfRenderWindow_drawSprite(window, barre, NULL);
+
+
+
+
+
+            //
             draw_player(&p1, window);
             draw_player(&p2, window);
 

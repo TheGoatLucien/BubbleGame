@@ -3,7 +3,7 @@
 #include "bubble.h"
 
 #define ROWS 29
-#define COLS 23
+#define COLS 19
 // constantes pour la grille « hexagonale »
 #define H_SPACING 32.0f      // espacement horizontal
 #define V_SPACING 28.0f      // espacement vertical

@@ -70,47 +70,53 @@ void apply_fall_logic_mathematically(player_t* player) {
     }
 }
 
-
 void descend_bubbles(player_t* player) {
-    // Descendre toutes les bulles existantes
+    float gridOriginY = 100.0f; // Position de départ de la grille
+
     for (int row = ROWS - 1; row > 0; row--) {
         for (int col = 0; col < COLS; col++) {
             if (player->grid[row - 1][col]) {
                 player->grid[row][col] = player->grid[row - 1][col];
                 player->grid[row - 1][col] = NULL;
-                player->grid[row][col]->pos.y = row * V_SPACING + BUBBLE_RADIUS;
+                player->grid[row][col]->pos.y = gridOriginY + row * V_SPACING + BUBBLE_RADIUS;
             }
         }
     }
 }
 
+
 void add_random_bubble_line(player_t* player) {
-    // Descendre toutes les bulles existantes avant d'ajouter une nouvelle ligne
+    // Descend existing bubbles
     for (int row = ROWS - 1; row > 0; row--) {
         for (int col = 0; col < COLS; col++) {
             if (player->grid[row - 1][col]) {
                 player->grid[row][col] = player->grid[row - 1][col];
                 player->grid[row - 1][col] = NULL;
-                player->grid[row][col]->pos.y = row * V_SPACING + BUBBLE_RADIUS;
+                // Update position using consistent gridOriginY and V_SPACING
+                player->grid[row][col]->pos.y = 100.0f + row * V_SPACING;
             }
         }
     }
 
-    // Ajoute une nouvelle ligne au sommet sans espace
+    // Add a new row at the top
+    float gridOriginX = player->launcher_pos.x - (COLS * H_SPACING) / 2;
+    float gridOriginY = 100.0f; // Ensure alignment with create_player
+
     for (int col = 0; col < COLS; col++) {
         bubble_t* new_bubble = malloc(sizeof(bubble_t));
         if (!new_bubble) continue;
-        new_bubble->color = rand() % 4 + 1; // Couleurs aléatoires
+        new_bubble->color = rand() % 4 + 1; // Random color
         new_bubble->active = 0;
 
-        // Alignement au plafond
-        float gridOriginX = player->launcher_pos.x - (COLS * H_SPACING) / 2;
+        // Align with top of the grid
         new_bubble->pos.x = gridOriginX + col * H_SPACING + BUBBLE_RADIUS;
-        new_bubble->pos.y = BUBBLE_RADIUS; // Pas de décalage vertical
+        new_bubble->pos.y = gridOriginY; // Align correctly
         new_bubble->next = NULL;
         player->grid[0][col] = new_bubble;
     }
 }
+
+
 
 player_t create_player(sfVector2f pos) {
     player_t player = { 0 };
@@ -119,22 +125,20 @@ player_t create_player(sfVector2f pos) {
     player.score = 0;
     player.defeat = 0;
     player.current = NULL;
-    player.next_bubble = create_bubble(pos, 0); // création de la prochaine bulle
+    player.next_bubble = create_bubble(pos, 0); // Create the next bubble
 
-    // Calcul de la position d'origine de la grille :
     float gridOriginX = player.launcher_pos.x - (COLS * H_SPACING) / 2;
-    float gridOriginY = 16.0f;  // on positionne en haut
+    float gridOriginY = 100.0f; // Start position for the top
 
-    // On initialise les premières lignes en quinconce
+    // Initialize rows
     for (int i = 0; i < INIT_ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             bubble_t* b = malloc(sizeof(bubble_t));
             if (!b) continue;
-            b->color = rand() % 4 + 1; // couleur jouable entre 1 et 4
-            // Pour les lignes impaires, décaler horizontalement de H_SPACING/2 
-            float offsetX = (i % 2 == 0) ? 0 : H_SPACING / 2;
+            b->color = rand() % 4 + 1; // Random playable color
+            float offsetX = (i % 2 == 0) ? 0 : H_SPACING / 2; // Offset for odd rows
             b->pos.x = gridOriginX + offsetX + j * H_SPACING + BUBBLE_RADIUS;
-            b->pos.y = gridOriginY + i * V_SPACING;
+            b->pos.y = gridOriginY + i * V_SPACING; // Align with grid origin
             b->active = 0;
             b->next = NULL;
             player.grid[i][j] = b;
@@ -144,15 +148,16 @@ player_t create_player(sfVector2f pos) {
 }
 
 
+
 void update_player(player_t* player, sfEvent event, int left, int right, int shoot) {
     float delta = getDeltaTime();
-    float rotationSpeed = 0.5f;
+    float rotationSpeed = 0.8f;
 
     if (sfKeyboard_isKeyPressed(left)) player->angle -= rotationSpeed * delta;
     if (sfKeyboard_isKeyPressed(right)) player->angle += rotationSpeed * delta;
 
-    if (player->angle < -2.5f) player->angle = -2.5f;
-    if (player->angle > -0.6f) player->angle = -0.6f;
+    if (player->angle < -2.7f) player->angle = -2.7f;
+    if (player->angle > -0.8f) player->angle = -0.8f;
 
     if (sfKeyboard_isKeyPressed(shoot) && player->current == NULL) {
         player->current = player->next_bubble;
@@ -205,21 +210,39 @@ void draw_aim_line(sfVector2f origin, float angle, sfRenderWindow* window) {
     sfVertexArray_setPrimitiveType(line, sfLinesStrip);
     sfVertexArray_append(line, (sfVertex) { pos, sfColor_fromRGBA(255, 255, 255, 80) });
 
+    float centerX = WINDOWS_WIDHT / 2; // Position centrale du mur
+    float margin = 5; // Marge pour détecter la collision avec le mur central
+
     while (bounces < max_bounces) {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) { // Avancer par petits pas
             pos.x += dx * 5;
             pos.y += dy * 5;
 
-            // Rebond gauche/droit
+            // Vérifie rebond mur gauche/droit
             if (pos.x <= 0 || pos.x >= WINDOWS_WIDHT) {
                 dx = -dx;
                 bounces++;
                 break;
             }
 
-            // Plafond : stop
+            // Vérifie rebond avec le plafond
             if (pos.y <= 0) {
                 bounces = max_bounces;
+                break;
+            }
+
+            // Vérifie rebond avec le mur central
+            if ((origin.x < centerX && pos.x >= centerX - margin) || 
+                (origin.x > centerX && pos.x <= centerX + margin)) {
+                dx = -dx;
+                bounces++;
+
+                // Ajuste la position pour éviter de traverser le mur
+                if (origin.x < centerX)
+                    pos.x = centerX - margin;
+                else
+                    pos.x = centerX + margin;
+                
                 break;
             }
         }
@@ -231,6 +254,7 @@ void draw_aim_line(sfVector2f origin, float angle, sfRenderWindow* window) {
     sfRenderWindow_drawVertexArray(window, line, NULL);
     sfVertexArray_destroy(line);
 }
+
 
 void update_falling_bubbles(player_t* player) {
     bubble_t** current = &player->falling_bubbles;
@@ -370,7 +394,7 @@ void update_bubbles(player_t* player, float* chrono) {
 attach_bubble:;
     // Déterminer la position d'origine horizontale ET verticale du grid.
     float gridOriginX = player->launcher_pos.x - (COLS * H_SPACING) / 2;
-    float gridOriginY = 16.0f; // Le même que celui utilisé dans create_player
+    float gridOriginY = 100.0f; // Le même que celui utilisé dans create_player
 
     // Calcul du rang (row) : on soustrait la position du toit (gridOriginY) et le rayon,
     // puis on divise par l'espacement vertical ; on arrondit pour "snaper" correctement.

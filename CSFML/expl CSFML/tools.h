@@ -26,7 +26,7 @@
 
 
 #define WINDOWS_WIDHT 1600
-#define WINDOWS_HEIGHT 500
+#define WINDOWS_HEIGHT 800
 
 
 typedef struct vector4f vector4f;
