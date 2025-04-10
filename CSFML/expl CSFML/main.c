@@ -172,9 +172,16 @@ int main() {
             sfSprite* barre = sfSprite_create();
             sfTexture* barreTexture = sfTexture_createFromFile("..//Ressources//Textures//barretimer.png", NULL);
             sfSprite_setTexture(barre, barreTexture, sfTrue);
-            sfSprite_setPosition(barre, (sfVector2f) { 1400, 0 });
+            sfSprite_setColor(barre, sfColor_fromRGB(100, 75, 0));
+            sfSprite_setPosition(barre, (sfVector2f) { 1370, 0 });
             sfRenderWindow_drawSprite(window, barre, NULL);
 
+            sfSprite* barre2 = sfSprite_create();
+            sfTexture* barreTexture2 = sfTexture_createFromFile("..//Ressources//Textures//barretimer.png", NULL);
+            sfSprite_setTexture(barre2, barreTexture2, sfTrue);
+            sfSprite_setColor(barre2, sfColor_fromRGB(100, 75, 0));
+            sfSprite_setPosition(barre2, (sfVector2f) { 10, 0 });
+            sfRenderWindow_drawSprite(window, barre2, NULL);
 
 
 
@@ -185,7 +192,7 @@ int main() {
 
             // Affichage chrono joueur 1
             char str_p1[64];
-            sprintf(str_p1, "Temps P1 : %.1f s", chrono_p1);
+            sprintf(str_p1, "Temps P1: %.1f s", chrono_p1);
             sfText_setString(chronoText_p1, str_p1);
             sfText_setPosition(chronoText_p1, (sfVector2f) { 20, 20 });
 			sfText_setColor(chronoText_p1, sfBlue);
@@ -193,7 +200,7 @@ int main() {
 
             // Affichage chrono joueur 2
             char str_p2[64];
-            sprintf(str_p2, "Temps P2 : %.1f s", chrono_p2);
+            sprintf(str_p2, "Temps P2: %.1f s", chrono_p2);
             sfText_setString(chronoText_p2, str_p2);
             sfText_setPosition(chronoText_p2, (sfVector2f) { WINDOWS_WIDHT - 220, 20 });
 			sfText_setColor(chronoText_p2, sfRed);
