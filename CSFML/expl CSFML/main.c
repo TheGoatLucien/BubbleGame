@@ -3,51 +3,51 @@
 #include "bubble.h"
 #include "player.h"
 
-void send_grey_bubbles(player_t* sender, player_t* receiver) {
-    int amount = sender->score / 3;
-    if (amount <= 0) return;
-
-    for (int i = 0; i < amount; i++) {
-        int col = rand() % COLS;
-
-        // Trouver la première position libre en partant du haut
-        int first_empty_row = -1;
-        for (int row = 0; row < ROWS; row++) {
-            if (!receiver->grid[row][col]) {
-                first_empty_row = row;
-                break;
-            }
-        }
-
-        // Si la colonne est pleine, on déclare la défaite
-        if (first_empty_row == -1) {
-            receiver->defeat = 1;
-            return;
-        }
-
-        // Pousser les bulles vers le bas
-        for (int row = ROWS - 1; row > first_empty_row; row--) {
-            receiver->grid[row][col] = receiver->grid[row - 1][col];
-            if (receiver->grid[row][col])
-                receiver->grid[row][col]->pos.y = row * V_SPACING + BUBBLE_RADIUS;
-        }
-
-        // Crée la bulle envoyée avec une couleur valide (1 à 4)
-        bubble_t* adversaryBubble = malloc(sizeof(bubble_t));
-        adversaryBubble->color = rand() % 4 + 1;  // couleur jouable
-        adversaryBubble->active = 0;
-        adversaryBubble->next = NULL;
-
-        float gridOriginX = receiver->launcher_pos.x - (COLS * H_SPACING) / 2;
-        float offsetX = (first_empty_row % 2 == 0) ? 0 : H_SPACING / 2;
-        adversaryBubble->pos.x = gridOriginX + offsetX + col * H_SPACING + BUBBLE_RADIUS;
-        adversaryBubble->pos.y = first_empty_row * V_SPACING + BUBBLE_RADIUS;
-
-        receiver->grid[first_empty_row][col] = adversaryBubble;
-    }
-
-    sender->score = 0;
-}
+//void send_grey_bubbles(player_t* sender, player_t* receiver) {
+//    int amount = sender->score / 3;
+//    if (amount <= 0) return;
+//
+//    for (int i = 0; i < amount; i++) {
+//        int col = rand() % COLS;
+//
+//        // Trouver la première position libre en partant du haut
+//        int first_empty_row = -1;
+//        for (int row = 0; row < ROWS; row++) {
+//            if (!receiver->grid[row][col]) {
+//                first_empty_row = row;
+//                break;
+//            }
+//        }
+//
+//        // Si la colonne est pleine, on déclare la défaite
+//        if (first_empty_row == -1) {
+//            receiver->defeat = 1;
+//            return;
+//        }
+//
+//        // Pousser les bulles vers le bas
+//        for (int row = ROWS - 1; row > first_empty_row; row--) {
+//            receiver->grid[row][col] = receiver->grid[row - 1][col];
+//            if (receiver->grid[row][col])
+//                receiver->grid[row][col]->pos.y = row * V_SPACING + BUBBLE_RADIUS;
+//        }
+//
+//        // Crée la bulle envoyée avec une couleur valide (1 à 4)
+//        bubble_t* adversaryBubble = malloc(sizeof(bubble_t));
+//        adversaryBubble->color = rand() % 4 + 1;  // couleur jouable
+//        adversaryBubble->active = 0;
+//        adversaryBubble->next = NULL;
+//
+//        float gridOriginX = receiver->launcher_pos.x - (COLS * H_SPACING) / 2;
+//        float offsetX = (first_empty_row % 2 == 0) ? 0 : H_SPACING / 2;
+//        adversaryBubble->pos.x = gridOriginX + offsetX + col * H_SPACING + BUBBLE_RADIUS;
+//        adversaryBubble->pos.y = first_empty_row * V_SPACING + BUBBLE_RADIUS;
+//
+//        receiver->grid[first_empty_row][col] = adversaryBubble;
+//    }
+//
+//    sender->score = 0;
+//}
 
 float chrono_p1 = 60.0f;
 float chrono_p2 = 60.0f;
@@ -134,8 +134,8 @@ int main() {
             update_player(&p2, event, sfKeyLeft, sfKeyRight, sfKeyReturn);
 
 
-            send_grey_bubbles(&p1, &p2);
-            send_grey_bubbles(&p2, &p1);
+            /*send_grey_bubbles(&p1, &p2);
+            send_grey_bubbles(&p2, &p1);*/
 
             update_bubbles(&p1, &chrono_p1);
             update_bubbles(&p2, &chrono_p2);

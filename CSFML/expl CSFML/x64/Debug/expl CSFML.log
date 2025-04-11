@@ -1,7 +1,4 @@
-﻿  bubble.c
-  main.c
-  Generating Code...
-C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\main.c(44,9): warning C4013: 'start_bubble_animation' undefined; assuming extern returning int
-C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\main.c(165,67): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\main.c(173,67): warning C4305: 'initializing': truncation from 'double' to 'float'
+﻿  main.c
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\main.c(167,67): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\main.c(175,67): warning C4305: 'initializing': truncation from 'double' to 'float'
   expl CSFML.vcxproj -> C:\Users\nzeut\Documents\BubbleGame\CSFML\x64\Debug-x64\expl CSFML.exe
