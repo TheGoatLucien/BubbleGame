@@ -186,7 +186,7 @@ void update_player(player_t* player, sfEvent event, int left, int right, int sho
         player->current->pos.y += sin(player->angle) * 800 * delta;
 
         // Rebond mur gauche/droit
-        if (player->current->pos.x <= 0 || player->current->pos.x >= WINDOWS_WIDHT) {
+        if (player->current->pos.x <= 80 || player->current->pos.x >= WINDOWS_WIDHT-80) {
             float dx = cos(player->angle);
             float dy = sin(player->angle);
             player->angle = atan2(dy, -dx);
@@ -236,7 +236,7 @@ void draw_aim_line(sfVector2f origin, float angle, sfRenderWindow* window) {
             pos.y += dy * 5;
 
             // Vérifie rebond mur gauche/droit
-            if (pos.x <= 0 || pos.x >= WINDOWS_WIDHT) {
+            if (pos.x <= 80 || pos.x >= WINDOWS_WIDHT-80) {
                 dx = -dx;
                 bounces++;
                 break;
