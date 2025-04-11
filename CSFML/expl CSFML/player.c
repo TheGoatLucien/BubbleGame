@@ -469,7 +469,15 @@ void draw_bubble_animations(player_t* player, sfRenderWindow* window) {
         sfCircleShape_setOrigin(shape, (sfVector2f) { BUBBLE_RADIUS* anim->scale, BUBBLE_RADIUS* anim->scale });
         sfCircleShape_setPosition(shape, anim->bubble->pos);
 
-        sfColor color = sfRed; // Couleur rouge pour les bulles rouges
+        // Récupérer la couleur de la bulle associée
+        sfColor color;
+        switch (anim->bubble->color) {
+        case 1: color = sfRed; break;
+        case 2: color = sfBlue; break;
+        case 3: color = sfGreen; break;
+        case 4: color = sfYellow; break;
+        default: color = sfWhite; break;
+        }
         color.a = anim->alpha; // Appliquer la transparence
         sfCircleShape_setFillColor(shape, color);
 
