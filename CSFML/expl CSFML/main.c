@@ -2,52 +2,80 @@
 #include "tools.h"
 #include "bubble.h"
 #include "player.h"
+int ai_mode = 0; // 0 = désactivé, 1 = activé
+int ai_level = 1; // Niveau de réflexion de l'IA (1 à 5)
 
-//void send_grey_bubbles(player_t* sender, player_t* receiver) {
-//    int amount = sender->score / 3;
-//    if (amount <= 0) return;
-//
-//    for (int i = 0; i < amount; i++) {
-//        int col = rand() % COLS;
-//
-//        // Trouver la première position libre en partant du haut
-//        int first_empty_row = -1;
-//        for (int row = 0; row < ROWS; row++) {
-//            if (!receiver->grid[row][col]) {
-//                first_empty_row = row;
-//                break;
-//            }
-//        }
-//
-//        // Si la colonne est pleine, on déclare la défaite
-//        if (first_empty_row == -1) {
-//            receiver->defeat = 1;
-//            return;
-//        }
-//
-//        // Pousser les bulles vers le bas
-//        for (int row = ROWS - 1; row > first_empty_row; row--) {
-//            receiver->grid[row][col] = receiver->grid[row - 1][col];
-//            if (receiver->grid[row][col])
-//                receiver->grid[row][col]->pos.y = row * V_SPACING + BUBBLE_RADIUS;
-//        }
-//
-//        // Crée la bulle envoyée avec une couleur valide (1 à 4)
-//        bubble_t* adversaryBubble = malloc(sizeof(bubble_t));
-//        adversaryBubble->color = rand() % 4 + 1;  // couleur jouable
-//        adversaryBubble->active = 0;
-//        adversaryBubble->next = NULL;
-//
-//        float gridOriginX = receiver->launcher_pos.x - (COLS * H_SPACING) / 2;
-//        float offsetX = (first_empty_row % 2 == 0) ? 0 : H_SPACING / 2;
-//        adversaryBubble->pos.x = gridOriginX + offsetX + col * H_SPACING + BUBBLE_RADIUS;
-//        adversaryBubble->pos.y = first_empty_row * V_SPACING + BUBBLE_RADIUS;
-//
-//        receiver->grid[first_empty_row][col] = adversaryBubble;
-//    }
-//
-//    sender->score = 0;
-//}
+
+
+int simulate_match(bubble_t* grid[ROWS][COLS], int row, int col, int color) {
+    if (row < 0 || row >= ROWS || col < 0 || col >= COLS || grid[row][col] != NULL) {
+        return 0; // Position invalide ou déjà occupée
+    }
+
+    // Simuler l'ajout de la bulle
+    grid[row][col] = malloc(sizeof(bubble_t));
+    grid[row][col]->color = color;
+
+    // Vérifier les matchs
+    int visited[ROWS][COLS] = { 0 };
+    bubble_t* cluster[ROWS * COLS] = { 0 };
+    int count = 0;
+
+    flood_fill(grid, row, col, color, visited, cluster, &count);
+
+    // Supprimer la bulle simulée
+    free(grid[row][col]);
+    grid[row][col] = NULL;
+
+    return count >= 3; // Retourne 1 si un match est trouvé, sinon 0
+}
+
+// Fonction pour gérer le comportement de l'IA
+void ai_play(player_t* ai_player, player_t* opponent, int level) {
+    static float ai_timer = 0;
+    ai_timer += getDeltaTime();
+
+    // Ajuster la vitesse de réflexion en fonction du niveau
+    float decision_time = 1.0f / level; // Plus le niveau est élevé, plus l'IA est rapide
+
+    if (ai_timer >= decision_time) {
+        ai_timer = 0;
+
+        // Vérifier si l'IA a une bulle à tirer
+        if (ai_player->current == NULL) {
+            ai_player->current = ai_player->next_bubble;
+            ai_player->current->active = 1; // Activer la bulle
+            ai_player->next_bubble = create_bubble(ai_player->launcher_pos, rand() % 4 + 1); // Générer une nouvelle bulle
+        }
+
+        // Logique de l'IA : chercher une position pour un match
+        int best_row = -1, best_col = -1;
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                if (simulate_match(opponent->grid, row, col, ai_player->current->color)) {
+                    best_row = row;
+                    best_col = col;
+                    break;
+                }
+            }
+            if (best_row != -1) break;
+        }
+
+        // Si une position pour un match est trouvée, ajuster l'angle de tir
+        if (best_row != -1 && best_col != -1) {
+            float gridOriginX = ai_player->launcher_pos.x - (COLS * H_SPACING) / 2;
+            float target_x = gridOriginX + best_col * H_SPACING + BUBBLE_RADIUS;
+            float target_y = 100.0f + best_row * V_SPACING + BUBBLE_RADIUS;
+
+            ai_player->angle = atan2(target_y - ai_player->launcher_pos.y, target_x - ai_player->launcher_pos.x);
+        }
+        else {
+            // Si aucun match n'est trouvé, tirer aléatoirement
+            ai_player->angle = ((rand() % 180) - 90) * (3.14f / 180.0f); // Angle aléatoire
+        }
+    }
+}
+
 
 float chrono_p1 = 60.0f;
 float chrono_p2 = 60.0f;
@@ -109,9 +137,19 @@ int main() {
         if (gameState != MENU && sfKeyboard_isKeyPressed(sfKeyW))
             gameState = MENU;
 
+        if (sfKeyboard_isKeyPressed(sfKeyI)) {
+            ai_mode = 1; // Activer le mode IA
+            ai_level = 3; // Par défaut, niveau 3
+        }
+
         if (gameState == GAME) {
 			// Génération de nouvelles lignes de bulles
              time_elapsed += getDeltaTime();
+
+             if (ai_mode) {
+                 ai_play(&p2, &p1, ai_level); // Le joueur 2 est contrôlé par l'IA
+             }
+
 
      
              if (time_elapsed >= generation_interval) {
