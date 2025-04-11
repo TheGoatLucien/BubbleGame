@@ -194,7 +194,8 @@ void update_player(player_t* player, sfEvent event, int left, int right, int sho
 
         // Rebond mur central
         float centerX = WINDOWS_WIDHT / 2;
-        float margin = 10;
+        float margin = 76; // Moitié de la largeur du mur central (151 / 2)
+		// Vérifie si la bulle traverse le mur central
 
         if ((player->launcher_pos.x < centerX && player->current->pos.x >= centerX - margin) ||
             (player->launcher_pos.x > centerX && player->current->pos.x <= centerX + margin)) {
@@ -227,7 +228,7 @@ void draw_aim_line(sfVector2f origin, float angle, sfRenderWindow* window) {
     sfVertexArray_append(line, (sfVertex) { pos, sfColor_fromRGBA(255, 255, 255, 80) });
 
     float centerX = WINDOWS_WIDHT / 2; // Position centrale du mur
-    float margin = 5; // Marge pour détecter la collision avec le mur central
+    float margin = 76; // Marge pour détecter la collision avec le mur central
 
     while (bounces < max_bounces) {
         for (int i = 0; i < 100; i++) { // Avancer par petits pas
@@ -294,9 +295,9 @@ void update_falling_bubbles(player_t* player) {
 
 void draw_player(player_t* player, sfRenderWindow* window) {
     sfRectangleShape* midWall = sfRectangleShape_create();
-    sfRectangleShape_setSize(midWall, (sfVector2f) { 10, WINDOWS_HEIGHT });
+    sfRectangleShape_setSize(midWall, (sfVector2f) { 151, WINDOWS_HEIGHT });
     sfRectangleShape_setFillColor(midWall, sfColor_fromRGBA(255, 255, 255, 60));
-    sfRectangleShape_setPosition(midWall, (sfVector2f) { (WINDOWS_WIDHT / 2) - 5, 0 });
+    sfRectangleShape_setPosition(midWall, (sfVector2f) { (WINDOWS_WIDHT / 2) -76, 0 });
     sfRenderWindow_drawRectangleShape(window, midWall, NULL);
     sfRectangleShape_destroy(midWall);
 

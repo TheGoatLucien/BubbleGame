@@ -22,7 +22,7 @@ void show_loading_screen(sfRenderWindow* window) {
     sfRectangleShape_setFillColor(loadingBar, sfColor_fromRGB(50, 200, 255));
     sfRectangleShape_setPosition(loadingBar, (sfVector2f) { WINDOWS_WIDHT / 4, 300 });
 
-    float duration = 5.0f;  // 5 secondes
+    float duration = 1.0f;  // 5 secondes
     float maxWidth = WINDOWS_WIDHT / 2;
 
     while (sfClock_getElapsedTime(clock).microseconds / 1000000.0f < duration) {
