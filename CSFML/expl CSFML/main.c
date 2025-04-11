@@ -133,14 +133,18 @@ int main() {
             update_player(&p1, event, sfKeyQ, sfKeyD, sfKeySpace);
             update_player(&p2, event, sfKeyLeft, sfKeyRight, sfKeyReturn);
 
+
+            send_grey_bubbles(&p1, &p2);
+            send_grey_bubbles(&p2, &p1);
+
             update_bubbles(&p1, &chrono_p1);
             update_bubbles(&p2, &chrono_p2);
+			update_bubble_animations(&p1, getDeltaTime());
+			update_bubble_animations(&p2, getDeltaTime());
 
             update_falling_bubbles(&p1);
             update_falling_bubbles(&p2);
 
-            send_grey_bubbles(&p1, &p2);
-            send_grey_bubbles(&p2, &p1);
         }
 
         sfRenderWindow_clear(window, sfBlack);
@@ -186,8 +190,9 @@ int main() {
             sfSprite_setPosition(barre2, (sfVector2f) { 10, 0 });
             sfRenderWindow_drawSprite(window, barre2, NULL);
 
-
-
+            //
+            draw_bubble_animations(&p1, window);
+            draw_bubble_animations(&p2, window);
 
             //
             draw_player(&p1, window);

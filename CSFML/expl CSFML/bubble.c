@@ -10,9 +10,9 @@ bubble_t* create_bubble(sfVector2f start, float angle) {
     b->color = rand() % 4 + 1; // 1 à 4
     b->active = 1;
     b->next = NULL;
+	b->falling = 0; // Initialement pas en chute
     return b;
 }
-
 void draw_bubble(bubble_t* b, sfRenderWindow* window) {
     sfCircleShape* shape = sfCircleShape_create();
     sfCircleShape_setRadius(shape, 16);
@@ -27,6 +27,10 @@ void draw_bubble(bubble_t* b, sfRenderWindow* window) {
     case 4: color = sfYellow; break;
     default: color = sfWhite; break;
     }
+    if (b->falling || b->active) {
+        color.a = 128; // Semi-transparente si en chute ou en animation
+    }
+
     sfCircleShape_setFillColor(shape, color);
     sfRenderWindow_drawCircleShape(window, shape, NULL);
     sfCircleShape_destroy(shape);

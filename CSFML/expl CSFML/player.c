@@ -140,6 +140,7 @@ player_t create_player(sfVector2f pos) {
             float offsetX = (i % 2 == 0) ? 0 : H_SPACING / 2; // Offset for odd rows
             b->pos.x = gridOriginX + offsetX + j * H_SPACING + BUBBLE_RADIUS;
             b->pos.y = gridOriginY + i * V_SPACING; // Align with grid origin
+            b->falling = 0;
             b->active = 0;
             b->next = NULL;
             player.grid[i][j] = b;
@@ -269,10 +270,13 @@ void update_falling_bubbles(player_t* player) {
             destroy_bubble(toDestroy);
         }
         else {
+            // Réinitialiser l'état de la bulle après la chute
+            (*current)->falling = 0;
             current = &(*current)->next;
         }
     }
 }
+
 
 void draw_player(player_t* player, sfRenderWindow* window) {
     sfRectangleShape* midWall = sfRectangleShape_create();
@@ -400,16 +404,82 @@ void update_bonus_animation(player_t* player, sfRenderWindow* window) {
         }
     }
 }
+void start_bubble_animation(player_t* player, bubble_t* bubble) {
+    bubble_animation_t* anim = malloc(sizeof(bubble_animation_t));
+    if (!anim) return;
+
+    anim->bubble = bubble;
+    anim->scale = 1.0f; // Taille initiale
+    anim->alpha = 255;  // Transparence initiale
+    anim->timer = 0.5f; // Durée de l'animation (0.5 seconde)
+    anim->next = player->animations;
+    player->animations = anim;
+}
+void update_bubble_animations(player_t* player, float deltaTime) {
+    bubble_animation_t** current = &player->animations;
+
+    while (*current) {
+        bubble_animation_t* anim = *current;
+
+        // Réduire le temps restant
+        anim->timer -= deltaTime;
+        if (anim->timer <= 0) {
+            // Supprimer l'animation une fois terminée
+            *current = anim->next;
+            free(anim);
+            continue;
+        }
+
+        // Mettre à jour l'échelle et la transparence
+        anim->scale += deltaTime * 2.0f; // Agrandissement rapide
+        anim->alpha -= (int)(deltaTime * 500.0f); // Réduction de la transparence
+        if (anim->alpha < 0) anim->alpha = 0;
+
+        // Appliquer la transparence à la bulle associée
+        if (anim->bubble) {
+            anim->bubble->active = 1; // Marquer la bulle comme active uniquement pendant l'animation
+        }
+        else {
+            anim->bubble->active = 0; // Réinitialiser après l'animation
+        }
+
+
+        current = &(*current)->next;
+    }
+}
+
+void draw_bubble_animations(player_t* player, sfRenderWindow* window) {
+    bubble_animation_t* anim = player->animations;
+
+    while (anim) {
+        sfCircleShape* shape = sfCircleShape_create();
+        sfCircleShape_setRadius(shape, BUBBLE_RADIUS * anim->scale);
+        sfCircleShape_setOrigin(shape, (sfVector2f) { BUBBLE_RADIUS* anim->scale, BUBBLE_RADIUS* anim->scale });
+        sfCircleShape_setPosition(shape, anim->bubble->pos);
+
+        sfColor color = sfRed; // Couleur rouge pour les bulles rouges
+        color.a = anim->alpha; // Appliquer la transparence
+        sfCircleShape_setFillColor(shape, color);
+
+        sfRenderWindow_drawCircleShape(window, shape, NULL);
+        sfCircleShape_destroy(shape);
+
+        anim = anim->next;
+    }
+}
+
+
 
 
 void update_bubbles(player_t* player, float* chrono) {
     if (!player->current) return;
 
-    // On vérifie si la bulle frappe le plafond
-    if (player->current->pos.y <= 0)
+    // Vérifier si la bulle frappe le plafond
+    if (player->current->pos.y <= 0) {
         goto attach_bubble;
+    }
 
-    // Vérification de collision sur la grille
+    // Vérification de collision avec les bulles existantes
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             if (player->grid[i][j] &&
@@ -421,29 +491,23 @@ void update_bubbles(player_t* player, float* chrono) {
     return;
 
 attach_bubble:;
-    // Déterminer la position d'origine horizontale ET verticale du grid.
+    // Calculer la position de la bulle sur la grille
     float gridOriginX = player->launcher_pos.x - (COLS * H_SPACING) / 2;
-    float gridOriginY = 100.0f; // Le même que celui utilisé dans create_player
+    float gridOriginY = 100.0f;
 
-    // Calcul du rang (row) : on soustrait la position du toit (gridOriginY) et le rayon,
-    // puis on divise par l'espacement vertical ; on arrondit pour "snaper" correctement.
     int row = fClamp((int)round((player->current->pos.y - gridOriginY - BUBBLE_RADIUS) / V_SPACING), 0, ROWS - 1);
-
-    // Choix de l'offset horizontal selon la parité de la ligne.
     float offsetX = (row % 2 == 0) ? 0 : H_SPACING / 2;
-    // Calcul du numéro de colonne avec arrondi. On soustrait gridOriginX et le rayon.
     int col = fClamp((int)round((player->current->pos.x - gridOriginX - offsetX - BUBBLE_RADIUS) / H_SPACING), 0, COLS - 1);
 
-    // Positionne la bulle en "snappant" aux coordonnées de la grille.
+    // Positionner la bulle sur la grille
     player->current->pos.x = gridOriginX + offsetX + col * H_SPACING + BUBBLE_RADIUS;
     player->current->pos.y = gridOriginY + row * V_SPACING + BUBBLE_RADIUS;
-
 
     if (!player->grid[row][col]) {
         player->grid[row][col] = player->current;
         player->current = NULL;
 
-        // Détection de cluster avec la fonction refaite.
+        // Détection de cluster
         int visited[ROWS][COLS] = { 0 };
         bubble_t* cluster[ROWS * COLS] = { 0 };
         int count = 0;
@@ -454,7 +518,9 @@ attach_bubble:;
                 for (int r = 0; r < ROWS; r++) {
                     for (int c = 0; c < COLS; c++) {
                         if (player->grid[r][c] == cluster[i]) {
-                            // Ajoute à la chute au lieu de destroy
+							cluster[i]->active = 0; // Marquer la bulle comme inactive
+							cluster[i]->falling = 1; // Marquer la bulle comme en chute
+                            start_bubble_animation(player, player->grid[r][c]);
                             player->grid[r][c]->falling = 1;
                             player->grid[r][c]->next = player->falling_bubbles;
                             player->falling_bubbles = player->grid[r][c];
@@ -466,33 +532,17 @@ attach_bubble:;
             player->score += count;
             *chrono += 10.0f;
             if (*chrono > 60.0f) *chrono = 60.0f;
-            // Ajouter une animation de "+10s"
-            sfText* bonusText = sfText_create();
-            sfText_setFont(bonusText, getDefaultFont());
-            sfText_setString(bonusText, "+10s");
-            sfText_setCharacterSize(bonusText, 30);
-            sfText_setFillColor(bonusText, sfGreen);
-            sfText_setPosition(bonusText, (sfVector2f) { player->launcher_pos.x - 20, player->launcher_pos.y - 50 });
-
-            bonus_animation_t* anim = malloc(sizeof(bonus_animation_t));
-            anim->text = bonusText;
-            anim->position = (sfVector2f){ player->launcher_pos.x - 20, player->launcher_pos.y - 50 };
-            anim->timer = 2.0f; // L'animation dure 2 secondes
-            anim->alpha = 255;  // Départ à une opacité maximale
-            player->bonus_animation = anim;
-
-            // Et on applique aussi la chute pour les bulles suspendues :
-            apply_fall_logic_mathematically(player);
         }
 
-
+        // Appliquer la logique de chute pour les bulles suspendues
+        apply_fall_logic_mathematically(player);
     }
     else {
-        // Si la case est déjà occupée, on supprime la bulle tirée et en regénère une nouvelle
+        // Si la case est déjà occupée, détruire la bulle
         destroy_bubble(player->current);
         player->current = NULL;
-        player->next_bubble = create_bubble(player->launcher_pos, 0);
     }
+
 
     // Vérification de la défaite (bulles trop proches du bas)
     for (int i = 0; i < ROWS; i++) {
@@ -504,3 +554,5 @@ attach_bubble:;
         }
     }
 }
+
+

@@ -18,6 +18,14 @@ typedef struct {
     int alpha;   // Opacité actuelle (0-255)
 } bonus_animation_t;
 
+typedef struct bubble_animation {
+    bubble_t* bubble;      // La bulle associée à l'animation
+    float scale;           // Échelle actuelle de la bulle
+    int alpha;             // Transparence actuelle (0-255)
+    float timer;           // Durée restante de l'animation
+    struct bubble_animation* next; // Liste chaînée pour gérer plusieurs animations
+} bubble_animation_t;
+
 
 
 typedef struct player {
@@ -30,6 +38,8 @@ typedef struct player {
     int defeat;
     sfVector2f launcher_pos;
     bonus_animation_t* bonus_animation;
+    bubble_animation_t* animations; // Liste des animations en cours
+
 } player_t;
 
 player_t create_player(sfVector2f pos);
@@ -40,3 +50,5 @@ void add_random_bubble_line(player_t* player);
 void update_falling_bubbles(player_t* player);
 void update_bonus_animation(player_t* player, sfRenderWindow* window);
 
+void draw_bubble_animations(player_t* player, sfRenderWindow* window);
+void update_bubble_animations(player_t* player, float deltaTime);
