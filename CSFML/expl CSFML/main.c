@@ -2,8 +2,7 @@
 #include "tools.h"
 #include "bubble.h"
 #include "player.h"
-int ai_mode = 0; // 0 = désactivé, 1 = activé
-int ai_level = 1; // Niveau de réflexion de l'IA (1 à 5)
+
 
 
 
@@ -137,10 +136,6 @@ int main() {
         if (gameState != MENU && sfKeyboard_isKeyPressed(sfKeyW))
             gameState = MENU;
 
-        if (sfKeyboard_isKeyPressed(sfKeyI)) {
-            ai_mode = 1; // Activer le mode IA
-            ai_level = 3; // Par défaut, niveau 3
-        }
 
         if (gameState == GAME) {
 			// Génération de nouvelles lignes de bulles
@@ -284,6 +279,8 @@ int main() {
                 p1 = create_player((sfVector2f) { WINDOWS_WIDHT / 4, WINDOWS_HEIGHT - 50 });
                 p2 = create_player((sfVector2f) { (3 * WINDOWS_WIDHT) / 4, WINDOWS_HEIGHT - 50 });
                 chrono_p1 = chrono_p2 = 60.0f;
+				ai_mode = 0; // Réinitialiser le mode IA
+
                 continue;
             }
         }
