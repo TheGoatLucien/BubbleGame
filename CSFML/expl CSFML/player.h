@@ -49,6 +49,7 @@ void update_bubbles(player_t* player, float* chrono);
 void add_random_bubble_line(player_t* player);
 void update_falling_bubbles(player_t* player);
 void update_bonus_animation(player_t* player, sfRenderWindow* window);
+int flood_fill(bubble_t* grid[ROWS][COLS], int row, int col, int color, int visited[ROWS][COLS], bubble_t** cluster, int* count);
 
 void draw_bubble_animations(player_t* player, sfRenderWindow* window);
 void update_bubble_animations(player_t* player, float deltaTime);

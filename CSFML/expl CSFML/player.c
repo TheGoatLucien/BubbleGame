@@ -534,6 +534,7 @@ attach: {
                 row = newRow;
                 col = newCol;
                 placed = 1;
+
                 break;
             }
         }
@@ -541,7 +542,6 @@ attach: {
 
     if (!placed) {
         destroy_bubble(player->current);
-        play_sound_hit();
         player->current = NULL;
         return;
     }
@@ -549,7 +549,7 @@ attach: {
     // Place dans la grille
     player->grid[row][col] = player->current;
     player->current = NULL;
-
+    play_sound_hit();
     // Détection de grappe
     int visited[ROWS][COLS] = { 0 };
     bubble_t* cluster[ROWS * COLS] = { 0 };

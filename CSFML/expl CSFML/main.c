@@ -48,6 +48,7 @@ void ai_play(player_t* ai_player, player_t* opponent, int level) {
         if (ai_player->current == NULL) {
             ai_player->current = ai_player->next_bubble;
             ai_player->current->active = 1; // Activer la bulle
+            play_sound_shoot();
             ai_player->next_bubble = create_bubble(ai_player->launcher_pos, rand() % 4 + 1); // Générer une nouvelle bulle
         }
 
@@ -74,7 +75,9 @@ void ai_play(player_t* ai_player, player_t* opponent, int level) {
         }
         else {
             // Si aucun match n'est trouvé, tirer aléatoirement
-            ai_player->angle = ((rand() % 180) - 90) * (3.14f / 180.0f); // Angle aléatoire
+
+			ai_player->angle += (rand() % 3 - 1) * 0.1f; // Ajuster légèrement l'angle
+            //ai_player->angle = ((rand() % 180) - 90) * (3.14f / 180.0f); // Angle aléatoire
         }
     }
 }
@@ -102,6 +105,8 @@ int main() {
 
     sfEvent event;
     gameState = MENU;
+    int has_played_game_music = 0; //
+	// Initialisation des joueurs
 
     player_t p1 = create_player((sfVector2f) { WINDOWS_WIDHT / 4, WINDOWS_HEIGHT - 50 });
     player_t p2 = create_player((sfVector2f) { (3 * WINDOWS_WIDHT) / 4, WINDOWS_HEIGHT - 50 });
@@ -163,12 +168,25 @@ int main() {
         }
 
         if (gameState != MENU && sfKeyboard_isKeyPressed(sfKeyW))
+        {
+            //has_played_game_music = 0;
+
+          
+           
+            stop_music();
+            play_menu_music();
             gameState = MENU;
+             
+        }
 
 
         if (gameState == GAME) {
-            stop_music();
-            play_game_music();
+            if (!has_played_game_music) {
+                stop_music();
+                play_game_music();
+                has_played_game_music = 1;
+            }
+
 
 			// Génération de nouvelles lignes de bulles
              time_elapsed += getDeltaTime();
@@ -302,13 +320,16 @@ int main() {
 
                 sfSleep(sfSeconds(4));
                 sfText_destroy(text);
-
+                //reset
+                has_played_game_music = 0;
+                stop_music();
+                play_menu_music();
                 gameState = MENU;
                 p1 = create_player((sfVector2f) { WINDOWS_WIDHT / 4, WINDOWS_HEIGHT - 50 });
                 p2 = create_player((sfVector2f) { (3 * WINDOWS_WIDHT) / 4, WINDOWS_HEIGHT - 50 });
                 chrono_p1 = chrono_p2 = 60.0f;
 				ai_mode = 0; // Réinitialiser le mode IA
-
+               	
                 continue;
             }
         }

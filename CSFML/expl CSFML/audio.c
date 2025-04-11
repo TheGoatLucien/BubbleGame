@@ -13,13 +13,13 @@ static sfSound* hit_sound = NULL;
 static sfSound* match_sound = NULL;
 
 void init_audio() {
-    menu_music = sfMusic_createFromFile("../Ressources/Music/menu.ogg");
-    game_music = sfMusic_createFromFile("../Ressources/Music/game.ogg");
+    menu_music = sfMusic_createFromFile("../Ressources/Musics/Inmenu.ogg");
+    game_music = sfMusic_createFromFile("../Ressources/Musics/Ingame.ogg");
 
-    click_buffer = sfSoundBuffer_createFromFile("../Ressources/SoundFx/UI_button18.wav");
-    shoot_buffer = sfSoundBuffer_createFromFile("../Ressources/SoundFx/shoot.wav");
-    hit_buffer = sfSoundBuffer_createFromFile("../Ressources/SoundFx/hit1.wav");
-    match_buffer = sfSoundBuffer_createFromFile("../Ressources/SoundFx/match.wav");
+    click_buffer = sfSoundBuffer_createFromFile("../Ressources/SoundsFX/UI_button18.ogg");
+    shoot_buffer = sfSoundBuffer_createFromFile("../Ressources/SoundsFX/shoot.ogg");
+    hit_buffer = sfSoundBuffer_createFromFile("../Ressources/SoundsFX/hit1.ogg");
+    match_buffer = sfSoundBuffer_createFromFile("../Ressources/SoundsFX/match.ogg");
 
     click_sound = sfSound_create(); sfSound_setBuffer(click_sound, click_buffer);
     shoot_sound = sfSound_create(); sfSound_setBuffer(shoot_sound, shoot_buffer);
