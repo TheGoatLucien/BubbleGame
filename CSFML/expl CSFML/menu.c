@@ -1,6 +1,6 @@
 #include "menu.h"
 #include "loading.h"
-
+#include "audio.h"
 
 
 //bouton
@@ -63,6 +63,7 @@ void updateLightBtn(sfRenderWindow* window, sfVector2i mousePosition) {
 	if (mousePosition.x >= 700 && mousePosition.x <= 900) {
 		if (mousePosition.y >= 300 && mousePosition.y <= 340) {
 		
+			play_sound_click();
 			sfText_setColor(jouer, sfGreen);
 			sfText_setColor(option, sfWhite);
 			sfText_setColor(quitter, sfWhite);
@@ -70,13 +71,14 @@ void updateLightBtn(sfRenderWindow* window, sfVector2i mousePosition) {
 
 		}
 		else if (mousePosition.y >= 400 && mousePosition.y <= 440) {
+			play_sound_click();
 			sfText_setColor(joueurVsIA, sfCyan);
 			sfText_setColor(jouer, sfWhite);
 			sfText_setColor(option, sfWhite);
 			sfText_setColor(quitter, sfWhite);
 		}
 		else if (mousePosition.y >= 500 && mousePosition.y <= 540) {
-			
+			play_sound_click();
 			sfText_setColor(option, sfMagenta);
 			sfText_setColor(jouer, sfWhite);
 			sfText_setColor(quitter, sfWhite);
@@ -84,6 +86,7 @@ void updateLightBtn(sfRenderWindow* window, sfVector2i mousePosition) {
 
 		}
 		else if (mousePosition.y >= 600 && mousePosition.y <= 640) {
+			play_sound_click();
 			sfText_setColor(quitter, sfRed);
 			sfText_setColor(jouer, sfWhite);
 			sfText_setColor(option, sfWhite);
@@ -106,22 +109,27 @@ void updateButton(sfRenderWindow* window, sfVector2i mousePosition) { // ce qui 
 		if (mousePosition.y >= 300 && mousePosition.y <= 340) {
 			//music_stop(menuMusic);
 			//play_game(window); // Mode Jouer
+			//play_sound_click();
+			play_sound_click();
 			show_loading_screen(window);
 
 			gameState = GAME;
 
 		}
 		else if (mousePosition.y >= 380 && mousePosition.y <= 440) {
+			play_sound_click();
 			ai_mode = 1;       // Mode IA activé
 			ai_level = 3; // Niveau de réflexion de l'IA
 			show_loading_screen(window);
 			gameState = GAME;
 		}
 		else if (mousePosition.y >= 500 && mousePosition.y <= 540) {
+			play_sound_click();
 			//music_stop(menuMusic);
 			show_option_panel(window);  //
 		}
 		else if (mousePosition.y >= 600 && mousePosition.y <= 640) {
+			play_sound_click();
 			sfRenderWindow_close(window);
 		}
 	}

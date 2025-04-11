@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="audio.c" />
     <ClCompile Include="bubble.c" />
     <ClCompile Include="loading.c" />
     <ClCompile Include="main.c" />
@@ -141,6 +142,7 @@
     <ClCompile Include="tools.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="audio.h" />
     <ClInclude Include="bubble.h" />
     <ClInclude Include="loading.h" />
     <ClInclude Include="menu.h" />

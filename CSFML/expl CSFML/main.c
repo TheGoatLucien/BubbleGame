@@ -3,6 +3,8 @@
 #include "bubble.h"
 #include "player.h"
 #include "loading.h"
+#include "audio.h"
+
 
 
 
@@ -87,6 +89,10 @@ sfText* chronoText_p2 = NULL;
 int main() {
     initTools();
     initButton();
+    //
+    init_audio();
+    play_menu_music();
+
 
     sfRenderWindow* window = sfRenderWindow_create(
         (sfVideoMode) {
@@ -112,6 +118,26 @@ int main() {
     sfText_setCharacterSize(chronoText_p2, 26);
     sfText_setFillColor(chronoText_p1, sfWhite);
     sfText_setFillColor(chronoText_p2, sfWhite);
+    //dessin jeu
+    sfSprite* fondGaucheSprite;
+    sfSprite* fondDroiteSprite;
+    sfSprite* barre;
+	sfSprite* barre2;
+	sfTexture* barreTexture;
+	sfTexture* barreTexture2;
+    sfTexture* fondGaucheTexture;
+    sfTexture* fondDroiteTexture;
+
+
+
+    fondGaucheSprite = sfSprite_create();
+    fondGaucheTexture = sfTexture_createFromFile("..//Ressources//Textures//background.png", NULL);
+    fondDroiteSprite = sfSprite_create();
+    fondDroiteTexture = sfTexture_createFromFile("..//Ressources//Textures//backgroundd1.png", NULL);
+    barre = sfSprite_create();
+    barreTexture = sfTexture_createFromFile("..//Ressources//Textures//barretimer.png", NULL);
+    barre2 = sfSprite_create();
+    barreTexture2 = sfTexture_createFromFile("..//Ressources//Textures//barretimer.png", NULL);
 
     float time_elapsed = 0;
     float generation_interval = 10.0f; // Une nouvelle ligne toutes les 5 seconds
@@ -141,6 +167,9 @@ int main() {
 
 
         if (gameState == GAME) {
+            stop_music();
+            play_game_music();
+
 			// Génération de nouvelles lignes de bulles
              time_elapsed += getDeltaTime();
 
@@ -190,37 +219,33 @@ int main() {
         }
         else if (gameState == GAME) {
             //dessins du jeu
-            sfSprite* fondGaucheSprite;
-            fondGaucheSprite = sfSprite_create();
-            sfTexture* fondGaucheTexture;
-            fondGaucheTexture = sfTexture_createFromFile("..//Ressources//Textures//background.png", NULL);
+        
+           
+           
             if (!fondGaucheTexture) {
                 printf("Erreur : Impossible de charger la texture fg.png\n");
             }
 
+            //
             sfSprite_setTexture(fondGaucheSprite, fondGaucheTexture, sfTrue);
             sfSprite_setPosition(fondGaucheSprite, (sfVector2f) { 0, 0 });
             sfSprite_setScale(fondGaucheSprite, (sfVector2f) { 5, 3.8 });
 
             sfRenderWindow_drawSprite(window, fondGaucheSprite, NULL);
 
-            sfSprite* fondDroiteSprite = sfSprite_create();
-            sfTexture* fondDroiteTexture = sfTexture_createFromFile("..//Ressources//Textures//backgroundd1.png", NULL);
+           //   
             sfSprite_setTexture(fondDroiteSprite, fondDroiteTexture, sfTrue);
             sfSprite_setPosition(fondDroiteSprite, (sfVector2f) { 800, 0 });
             sfSprite_setScale(fondDroiteSprite, (sfVector2f) { 5, 3.8 });
 
             sfRenderWindow_drawSprite(window, fondDroiteSprite, NULL);
-
-            sfSprite* barre = sfSprite_create();
-            sfTexture* barreTexture = sfTexture_createFromFile("..//Ressources//Textures//barretimer.png", NULL);
+			// Affichage de la barre de vie du joueur 1
             sfSprite_setTexture(barre, barreTexture, sfTrue);
             sfSprite_setColor(barre, sfColor_fromRGB(100, 75, 0));
             sfSprite_setPosition(barre, (sfVector2f) { 1370, 0 });
             sfRenderWindow_drawSprite(window, barre, NULL);
 
-            sfSprite* barre2 = sfSprite_create();
-            sfTexture* barreTexture2 = sfTexture_createFromFile("..//Ressources//Textures//barretimer.png", NULL);
+			// Affichage de la barre de vie du joueur 2
             sfSprite_setTexture(barre2, barreTexture2, sfTrue);
             sfSprite_setColor(barre2, sfColor_fromRGB(100, 75, 0));
             sfSprite_setPosition(barre2, (sfVector2f) { 10, 0 });
@@ -293,6 +318,15 @@ int main() {
 
     if (gameState == MENU)
         destroyButton();
+	sfSprite_destroy(fondGaucheSprite);
+	sfSprite_destroy(fondDroiteSprite);
+	sfSprite_destroy(barre);
+	sfSprite_destroy(barre2);
+	sfTexture_destroy(fondGaucheTexture);
+	sfTexture_destroy(fondDroiteTexture);
+	sfTexture_destroy(barreTexture);
+	sfTexture_destroy(barreTexture2);
+
 
     sfText_destroy(chronoText_p1);
     sfText_destroy(chronoText_p2);

@@ -2,6 +2,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include "audio.h"
 
 void update_attachment_status(bubble_t* grid[ROWS][COLS], int attach[ROWS][COLS]) {
     // Initialiser attach à -1
@@ -174,6 +175,7 @@ void update_player(player_t* player, sfEvent event, int left, int right, int sho
     if (player->angle > -0.8f) player->angle = -0.8f;
 
     if (sfKeyboard_isKeyPressed(shoot) && player->current == NULL) {
+        play_sound_shoot();
         player->current = player->next_bubble;
         player->current->active = 1;
         player->next_bubble = create_bubble(player->launcher_pos, 0); // Générer une nouvelle bulle
@@ -539,6 +541,7 @@ attach: {
 
     if (!placed) {
         destroy_bubble(player->current);
+        play_sound_hit();
         player->current = NULL;
         return;
     }
@@ -554,6 +557,8 @@ attach: {
     flood_fill(player->grid, row, col, player->grid[row][col]->color, visited, cluster, &count);
 
     if (count >= 3) {
+        play_sound_match(); // son du match
+
         for (int i = 0; i < count; i++) {
             for (int r = 0; r < ROWS; r++) {
                 for (int c = 0; c < COLS; c++) {
