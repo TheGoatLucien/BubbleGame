@@ -58,17 +58,18 @@ void apply_fall_logic_mathematically(player_t* player) {
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             if (player->grid[i][j] && attach[i][j] == -1) {
-                // Ajouter à la liste des bulles en chute
+                // Marquer la bulle comme en chute
                 player->grid[i][j]->falling = 1;
                 player->grid[i][j]->next = player->falling_bubbles;
                 player->falling_bubbles = player->grid[i][j];
 
-                // Retirer de la grille
+                // Retirer la bulle de la grille
                 player->grid[i][j] = NULL;
             }
         }
     }
 }
+
 
 void descend_bubbles(player_t* player) {
     float gridOriginY = 100.0f; // Position de départ de la grille
@@ -86,33 +87,44 @@ void descend_bubbles(player_t* player) {
 
 
 void add_random_bubble_line(player_t* player) {
-    // Descend existing bubbles
+    // Descendre les bulles existantes
     for (int row = ROWS - 1; row > 0; row--) {
         for (int col = 0; col < COLS; col++) {
             if (player->grid[row - 1][col]) {
                 player->grid[row][col] = player->grid[row - 1][col];
                 player->grid[row - 1][col] = NULL;
-                // Update position using consistent gridOriginY and V_SPACING
-                player->grid[row][col]->pos.y = 100.0f + row * V_SPACING;
+                player->grid[row][col]->pos.y += V_SPACING;
             }
         }
     }
 
-    // Add a new row at the top
+    // Ajouter une nouvelle ligne en haut
     float gridOriginX = player->launcher_pos.x - (COLS * H_SPACING) / 2;
-    float gridOriginY = 100.0f; // Ensure alignment with create_player
+    float gridOriginY = 100.0f;
 
     for (int col = 0; col < COLS; col++) {
         bubble_t* new_bubble = malloc(sizeof(bubble_t));
         if (!new_bubble) continue;
-        new_bubble->color = rand() % 4 + 1; // Random color
-        new_bubble->active = 0;
 
-        // Align with top of the grid
-        new_bubble->pos.x = gridOriginX + col * H_SPACING + BUBBLE_RADIUS;
-        new_bubble->pos.y = gridOriginY; // Align correctly
+        new_bubble->color = rand() % 4 + 1; // Couleur aléatoire
+        new_bubble->active = 0;            // Assurez-vous que la bulle n'est pas active
+        new_bubble->falling = 0;           // Assurez-vous que la bulle ne tombe pas
         new_bubble->next = NULL;
+
+        new_bubble->pos.x = gridOriginX + col * H_SPACING + BUBBLE_RADIUS;
+        new_bubble->pos.y = gridOriginY;
+
         player->grid[0][col] = new_bubble;
+    }
+}
+void reset_bubble_states(player_t* player) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            if (player->grid[i][j]) {
+                player->grid[i][j]->active = 0;
+                player->grid[i][j]->falling = 0;
+            }
+        }
     }
 }
 
@@ -415,6 +427,7 @@ void start_bubble_animation(player_t* player, bubble_t* bubble) {
     anim->next = player->animations;
     player->animations = anim;
 }
+
 void update_bubble_animations(player_t* player, float deltaTime) {
     bubble_animation_t** current = &player->animations;
 
@@ -435,18 +448,15 @@ void update_bubble_animations(player_t* player, float deltaTime) {
         anim->alpha -= (int)(deltaTime * 500.0f); // Réduction de la transparence
         if (anim->alpha < 0) anim->alpha = 0;
 
-        // Appliquer la transparence à la bulle associée
+        // Appliquer la transparence et l'échelle à la bulle associée
         if (anim->bubble) {
-            anim->bubble->active = 1; // Marquer la bulle comme active uniquement pendant l'animation
+            anim->bubble->active = 1; // Marquer la bulle comme active
         }
-        else {
-            anim->bubble->active = 0; // Réinitialiser après l'animation
-        }
-
 
         current = &(*current)->next;
     }
 }
+
 
 void draw_bubble_animations(player_t* player, sfRenderWindow* window) {
     bubble_animation_t* anim = player->animations;
@@ -470,81 +480,104 @@ void draw_bubble_animations(player_t* player, sfRenderWindow* window) {
 
 
 
-
 void update_bubbles(player_t* player, float* chrono) {
     if (!player->current) return;
 
-    // Vérifier si la bulle frappe le plafond
-    if (player->current->pos.y <= 0) {
-        goto attach_bubble;
-    }
+    // Collision avec plafond
+    if (player->current->pos.y <= 0)
+        goto attach;
 
-    // Vérification de collision avec les bulles existantes
+    // Collision avec une autre bulle
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             if (player->grid[i][j] &&
                 Circle_Collision(player->current->pos, player->grid[i][j]->pos, BUBBLE_RADIUS, BUBBLE_RADIUS)) {
-                goto attach_bubble;
+                goto attach;
             }
         }
     }
+
     return;
 
-attach_bubble:;
-    // Calculer la position de la bulle sur la grille
+attach: {
     float gridOriginX = player->launcher_pos.x - (COLS * H_SPACING) / 2;
-    float gridOriginY = 100.0f;
+    int row = (int)round((player->current->pos.y - 100.0f) / V_SPACING);
+    int col = (int)round((player->current->pos.x - gridOriginX - ((row % 2 == 0) ? 0 : H_SPACING / 2)) / H_SPACING);
 
-    int row = fClamp((int)round((player->current->pos.y - gridOriginY - BUBBLE_RADIUS) / V_SPACING), 0, ROWS - 1);
-    float offsetX = (row % 2 == 0) ? 0 : H_SPACING / 2;
-    int col = fClamp((int)round((player->current->pos.x - gridOriginX - offsetX - BUBBLE_RADIUS) / H_SPACING), 0, COLS - 1);
+    row = fClamp(row, 0, ROWS - 1);
+    col = fClamp(col, 0, COLS - 1);
 
-    // Positionner la bulle sur la grille
-    player->current->pos.x = gridOriginX + offsetX + col * H_SPACING + BUBBLE_RADIUS;
-    player->current->pos.y = gridOriginY + row * V_SPACING + BUBBLE_RADIUS;
+    int placed = 0;
 
     if (!player->grid[row][col]) {
-        player->grid[row][col] = player->current;
+        placed = 1;
+    }
+    else {
+        int dx[6] = { -1, -1, 0, 0, 1, 1 };
+        int dy_even[6] = { 0, 1, -1, 1, 0, 1 };
+        int dy_odd[6] = { -1, 0, -1, 1, -1, 0 };
+        int* dy = (row % 2 == 0) ? dy_even : dy_odd;
+
+        for (int i = 0; i < 6; i++) {
+            int newRow = row + dx[i];
+            int newCol = col + dy[i];
+
+            if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS &&
+                !player->grid[newRow][newCol]) {
+
+                float offsetX = (newRow % 2 == 0) ? 0 : H_SPACING / 2;
+                player->current->pos.x = gridOriginX + offsetX + newCol * H_SPACING + BUBBLE_RADIUS;
+                player->current->pos.y = 100.0f + newRow * V_SPACING + BUBBLE_RADIUS;
+
+                row = newRow;
+                col = newCol;
+                placed = 1;
+                break;
+            }
+        }
+    }
+
+    if (!placed) {
+        destroy_bubble(player->current);
         player->current = NULL;
+        return;
+    }
 
-        // Détection de cluster
-        int visited[ROWS][COLS] = { 0 };
-        bubble_t* cluster[ROWS * COLS] = { 0 };
-        int count = 0;
-        flood_fill(player->grid, row, col, player->grid[row][col]->color, visited, cluster, &count);
+    // Place dans la grille
+    player->grid[row][col] = player->current;
+    player->current = NULL;
 
-        if (count >= 3) {
-            for (int i = 0; i < count; i++) {
-                for (int r = 0; r < ROWS; r++) {
-                    for (int c = 0; c < COLS; c++) {
-                        if (player->grid[r][c] == cluster[i]) {
-							cluster[i]->active = 0; // Marquer la bulle comme inactive
-							cluster[i]->falling = 1; // Marquer la bulle comme en chute
-                            start_bubble_animation(player, player->grid[r][c]);
-                            player->grid[r][c]->falling = 1;
-                            player->grid[r][c]->next = player->falling_bubbles;
-                            player->falling_bubbles = player->grid[r][c];
-                            player->grid[r][c] = NULL;
-                        }
+    // Détection de grappe
+    int visited[ROWS][COLS] = { 0 };
+    bubble_t* cluster[ROWS * COLS] = { 0 };
+    int count = 0;
+    flood_fill(player->grid, row, col, player->grid[row][col]->color, visited, cluster, &count);
+
+    if (count >= 3) {
+        for (int i = 0; i < count; i++) {
+            for (int r = 0; r < ROWS; r++) {
+                for (int c = 0; c < COLS; c++) {
+                    if (player->grid[r][c] == cluster[i]) {
+                        cluster[i]->active = 0; // Marquer la bulle comme inactive
+                        cluster[i]->falling = 1; // Marquer la bulle comme en chute
+                        start_bubble_animation(player, player->grid[r][c]); //  animation
+                        player->grid[r][c]->falling = 1;
+                       
+                        player->grid[r][c] = NULL;
                     }
                 }
             }
-            player->score += count;
-            *chrono += 10.0f;
-            if (*chrono > 60.0f) *chrono = 60.0f;
         }
 
-        // Appliquer la logique de chute pour les bulles suspendues
-        apply_fall_logic_mathematically(player);
-    }
-    else {
-        // Si la case est déjà occupée, détruire la bulle
-        destroy_bubble(player->current);
-        player->current = NULL;
-    }
+        player->score += count;        // score
+        *chrono += 10.0f;              //  gain chrono
+        if (*chrono > 60.0f) *chrono = 60.0f;
 
-
-    // Vérification de la défaite (bulles trop proches du bas)
+        apply_fall_logic_mathematically(player);  // suspension
+    }
+   
+    }
+// Vérification de la défaite (bulles trop proches du bas)
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             if (player->grid[i][j] && player->grid[i][j]->pos.y >= WINDOWS_HEIGHT - 100) {
@@ -554,5 +587,3 @@ attach_bubble:;
         }
     }
 }
-
-
