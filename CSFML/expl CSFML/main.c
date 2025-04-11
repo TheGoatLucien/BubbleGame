@@ -2,6 +2,8 @@
 #include "tools.h"
 #include "bubble.h"
 #include "player.h"
+#include "loading.h"
+
 
 
 
@@ -101,6 +103,7 @@ int main() {
 
     // Chrono visuel init
     chronoText_p1 = sfText_create();
+
     chronoText_p2 = sfText_create();
     sfFont* font = getDefaultFont();
     sfText_setFont(chronoText_p1, font);

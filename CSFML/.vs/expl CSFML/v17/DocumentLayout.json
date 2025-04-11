@@ -3,36 +3,40 @@
   "WorkspaceRootPath": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\jeu.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\jeu.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\menu.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\menu.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\bubble.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\bubble.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\loading.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\loading.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\menu.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\menu.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\tools.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\tools.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\tools.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\tools.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\loading.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\loading.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\player.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\player.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\tools.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\tools.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\bubble.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\bubble.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\tools.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\tools.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\player.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -41,10 +45,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\bubble.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\bubble.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\jeu.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{8E24EA88-3967-44D3-ADBD-7A84BF07605F}|expl CSFML\\expl CSFML.vcxproj|solutionrelative:expl CSFML\\jeu.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\l.nzeutom\\Downloads\\game_final.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
@@ -57,7 +57,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
@@ -79,46 +79,85 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "menu.h",
-              "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\menu.h",
-              "RelativeDocumentMoniker": "expl CSFML\\menu.h",
-              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\menu.h",
-              "RelativeToolTip": "expl CSFML\\menu.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAKAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "tools.h",
+              "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\tools.h",
+              "RelativeDocumentMoniker": "expl CSFML\\tools.h",
+              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\tools.h",
+              "RelativeToolTip": "expl CSFML\\tools.h",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAqwCsAAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-04-07T12:29:01.768Z",
+              "WhenOpened": "2025-01-15T08:08:31.113Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "bubble.c",
               "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\bubble.c",
               "RelativeDocumentMoniker": "expl CSFML\\bubble.c",
               "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\bubble.c",
               "RelativeToolTip": "expl CSFML\\bubble.c",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABcAAAASAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAABcAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2025-04-07T18:50:51.966Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "player.h",
-              "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\player.h",
-              "RelativeDocumentMoniker": "expl CSFML\\player.h",
-              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\player.h",
-              "RelativeToolTip": "expl CSFML\\player.h",
-              "ViewState": "AgIAABkAAAAAAAAAAAAiwDYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-04-07T18:50:29.516Z",
+              "DocumentIndex": 4,
+              "Title": "main.c",
+              "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\main.c",
+              "RelativeDocumentMoniker": "expl CSFML\\main.c",
+              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\main.c",
+              "RelativeToolTip": "expl CSFML\\main.c",
+              "ViewState": "AgIAAFQAAAAAAAAAAAAAAGEAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-01-08T09:15:09.456Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 0,
+              "Title": "menu.c",
+              "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\menu.c",
+              "RelativeDocumentMoniker": "expl CSFML\\menu.c",
+              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\menu.c*",
+              "RelativeToolTip": "expl CSFML\\menu.c*",
+              "ViewState": "AgIAAKAAAAAAAAAAAAAnwPUAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-04-07T12:26:17.091Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "loading.h",
+              "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\loading.h",
+              "RelativeDocumentMoniker": "expl CSFML\\loading.h",
+              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\loading.h",
+              "RelativeToolTip": "expl CSFML\\loading.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-04-11T13:21:45.732Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "loading.c",
+              "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\loading.c",
+              "RelativeDocumentMoniker": "expl CSFML\\loading.c",
+              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\loading.c",
+              "RelativeToolTip": "expl CSFML\\loading.c",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-04-11T13:17:33.053Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "bubble.h",
               "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\bubble.h",
               "RelativeDocumentMoniker": "expl CSFML\\bubble.h",
@@ -126,64 +165,36 @@
               "RelativeToolTip": "expl CSFML\\bubble.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-04-07T18:51:13.598Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-07T18:51:13.598Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "main.c",
-              "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\main.c",
-              "RelativeDocumentMoniker": "expl CSFML\\main.c",
-              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\main.c",
-              "RelativeToolTip": "expl CSFML\\main.c",
-              "ViewState": "AgIAAHgAAAAAAAAAAAAAAIcAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-01-08T09:15:09.456Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "menu.c",
-              "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\menu.c",
-              "RelativeDocumentMoniker": "expl CSFML\\menu.c",
-              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\menu.c",
-              "RelativeToolTip": "expl CSFML\\menu.c",
-              "ViewState": "AgIAAHUAAAAAAAAAAAAAAIIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-04-07T12:26:17.091Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "jeu.h",
-              "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\jeu.h",
-              "RelativeDocumentMoniker": "expl CSFML\\jeu.h",
-              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\jeu.h",
-              "RelativeToolTip": "expl CSFML\\jeu.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "menu.h",
+              "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\menu.h",
+              "RelativeDocumentMoniker": "expl CSFML\\menu.h",
+              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\menu.h",
+              "RelativeToolTip": "expl CSFML\\menu.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-04-11T13:21:45.732Z",
+              "WhenOpened": "2025-04-07T12:29:01.768Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "tools.h",
-              "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\tools.h",
-              "RelativeDocumentMoniker": "expl CSFML\\tools.h",
-              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\tools.h",
-              "RelativeToolTip": "expl CSFML\\tools.h",
-              "ViewState": "AgIAAOEAAAAAAAAAAAAiwP4AAAAAAAAAAAAAAA==",
+              "DocumentIndex": 9,
+              "Title": "player.h",
+              "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\player.h",
+              "RelativeDocumentMoniker": "expl CSFML\\player.h",
+              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\player.h",
+              "RelativeToolTip": "expl CSFML\\player.h",
+              "ViewState": "AgIAABkAAAAAAAAAAAAiwDYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-01-15T08:08:31.113Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-07T18:50:29.516Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "tools.c",
               "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\tools.c",
               "RelativeDocumentMoniker": "expl CSFML\\tools.c",
@@ -191,21 +202,7 @@
               "RelativeToolTip": "expl CSFML\\tools.c",
               "ViewState": "AgIAAMUAAAAAAAAAAAAiwMkAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-01-15T08:08:15.136Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "jeu.c",
-              "DocumentMoniker": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\jeu.c",
-              "RelativeDocumentMoniker": "expl CSFML\\jeu.c",
-              "ToolTip": "C:\\Users\\nzeut\\Documents\\BubbleGame\\CSFML\\expl CSFML\\jeu.c",
-              "RelativeToolTip": "expl CSFML\\jeu.c",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-04-11T13:17:33.053Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-15T08:08:15.136Z"
             },
             {
               "$type": "Document",
