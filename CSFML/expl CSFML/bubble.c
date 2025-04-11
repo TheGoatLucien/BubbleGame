@@ -35,6 +35,9 @@ void draw_bubble(bubble_t* bubble, sfRenderWindow* window) {
     if (bubble->falling || (bubble->active && bubble->next != NULL)) {
         color.a = 128;
     }
+	else {
+		color.a = 255;
+	}
 
     sfCircleShape_setFillColor(shape, color);
     sfRenderWindow_drawCircleShape(window, shape, NULL);
