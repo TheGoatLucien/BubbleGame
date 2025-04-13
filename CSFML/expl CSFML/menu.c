@@ -4,15 +4,13 @@
 #include "audio.h"
 
 
-//bouton
+//boutton
 sfFont* font;
 sfText* jouer;
 sfText* joueurVsIA;
 sfText* option;
 sfText* quitter;
 sfText* level;
-sfSprite* Background;
-sfTexture* textureBck;
 sfSprite* Background;
 sfTexture* textureBck;
 sfSprite* title;
@@ -32,7 +30,7 @@ void initButton() { //ce qui sera appellé avant le while dans le main
 	//sfMusic* menuMusic = music_play("../Ressources/Sounds/JDSherbert - Ambiences Music Pack - Desert Sirocco.ogg");
 
 	// Configuration des boutons
-	sfText_setString(jouer, "JOUER");
+	sfText_setString(jouer, "JOUER 1V1");
 	sfText_setFont(jouer, font);
 	sfText_setCharacterSize(jouer, 40);
 	sfText_setPosition(jouer, (sfVector2f) { 700, 300 });
@@ -214,7 +212,13 @@ void show_option_panel(sfRenderWindow* window) {
 
 		"JOUEUR  VS IA:\n"
 		"- Q / D  : viser\n"
-		"- ESPACE : tirer\n\n");
+		"- ESPACE : tirer\n\n\n"
+	
+		"- ECHAP : MENU PAUSE\n\n");
+
+
+
+
 
 	sfText_setPosition(controls, (sfVector2f) { pos.x + 30, pos.y + 40 });
 
@@ -297,12 +301,16 @@ void show_countdown(sfRenderWindow* window) {
 		sfRenderWindow_display(window);
 		sfSleep(sfSeconds(1));
 	}
-
-	sfText_setString(text, "C EST PARTI !");
+	 pos =(sfVector2f) { WINDOWS_WIDHT / 2 - 200, WINDOWS_HEIGHT / 2 - 100 };
+	sfText_setPosition(text, pos);
+	sfText_setString(text, "CEST PARTI !");
+	sfRenderWindow_clear(window, sfBlack);
 	sfRenderWindow_drawText(window, text, NULL);
+	sfRenderWindow_display(window);
 	
 	sfSleep(sfSeconds(1));
 
+	sfText_destroy(text);
 }
 
 

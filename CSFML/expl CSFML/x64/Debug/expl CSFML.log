@@ -1,4 +1,4 @@
 ﻿  menu.c
-C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\menu.c(342,43): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\menu.c(342,64): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\menu.c(350,43): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\menu.c(350,64): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
   expl CSFML.vcxproj -> C:\Users\nzeut\Documents\BubbleGame\CSFML\x64\Debug-x64\expl CSFML.exe
