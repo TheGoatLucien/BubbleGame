@@ -118,7 +118,7 @@ void updateButton(sfRenderWindow* window, sfVector2i mousePosition) { // ce qui 
 		else if (mousePosition.y >= 380 && mousePosition.y <= 440) {
 			play_sound_click();
 			ai_mode = 1;       // Mode IA activé
-			ai_level = 5; // Niveau de réflexion de l'IA
+			ai_level = 2; // Niveau de réflexion de l'IA
 			show_loading_screen(window);
 			sfSleep(sfMilliseconds(100)); // Petite pause pour entendre le clic
 			gameState = GAME;

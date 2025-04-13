@@ -202,8 +202,11 @@ void update_player(player_t* player, sfEvent event, int left, int right, int sho
             float dx = cos(player->angle);
             float dy = sin(player->angle);
             player->angle = atan2(dy, -dx);
-            if (player->launcher_pos.x < centerX)
+            if (player->launcher_pos.x < centerX) { 
+                play_sound_hit();
                 player->current->pos.x = centerX - margin;
+
+            }  
             else
                 player->current->pos.x = centerX + margin;
         }
