@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "menu.h"
 #include "loading.h"
 #include "audio.h"
@@ -118,8 +119,9 @@ void updateButton(sfRenderWindow* window, sfVector2i mousePosition) { // ce qui 
 		else if (mousePosition.y >= 380 && mousePosition.y <= 440) {
 			play_sound_click();
 			ai_mode = 1;       // Mode IA activé
-			ai_level = 2; // Niveau de réflexion de l'IA
+		
 			show_loading_screen(window);
+			ai_level = ask_ia_level(window); //  demande du niveau de l'IA ici
 			sfSleep(sfMilliseconds(100)); // Petite pause pour entendre le clic
 			gameState = GAME;
 		}
@@ -273,4 +275,131 @@ int is_quit_button_clicked(sfVector2i mousePos) {
 
 	return (mousePos.x >= quitX && mousePos.x <= quitX + 200 &&
 		mousePos.y >= quitY && mousePos.y <= quitY + 50);
+}
+
+
+void show_countdown(sfRenderWindow* window) {
+	sfFont* font = getDefaultFont();
+	sfText* text = sfText_create();
+	sfText_setFont(text, font);
+	sfText_setCharacterSize(text, 100);
+	sfText_setFillColor(text, sfWhite);
+
+	sfVector2f pos = { WINDOWS_WIDHT / 2 - 100, WINDOWS_HEIGHT / 2 - 100 };
+	sfText_setPosition(text, pos);
+
+	for (int i = 3; i >= 1; i--) {
+		char buffer[2];
+		sprintf(buffer, "%d", i);
+		sfText_setString(text, buffer);
+		sfRenderWindow_clear(window, sfBlack);
+		sfRenderWindow_drawText(window, text, NULL);
+		sfRenderWindow_display(window);
+		sfSleep(sfSeconds(1));
+	}
+
+	sfText_setString(text, "C EST PARTI !");
+	sfRenderWindow_drawText(window, text, NULL);
+	
+	sfSleep(sfSeconds(1));
+
+}
+
+
+
+
+int show_pause_menu(sfRenderWindow* window, sfTexture* iconTexture) {
+
+	sfSprite* icon = sfSprite_create();
+	sfSprite_setTexture(icon, iconTexture, sfTrue);
+	sfSprite_setPosition(icon, (sfVector2f) { 720, 70 });
+	sfSprite_setScale(icon, (sfVector2f) { 0.5, 0.5 });
+	sfFont* font = getDefaultFont();
+
+	sfText* continuer = sfText_create();
+	sfText_setFont(continuer, font);
+	sfText_setString(continuer, "Continuer");
+	sfText_setCharacterSize(continuer,40);
+	sfText_setPosition(continuer, (sfVector2f) { 700, 400 });
+
+	sfText* quitter = sfText_create();
+	sfText_setFont(quitter, font);
+	sfText_setString(quitter, "Quitter");
+	sfText_setCharacterSize(quitter,40);
+	sfText_setPosition(quitter, (sfVector2f) { 700, 470 });
+
+	while (sfRenderWindow_isOpen(window)) {
+		sfEvent event;
+		while (sfRenderWindow_pollEvent(window, &event)) {
+			if (event.type == sfEvtClosed) {
+				sfRenderWindow_close(window);
+				return 0;
+			}
+
+
+
+			if (event.type == sfEvtMouseButtonPressed) {
+				sfVector2f mouse = { event.mouseButton.x, event.mouseButton.y };
+
+				sfFloatRect contBounds = sfText_getGlobalBounds(continuer);
+				sfFloatRect quitBounds = sfText_getGlobalBounds(quitter);
+
+				if (sfFloatRect_contains(&contBounds, mouse.x, mouse.y)) {
+				
+					// Reprendre le jeu
+					sfSprite_destroy(icon);
+					sfText_destroy(continuer);
+					sfText_destroy(quitter);
+					return 1; // continuer
+				}
+
+				else if (sfFloatRect_contains(&quitBounds, mouse.x, mouse.y)) {
+					
+					sfSprite_destroy(icon);
+					sfText_destroy(continuer);
+					sfText_destroy(quitter);
+					return 0; // quitter
+				}
+				else {
+					sfText_setColor(continuer, sfWhite);
+					sfText_setColor(quitter, sfWhite);
+				}
+			
+
+			}
+			if (event.type == sfEvtMouseMoved) {
+				sfVector2i mousePos = { event.mouseMove.x, event.mouseMove.y };
+				printf("%d pour 1\n", mousePos.x);
+				printf("%d pour 1\n", mousePos.y);
+					if (mousePos.x >= 700 && mousePos.x <= 780) {
+						if (mousePos.y >= 415 && mousePos.y <= 460) {
+							
+							sfText_setColor(continuer, sfGreen);
+							sfText_setColor(quitter, sfWhite);
+						}
+						else if (mousePos.y >= 470 && mousePos.y <= 520) {
+							
+							sfText_setColor(quitter, sfRed);
+							sfText_setColor(continuer, sfWhite);
+						}
+						else {
+							sfText_setColor(continuer, sfWhite);
+							sfText_setColor(quitter, sfWhite);
+						}
+
+
+					}
+				
+			
+
+			}
+		}
+		sfRenderWindow_clear(window, sfBlue); // 150 pour semi-transparence
+		sfRenderWindow_drawSprite(window, icon, NULL);
+		sfRenderWindow_drawText(window, continuer, NULL);
+		sfRenderWindow_drawText(window, quitter, NULL);
+		sfRenderWindow_display(window);
+	}
+
+	return 0;
 }

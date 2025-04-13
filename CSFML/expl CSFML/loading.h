@@ -6,5 +6,5 @@
 
 // Fonction à appeler depuis le main quand on passe du menu au jeu
 void show_loading_screen(sfRenderWindow* window);
-
+int ask_ia_level(sfRenderWindow* window);
 // LOADING_SCREEN_H

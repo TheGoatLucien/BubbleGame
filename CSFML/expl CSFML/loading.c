@@ -43,3 +43,45 @@ void show_loading_screen(sfRenderWindow* window) {
     sfRectangleShape_destroy(loadingBar);
     
 }
+int ask_ia_level(sfRenderWindow* window) {
+    sfFont* font = getDefaultFont();
+    sfText* prompt = sfText_create();
+    sfText_setFont(prompt, font);
+    sfText_setString(prompt, "Choisissez le niveau de l IA (1 A 5) :");
+    sfText_setCharacterSize(prompt, 28);
+    sfText_setPosition(prompt, (sfVector2f) { 100, 100 });
+
+    sfText* choices[5];
+    for (int i = 0; i < 5; i++) {
+        choices[i] = sfText_create();
+        char label[2] = { '1' + i, '\0' };
+        sfText_setFont(choices[i], font);
+        sfText_setString(choices[i], label);
+        sfText_setCharacterSize(choices[i], 40);
+        sfText_setPosition(choices[i], (sfVector2f) { 150 + i * 60, 200 });
+    }
+
+    while (sfRenderWindow_isOpen(window)) {
+        sfEvent event;
+        while (sfRenderWindow_pollEvent(window, &event)) {
+            if (event.type == sfEvtClosed) sfRenderWindow_close(window);
+            if (event.type == sfEvtMouseButtonPressed) {
+                sfVector2f mouse = { event.mouseButton.x, event.mouseButton.y };
+                for (int i = 0; i < 5; i++) {
+                    sfFloatRect bounds = sfText_getGlobalBounds(choices[i]);
+                    if (sfFloatRect_contains(&bounds, mouse.x, mouse.y)) {
+                        return i + 1;
+                    }
+
+                }
+            }
+        }
+
+        sfRenderWindow_clear(window, sfBlack);
+        sfRenderWindow_drawText(window, prompt, NULL);
+        for (int i = 0; i < 5; i++) sfRenderWindow_drawText(window, choices[i], NULL);
+        sfRenderWindow_display(window);
+    }
+
+    return 1; // Par défaut
+}

@@ -146,7 +146,8 @@ int main() {
 
     float time_elapsed = 0;
     float generation_interval = 10.0f; // Une nouvelle ligne toutes les 5 seconds
-
+    //ini if game
+	
 
     while (sfRenderWindow_isOpen(window)) {
         restartClock();
@@ -185,8 +186,26 @@ int main() {
                 stop_music();
                 play_game_music();
                 has_played_game_music = 1;
+                // le compte à rebours
+                show_countdown(window);
             }
+            // Si on appuie sur ÉCHAP, on affiche le menu pause
+            if (sfKeyboard_isKeyPressed(sfKeyEscape)) {
+                sfSleep(sfMilliseconds(200)); // Anti-spam input
+                sfTexture* pauseIcon = sfTexture_createFromFile("../Ressources/Textures/play.png", NULL); // ton icône
+			
+                int result = show_pause_menu(window, pauseIcon);
+                sfTexture_destroy(pauseIcon);
 
+                if (result == 0) { // Si "Quitter"
+                    stop_music();
+                    play_menu_music();
+                    gameState = MENU;
+                    has_played_game_music = 0;
+                    // Reset jeu si besoin ici
+                    continue;
+                }
+            }
 
 			// Génération de nouvelles lignes de bulles
              time_elapsed += getDeltaTime();
