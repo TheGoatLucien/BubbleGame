@@ -220,8 +220,8 @@ int main() {
             /*send_grey_bubbles(&p1, &p2);
             send_grey_bubbles(&p2, &p1);*/
 
-            update_bubbles(&p1, &chrono_p1);
-            update_bubbles(&p2, &chrono_p2);
+            update_bubbles(&p1, &chrono_p1, &chrono_p2);
+            update_bubbles(&p2, &chrono_p2, &chrono_p1);
 			update_bubble_animations(&p1, getDeltaTime());
 			update_bubble_animations(&p2, getDeltaTime());
 

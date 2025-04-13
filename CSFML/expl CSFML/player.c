@@ -494,7 +494,7 @@ void draw_bubble_animations(player_t* player, sfRenderWindow* window) {
 
 
 
-void update_bubbles(player_t* player, float* chrono) {
+void update_bubbles(player_t* player, float* chrono1, float* chrono2) {
     if (!player->current) return;
 
     // Collision avec plafond
@@ -587,8 +587,10 @@ attach: {
         }
 
         player->score += count;        // score
-        *chrono += 10.0f;              //  gain chrono
-        if (*chrono > 60.0f) *chrono = 60.0f;
+        *chrono1 += 10.0f;              //  gain chrono pour le joueur1
+		*chrono2 -= 10.0f;              //  perte chrono pour le joueur2
+        if (*chrono1 > 60.0f) *chrono1 = 60.0f;
+		if (*chrono2 < 0.0f) *chrono2 = 0.0f;
 
         apply_fall_logic_mathematically(player);  // suspension
     }
