@@ -219,61 +219,105 @@ void update_player(player_t* player, sfEvent event, int left, int right, int sho
         }
     }
 }
-
-void draw_aim_line(sfVector2f origin, float angle, sfRenderWindow* window) {
+void draw_aim_line(sfVector2f origin, float angle, player_t* player, sfRenderWindow* window) {
     sfVector2f pos = origin;
-    float dx = cos(angle), dy = sin(angle);
+    float dx = cosf(angle), dy = sinf(angle);
+
+    // Normalisation du vecteur direction
+    float mag = sqrtf(dx * dx + dy * dy);
+    dx /= mag;
+    dy /= mag;
+
+    const float step = 4.0f; // déplacement par itération
+    const int max_iterations = 2000;
+    const int max_bounces = 5;
     int bounces = 0;
-    const int max_bounces = 3;
+
+    sfVector2f collision_pos = pos;
+    int collision_found = 0;
 
     sfVertexArray* line = sfVertexArray_create();
     sfVertexArray_setPrimitiveType(line, sfLinesStrip);
     sfVertexArray_append(line, (sfVertex) { pos, sfColor_fromRGBA(255, 255, 255, 80) });
 
-    float centerX = WINDOWS_WIDHT / 2; // Position centrale du mur
-    float margin = 76; // Marge pour détecter la collision avec le mur central
+    float centerX = WINDOWS_WIDHT / 2;
+    float margin = 76;
 
-    while (bounces < max_bounces) {
-        for (int i = 0; i < 100; i++) { // Avancer par petits pas
-            pos.x += dx * 5;
-            pos.y += dy * 5;
+    for (int i = 0; i < max_iterations && !collision_found; i++) {
+        pos.x += dx * step;
+        pos.y += dy * step;
 
-            // Vérifie rebond mur gauche/droit
-            if (pos.x <= 80 || pos.x >= WINDOWS_WIDHT-80) {
-                dx = -dx;
-                bounces++;
-                break;
-            }
+        // Rebond mur gauche/droite
+        if (pos.x <= 80 || pos.x >= WINDOWS_WIDHT - 80) {
+            dx = -dx;
+            bounces++;
+        }
 
-            // Vérifie rebond avec le plafond
-            if (pos.y <= 0) {
-                bounces = max_bounces;
-                break;
-            }
+        // Rebond mur central
+        if ((origin.x < centerX && pos.x >= centerX - margin) ||
+            (origin.x > centerX && pos.x <= centerX + margin)) {
+            dx = -dx;
+            bounces++;
+            pos.x = (origin.x < centerX) ? centerX - margin : centerX + margin;
+        }
 
-            // Vérifie rebond avec le mur central
-            if ((origin.x < centerX && pos.x >= centerX - margin) || 
-                (origin.x > centerX && pos.x <= centerX + margin)) {
-                dx = -dx;
-                bounces++;
+        // Collision plafond
+        if (pos.y <= 0) {
+            collision_pos = pos;
+            collision_found = 1;
+            break;
+        }
 
-                // Ajuste la position pour éviter de traverser le mur
-                if (origin.x < centerX)
-                    pos.x = centerX - margin;
-                else
-                    pos.x = centerX + margin;
-                
-                break;
+        // Collision avec une bulle
+        for (int row = 0; row < ROWS && !collision_found; row++) {
+            for (int col = 0; col < COLS; col++) {
+                bubble_t* b = player->grid[row][col];
+                if (b && Circle_Collision(pos, b->pos, 5, BUBBLE_RADIUS)) {
+                    // Reculer dans la direction opposée pour coller
+                    collision_pos.x = pos.x - dx * BUBBLE_RADIUS;
+                    collision_pos.y = pos.y - dy * BUBBLE_RADIUS;
+                    collision_found = 1;
+                    break;
+                }
             }
         }
 
         sfVertex v = { pos, sfColor_fromRGBA(255, 255, 255, 80) };
         sfVertexArray_append(line, v);
+
+        if (bounces >= max_bounces) break;
     }
 
+    // Ligne
     sfRenderWindow_drawVertexArray(window, line, NULL);
     sfVertexArray_destroy(line);
+
+    // Bulle de prévisualisation avec effet pulsant
+    float time = getDeltaTime();
+    float pulse = 2 * sinf(time * 3);
+    float radius = 16 + pulse;
+
+    sfCircleShape* preview = sfCircleShape_create();
+    sfCircleShape_setRadius(preview, radius);
+    sfCircleShape_setOrigin(preview, (sfVector2f) { radius, radius });
+    sfCircleShape_setPosition(preview, collision_pos);
+
+    sfColor color;
+    switch (player->next_bubble->color) {
+    case 1: color = sfRed; break;
+    case 2: color = sfBlue; break;
+    case 3: color = sfGreen; break;
+    case 4: color = sfYellow; break;
+    default: color = sfWhite; break;
+    }
+    color.a = 128;
+    sfCircleShape_setFillColor(preview, color);
+    sfRenderWindow_drawCircleShape(window, preview, NULL);
+    sfCircleShape_destroy(preview);
 }
+
+
+
 
 
 void update_falling_bubbles(player_t* player) {
@@ -304,7 +348,7 @@ void draw_player(player_t* player, sfRenderWindow* window) {
     sfRenderWindow_drawRectangleShape(window, midWall, NULL);
     sfRectangleShape_destroy(midWall);
 
-    draw_aim_line(player->launcher_pos, player->angle, window);
+    draw_aim_line(player->launcher_pos, player->angle, player, window);
 
     sfCircleShape* launcher = sfCircleShape_create();
     sfCircleShape_setRadius(launcher, 20);
@@ -588,7 +632,25 @@ attach: {
 
         player->score += count;        // score
         *chrono1 += 10.0f;              //  gain chrono pour le joueur1
+        // BONUS VISUEL
+        bonus_animation_t* anim = malloc(sizeof(bonus_animation_t));
+        anim->text = sfText_create();
+        sfText_setFont(anim->text, getDefaultFont());
+        sfText_setCharacterSize(anim->text, 30);
+        sfText_setString(anim->text, "+10s !");
+        sfText_setFillColor(anim->text, sfGreen);
+        anim->position = player->launcher_pos;
+        sfText_setPosition(anim->text, anim->position);
+        anim->timer = 2.0f;
+        anim->alpha = 255;
+        player->bonus_animation = anim;
+
 		*chrono2 -= 10.0f;              //  perte chrono pour le joueur2
+        //BONUS VISUEL
+
+
+
+
         if (*chrono1 > 60.0f) *chrono1 = 60.0f;
 		if (*chrono2 < 0.0f) *chrono2 = 0.0f;
 
