@@ -3,6 +3,8 @@
 #include "loading.h"
 #include "audio.h"
 
+#define STAR_COUNT 100
+static sfCircleShape* stars[STAR_COUNT];
 
 //boutton
 sfFont* font;
@@ -54,6 +56,17 @@ void initButton() { //ce qui sera appellé avant le while dans le main
 
 	//
 	ai_mode = 0; // 0 = désactivé, 1 = activé
+
+	// 
+	for (int i = 0; i < STAR_COUNT; i++) {
+		stars[i] = sfCircleShape_create();
+		sfCircleShape_setRadius(stars[i], rand_float(1.0f, 2.5f));
+		sfCircleShape_setFillColor(stars[i], sfWhite);
+		float x = rand_float(0, WINDOWS_WIDHT);
+		float y = rand_float(0, WINDOWS_HEIGHT);
+		sfCircleShape_setPosition(stars[i], (sfVector2f) { x, y });
+	}
+
 	
 
 
@@ -63,6 +76,13 @@ void updateLightBtn(sfRenderWindow* window, sfVector2i mousePosition) {
 		if (mousePosition.y >= 300 && mousePosition.y <= 340) {
 		
 			sfText_setColor(jouer, sfGreen);
+			sfText_setScale(jouer, (sfVector2f) { 1.2f, 1.2f });
+			sfText_setScale(option, (sfVector2f) { 1.0f, 1.0f });
+			sfText_setScale(quitter, (sfVector2f) { 1.0f, 1.0f });
+			sfText_setScale(joueurVsIA, (sfVector2f) { 1.0f, 1.0f });
+
+
+
 			sfText_setColor(option, sfWhite);
 			sfText_setColor(quitter, sfWhite);
 			sfText_setColor(joueurVsIA, sfWhite);
@@ -71,6 +91,11 @@ void updateLightBtn(sfRenderWindow* window, sfVector2i mousePosition) {
 		else if (mousePosition.y >= 400 && mousePosition.y <= 440) {
 			
 			sfText_setColor(joueurVsIA, sfCyan);
+			sfText_setScale(joueurVsIA, (sfVector2f) { 1.2f, 1.2f });
+			sfText_setScale(jouer, (sfVector2f) { 1.0f, 1.0f });
+			sfText_setScale(option, (sfVector2f) { 1.0f, 1.0f });
+			sfText_setScale(quitter, (sfVector2f) { 1.0f, 1.0f });
+
 			sfText_setColor(jouer, sfWhite);
 			sfText_setColor(option, sfWhite);
 			sfText_setColor(quitter, sfWhite);
@@ -78,6 +103,12 @@ void updateLightBtn(sfRenderWindow* window, sfVector2i mousePosition) {
 		else if (mousePosition.y >= 500 && mousePosition.y <= 540) {
 			
 			sfText_setColor(option, sfMagenta);
+			sfText_setScale(option, (sfVector2f) { 1.2f, 1.2f });
+			sfText_setScale(jouer, (sfVector2f) { 1.0f, 1.0f });
+			sfText_setScale(joueurVsIA, (sfVector2f) { 1.0f, 1.0f });
+			sfText_setScale(quitter, (sfVector2f) { 1.0f, 1.0f });
+
+
 			sfText_setColor(jouer, sfWhite);
 			sfText_setColor(quitter, sfWhite);
 			sfText_setColor(joueurVsIA, sfWhite);
@@ -85,6 +116,11 @@ void updateLightBtn(sfRenderWindow* window, sfVector2i mousePosition) {
 		}
 		else if (mousePosition.y >= 600 && mousePosition.y <= 640) {
 			sfText_setColor(quitter, sfRed);
+			sfText_setScale(quitter, (sfVector2f) { 1.2f, 1.2f });
+			sfText_setScale(jouer, (sfVector2f) { 1.0f, 1.0f });
+			sfText_setScale(option, (sfVector2f) { 1.0f, 1.0f });
+			sfText_setScale(joueurVsIA, (sfVector2f) { 1.0f, 1.0f });
+
 			sfText_setColor(jouer, sfWhite);
 			sfText_setColor(option, sfWhite);
 			sfText_setColor(joueurVsIA, sfWhite);
@@ -94,6 +130,11 @@ void updateLightBtn(sfRenderWindow* window, sfVector2i mousePosition) {
 		
 	}
 	else {
+		sfText_setScale(jouer, (sfVector2f) { 1.0f, 1.0f });
+		sfText_setScale(joueurVsIA, (sfVector2f) { 1.0f, 1.0f });
+		sfText_setScale(option, (sfVector2f) { 1.0f, 1.0f });
+		sfText_setScale(quitter, (sfVector2f) { 1.0f, 1.0f });
+
 		sfText_setColor(jouer, sfWhite);
 		sfText_setColor(option, sfWhite);
 		sfText_setColor(quitter, sfWhite);
@@ -141,20 +182,41 @@ void displayButton(sfRenderWindow* window) { // display dans le displqy window
 		Background = sfSprite_create();
 		textureBck = sfTexture_createFromFile("../Ressources/Textures/titlescreen.png",NULL);
 		sfSprite_setTexture(Background, textureBck,sfTrue);
-		sfSprite_setScale(Background, (sfVector2f){5,5});
+		sfSprite_setScale(Background, (sfVector2f){6,6});
 
 		title = sfSprite_create();
 		titleBck = sfTexture_createFromFile("../Ressources/Textures/title.png", NULL);
 		sfSprite_setTexture(title, titleBck, sfTrue);
-		sfSprite_setScale(title, (sfVector2f) { 2, 2 });
-		sfSprite_setPosition(title, (sfVector2f) { 500, 10 });
-
-
-
-
-
+		sfSprite_setScale(title, (sfVector2f) { 4, 4 });
+		sfSprite_setPosition(title, (sfVector2f) { 630, 20 });
+	
 		sfRenderWindow_drawSprite(window, Background, NULL);
+
+		// Effet étoiles animées en fond
+		for (int i = 0; i < STAR_COUNT; i++) {
+			sfVector2f pos = sfCircleShape_getPosition(stars[i]);
+			pos.y += 0.2f; // vitesse lente vers le bas
+			if (pos.y > WINDOWS_HEIGHT) pos.y = 0;
+			sfCircleShape_setPosition(stars[i], pos);
+			sfRenderWindow_drawCircleShape(window, stars[i], NULL);
+		}
+
+		
+
+		float time = getDeltaTime();
+		static float scale_anim = 1.0f;
+		static int growing = 1;
+		if (growing) {
+			scale_anim += time * 0.5f;
+			if (scale_anim >= 1.6f) growing = 0;
+		}
+		else {
+			scale_anim -= time * 0.5f;
+			if (scale_anim <= 0.95f) growing = 1;
+		}
+		sfSprite_setScale(title, (sfVector2f) { scale_anim, scale_anim });
 		sfRenderWindow_drawSprite(window, title, NULL);
+
 		sfRenderWindow_drawText(window, jouer, NULL);
 		sfRenderWindow_drawText(window, joueurVsIA, NULL);
 		sfRenderWindow_drawText(window, level, NULL);
@@ -168,6 +230,10 @@ void displayButton(sfRenderWindow* window) { // display dans le displqy window
 
 }
 void destroyButton() { // apres la boucle while pour liberer l'espace
+	for (int i = 0; i < STAR_COUNT; i++) {
+		if (stars[i]) sfCircleShape_destroy(stars[i]);
+	}
+
 	sfText_destroy(jouer);
 	sfText_destroy(level);
 	sfText_destroy(joueurVsIA);

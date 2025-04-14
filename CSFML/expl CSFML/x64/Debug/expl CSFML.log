@@ -1,2 +1,9 @@
-﻿  bubble.c
-  expl CSFML.vcxproj -> C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\x64\Debug-x64\expl CSFML.exe
+﻿  menu.c
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\menu.c(63,37): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\menu.c(65,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\menu.c(66,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\menu.c(390,41): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\menu.c(390,46): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\menu.c(416,43): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\nzeut\Documents\BubbleGame\CSFML\expl CSFML\menu.c(416,64): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  expl CSFML.vcxproj -> C:\Users\nzeut\Documents\BubbleGame\CSFML\x64\Debug-x64\expl CSFML.exe
