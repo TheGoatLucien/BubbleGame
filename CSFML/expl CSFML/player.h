@@ -45,7 +45,7 @@ typedef struct player {
 player_t create_player(sfVector2f pos);
 void update_player(player_t* player, sfEvent event, int left, int right, int shoot);
 void draw_player(player_t* player, sfRenderWindow* window);
-void update_bubbles(player_t* player, float* chrono1, float* chrono2);
+void update_bubbles(player_t* player, player_t* player2, float* chrono1, float* chrono2);
 void add_random_bubble_line(player_t* player);
 void update_falling_bubbles(player_t* player);
 void update_bonus_animation(player_t* player, sfRenderWindow* window);

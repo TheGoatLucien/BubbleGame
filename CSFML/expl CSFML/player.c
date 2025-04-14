@@ -102,8 +102,9 @@ void add_random_bubble_line(player_t* player) {
     // Ajouter une nouvelle ligne en haut
     float gridOriginX = player->launcher_pos.x - (COLS * H_SPACING) / 2;
     float gridOriginY = 100.0f;
-
-    for (int col = 0; col < COLS; col++) {
+    static sfBool offset;
+    int r = rand() % 3;
+    for (int col = r; col < 13 - r; col++) {
         bubble_t* new_bubble = malloc(sizeof(bubble_t));
         if (!new_bubble) continue;
 
@@ -112,10 +113,25 @@ void add_random_bubble_line(player_t* player) {
         new_bubble->falling = 0;           // Assurez-vous que la bulle ne tombe pas
         new_bubble->next = NULL;
 
-        new_bubble->pos.x = gridOriginX + col * H_SPACING + BUBBLE_RADIUS;
+        if (offset)
+        {
+            new_bubble->pos.x = gridOriginX + 20 + col * H_SPACING + BUBBLE_RADIUS * (COLS / 2);
+        }
+        else
+        {
+            new_bubble->pos.x = gridOriginX + col * H_SPACING + BUBBLE_RADIUS * (COLS / 2);
+        }
         new_bubble->pos.y = gridOriginY;
 
         player->grid[0][col] = new_bubble;
+    }
+    if (offset)
+    {
+        offset = sfFalse;
+    }
+    else
+    {
+        offset = sfTrue;
     }
 }
 void reset_bubble_states(player_t* player) {
@@ -538,7 +554,7 @@ void draw_bubble_animations(player_t* player, sfRenderWindow* window) {
 
 
 
-void update_bubbles(player_t* player, float* chrono1, float* chrono2) {
+void update_bubbles(player_t* player, player_t *player2,float* chrono1, float* chrono2) {
     if (!player->current) return;
 
     // Collision avec plafond
@@ -645,8 +661,23 @@ attach: {
         anim->alpha = 255;
         player->bonus_animation = anim;
 
-		*chrono2 -= 10.0f;              //  perte chrono pour le joueur2
+		*chrono2 -= 5.0f;              //  perte chrono pour le joueur2
         //BONUS VISUEL
+        bonus_animation_t* anim1 = malloc(sizeof(bonus_animation_t));
+        anim1->text = sfText_create();
+        sfText_setFont(anim1->text, getDefaultFont());
+        sfText_setCharacterSize(anim1->text, 30);
+        sfText_setString(anim1->text, "-5s !");
+        sfText_setFillColor(anim1->text, sfBlack);
+        anim1->position = player2->launcher_pos;
+        sfText_setPosition(anim1->text, anim1->position);
+        anim1->timer = 2.0f;
+        anim1->alpha = 255;
+        player2->bonus_animation = anim1;
+
+
+
+
 
 
 

@@ -192,7 +192,7 @@ int main() {
             // Si on appuie sur ÉCHAP, on affiche le menu pause
             if (sfKeyboard_isKeyPressed(sfKeyEscape)) {
                 sfSleep(sfMilliseconds(200)); // Anti-spam input
-                sfTexture* pauseIcon = sfTexture_createFromFile("../Ressources/Textures/play.png", NULL); // ton icône
+                sfTexture* pauseIcon = sfTexture_createFromFile("../Ressources/Textures/play1.png", NULL); // ton icône
 			
                 int result = show_pause_menu(window, pauseIcon);
                 sfTexture_destroy(pauseIcon);
@@ -239,8 +239,8 @@ int main() {
             /*send_grey_bubbles(&p1, &p2);
             send_grey_bubbles(&p2, &p1);*/
 
-            update_bubbles(&p1, &chrono_p1, &chrono_p2);
-            update_bubbles(&p2, &chrono_p2, &chrono_p1);
+            update_bubbles(&p1,&p2 ,&chrono_p1, &chrono_p2);
+            update_bubbles(&p2,&p1, &chrono_p2, &chrono_p1);
 			update_bubble_animations(&p1, getDeltaTime());
 			update_bubble_animations(&p2, getDeltaTime());
 

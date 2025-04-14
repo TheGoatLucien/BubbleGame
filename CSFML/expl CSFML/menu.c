@@ -320,8 +320,8 @@ int show_pause_menu(sfRenderWindow* window, sfTexture* iconTexture) {
 
 	sfSprite* icon = sfSprite_create();
 	sfSprite_setTexture(icon, iconTexture, sfTrue);
-	sfSprite_setPosition(icon, (sfVector2f) { 720, 70 });
-	sfSprite_setScale(icon, (sfVector2f) { 0.5, 0.5 });
+	sfSprite_setPosition(icon, (sfVector2f) { 700, 70 });
+	sfSprite_setScale(icon, (sfVector2f) { 0.4, 0.4 });
 	sfFont* font = getDefaultFont();
 
 	sfText* continuer = sfText_create();
@@ -402,7 +402,7 @@ int show_pause_menu(sfRenderWindow* window, sfTexture* iconTexture) {
 
 			}
 		}
-		sfRenderWindow_clear(window, sfBlue); // 150 pour semi-transparence
+		sfRenderWindow_clear(window, sfBlack); // 150 pour semi-transparence
 		sfRenderWindow_drawSprite(window, icon, NULL);
 		sfRenderWindow_drawText(window, continuer, NULL);
 		sfRenderWindow_drawText(window, quitter, NULL);
