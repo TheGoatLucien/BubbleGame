@@ -36,23 +36,22 @@ int simulate_match(bubble_t* grid[ROWS][COLS], int row, int col, int color) {
 // Fonction pour gérer le comportement de l'IA
 void ai_play(player_t* ai_player, player_t* opponent, int level) {
     static float ai_timer = 0;
-    ai_timer += getDeltaTime();
+    static int need_new_random_angle = 1; // nouveau tir aléatoire si pas de match
+    static float random_angle = 0;
 
-    // Ajuster la vitesse de réflexion en fonction du niveau
-    float decision_time = 1.0f / level; // Plus le niveau est élevé, plus l'IA est rapide
+    ai_timer += getDeltaTime();
+    float decision_time = 1.0f / level;
 
     if (ai_timer >= decision_time) {
         ai_timer = 0;
 
-        // Vérifier si l'IA a une bulle à tirer
         if (ai_player->current == NULL) {
             ai_player->current = ai_player->next_bubble;
-            ai_player->current->active = 1; // Activer la bulle
+            ai_player->current->active = 1;
             play_sound_shoot();
-            ai_player->next_bubble = create_bubble(ai_player->launcher_pos, rand() % 4 + 1); // Générer une nouvelle bulle
+            ai_player->next_bubble = create_bubble(ai_player->launcher_pos, rand() % 4 + 1);
         }
 
-        // Logique de l'IA : chercher une position pour un match
         int best_row = -1, best_col = -1;
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
@@ -65,21 +64,22 @@ void ai_play(player_t* ai_player, player_t* opponent, int level) {
             if (best_row != -1) break;
         }
 
-        // Si une position pour un match est trouvée, ajuster l'angle de tir
         if (best_row != -1 && best_col != -1) {
             float gridOriginX = ai_player->launcher_pos.x - (COLS * H_SPACING) / 2;
             float target_x = gridOriginX + best_col * H_SPACING + BUBBLE_RADIUS;
             float target_y = 100.0f + best_row * V_SPACING + BUBBLE_RADIUS;
-
             ai_player->angle = atan2(target_y - ai_player->launcher_pos.y, target_x - ai_player->launcher_pos.x);
+            need_new_random_angle = 1; // on réinitialise
         }
         else {
-            // Si aucun match n'est trouvé, tirer aléatoirement
-
-			ai_player->angle += (rand() % 3 - 1) * 0.1f; // Ajuster légèrement l'angle
-            ai_player->angle = ((rand() % 180) - 90) * (3.14f / 180.0f); // Angle aléatoire
+            if (need_new_random_angle) {
+                random_angle = ((rand() % 140) - 70) * (3.14f / 180.0f); // entre -70° et +70°
+                need_new_random_angle = 0;
+            }
+            ai_player->angle = random_angle;
         }
     }
+
 }
 
 

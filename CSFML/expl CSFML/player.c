@@ -14,7 +14,7 @@ void update_attachment_status(bubble_t* grid[ROWS][COLS], int attach[ROWS][COLS]
 
     // Pour chaque colonne de la première ligne, si une bulle existe, on la marque comme attachée (0)
     for (int j = 0; j < COLS; j++) {
-        if (grid[0][j] != NULL) {
+        if (grid[0][j] != NULL && !grid[0][j]->falling) {
             attach[0][j] = 0;
         }
     }
@@ -625,19 +625,23 @@ attach: {
         play_sound_match(); // son du match
 
         for (int i = 0; i < count; i++) {
+            bubble_t* b = cluster[i];
+            if (!b) continue;
+            b->active = 0;
+            b->falling = 1;
+            start_bubble_animation(player, b);
+
+            // Trouver la position exacte dans la grille et la retirer
             for (int r = 0; r < ROWS; r++) {
                 for (int c = 0; c < COLS; c++) {
-                    if (player->grid[r][c] == cluster[i]) {
-                        cluster[i]->active = 0; // Marquer la bulle comme inactive
-                        cluster[i]->falling = 1; // Marquer la bulle comme en chute
-                        start_bubble_animation(player, player->grid[r][c]); //  animation
-                        player->grid[r][c]->falling = 1;
-                       
+                    if (player->grid[r][c] == b) {
                         player->grid[r][c] = NULL;
+                        break;
                     }
                 }
             }
         }
+
 
         player->score += count;        // score
         *chrono1 += 10.0f;              //  gain chrono pour le joueur1
