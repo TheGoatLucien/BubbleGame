@@ -135,6 +135,7 @@ int main() {
     sfSprite* menuSprite;
     sfTexture* menuTexture;
 
+    sfText* echapText;
 
 
     fondGaucheSprite = sfSprite_create();
@@ -147,7 +148,7 @@ int main() {
     barreTexture2 = sfTexture_createFromFile("..//Ressources//Textures//barretimer.png", NULL);
      menuSprite= sfSprite_create();
      menuTexture = sfTexture_createFromFile("..//Ressources//Textures//play.png", NULL);
-
+     echapText = sfText_create();
 
     float time_elapsed = 0;
     float generation_interval = 10.0f; // Une nouvelle ligne toutes les 5 seconds
@@ -222,9 +223,9 @@ int main() {
 
      
              if (time_elapsed >= generation_interval) {
-         add_random_bubble_line(&p1); // Ajoute une ligne pour le joueur 1
-         add_random_bubble_line(&p2); // Ajoute une ligne pour le joueur 2
-         time_elapsed = 0; // Réinitialiser le timer
+             add_random_bubble_line(&p1); // Ajoute une ligne pour le joueur 1
+             add_random_bubble_line(&p2); // Ajoute une ligne pour le joueur 2
+             time_elapsed = 0; // Réinitialiser le timer
      
              }
 
@@ -264,9 +265,7 @@ int main() {
         
            
            
-            if (!fondGaucheTexture) {
-                printf("Erreur : Impossible de charger la texture fg.png\n");
-            }
+           //
 
             //
             sfSprite_setTexture(fondGaucheSprite, fondGaucheTexture, sfTrue);
@@ -292,6 +291,19 @@ int main() {
             sfSprite_setColor(barre2, sfColor_fromRGB(100, 75, 0));
             sfSprite_setPosition(barre2, (sfVector2f) { 10, 0 });
             sfRenderWindow_drawSprite(window, barre2, NULL);
+            //
+
+            sfSprite_setTexture(menuSprite, menuTexture, sfTrue);
+            sfSprite_setPosition(menuSprite, (sfVector2f) { 780, 20 });
+            sfSprite_setScale(menuSprite, (sfVector2f) { 0.1, 0.1 });
+            sfRenderWindow_drawSprite(window, menuSprite, NULL);
+             
+            sfText_setString(echapText, "ECHAP");
+            sfText_setFont(echapText, getDefaultFont());
+            sfText_setPosition(echapText, (sfVector2f) { 780, 70 });
+            sfText_setScale(echapText, (sfVector2f) { 0.5, 0.5 });
+            sfText_setColor(echapText, sfBlack);
+            sfRenderWindow_drawText(window, echapText, NULL);
 
             //
             draw_bubble_animations(&p1, window);
@@ -324,14 +336,19 @@ int main() {
                 sfText* text = sfText_create();
                 sfText_setFont(text, font);
                 sfText_setCharacterSize(text, 60);
-                sfText_setFillColor(text, sfRed);
+                sfText_setFillColor(text, sfGreen);
 
-                if (p1.defeat && !p2.defeat)
+                if (p1.defeat && !p2.defeat) {
+                   
                     sfText_setString(text, "JOUEUR 2 A GAGNE !");
-                else if (p2.defeat && !p1.defeat)
+                }
+                else if (p2.defeat && !p1.defeat) {
                     sfText_setString(text, "JOUEUR 1 A GAGNE !");
-                else
-                    sfText_setString(text, "FIN DE JEU !");
+                }
+                else {
+                     sfText_setString(text, "FIN DE JEU !");
+                }
+                   
 
                 sfFloatRect bounds = sfText_getLocalBounds(text);
                 sfVector2f pos = {

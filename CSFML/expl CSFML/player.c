@@ -341,12 +341,12 @@ void update_falling_bubbles(player_t* player) {
 
 
 void draw_player(player_t* player, sfRenderWindow* window) {
-    sfRectangleShape* midWall = sfRectangleShape_create();
+   /* sfRectangleShape* midWall = sfRectangleShape_create();
     sfRectangleShape_setSize(midWall, (sfVector2f) { 151, WINDOWS_HEIGHT });
     sfRectangleShape_setFillColor(midWall, sfColor_fromRGBA(255, 255, 255, 60));
     sfRectangleShape_setPosition(midWall, (sfVector2f) { (WINDOWS_WIDHT / 2) -76, 0 });
     sfRenderWindow_drawRectangleShape(window, midWall, NULL);
-    sfRectangleShape_destroy(midWall);
+    sfRectangleShape_destroy(midWall);*/
 
     draw_aim_line(player->launcher_pos, player->angle, player, window);
 
