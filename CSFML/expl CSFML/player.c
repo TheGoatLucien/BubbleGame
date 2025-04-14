@@ -87,7 +87,7 @@ void descend_bubbles(player_t* player) {
 }
 
 
-void add_random_bubble_line(player_t* player) {
+void add_random_bubble_line(player_t* player) { //pour ajouter la ligne de fond
     // Descendre les bulles existantes
     for (int row = ROWS - 1; row > 0; row--) {
         for (int col = 0; col < COLS; col++) {
@@ -102,9 +102,8 @@ void add_random_bubble_line(player_t* player) {
     // Ajouter une nouvelle ligne en haut
     float gridOriginX = player->launcher_pos.x - (COLS * H_SPACING) / 2;
     float gridOriginY = 100.0f;
-    static sfBool offset;
-    int r = rand() % 3;
-    for (int col = r; col < 13 - r; col++) {
+    
+    for (int col = 0; col < COLS; col++) {
         bubble_t* new_bubble = malloc(sizeof(bubble_t));
         if (!new_bubble) continue;
 
@@ -113,25 +112,10 @@ void add_random_bubble_line(player_t* player) {
         new_bubble->falling = 0;           // Assurez-vous que la bulle ne tombe pas
         new_bubble->next = NULL;
 
-        if (offset)
-        {
-            new_bubble->pos.x = gridOriginX + 20 + col * H_SPACING + BUBBLE_RADIUS * (COLS / 2);
-        }
-        else
-        {
-            new_bubble->pos.x = gridOriginX + col * H_SPACING + BUBBLE_RADIUS * (COLS / 2);
-        }
+        new_bubble->pos.x = gridOriginX + col * H_SPACING + BUBBLE_RADIUS;
         new_bubble->pos.y = gridOriginY;
 
         player->grid[0][col] = new_bubble;
-    }
-    if (offset)
-    {
-        offset = sfFalse;
-    }
-    else
-    {
-        offset = sfTrue;
     }
 }
 void reset_bubble_states(player_t* player) {

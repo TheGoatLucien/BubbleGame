@@ -1,10 +1,10 @@
 ﻿  player.c
-C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(201,60): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(202,60): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(208,29): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(220,29): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(206,24): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(207,24): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(218,24): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(219,24): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(185,60): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(186,60): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(192,29): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(204,29): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(190,24): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(191,24): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(202,24): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\expl CSFML\player.c(203,24): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
   expl CSFML.vcxproj -> C:\Users\l.nzeutom\Desktop\BubbleGame\CSFML\x64\Debug-x64\expl CSFML.exe

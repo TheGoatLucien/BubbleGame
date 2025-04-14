@@ -77,7 +77,7 @@ void ai_play(player_t* ai_player, player_t* opponent, int level) {
             // Si aucun match n'est trouvé, tirer aléatoirement
 
 			ai_player->angle += (rand() % 3 - 1) * 0.1f; // Ajuster légèrement l'angle
-            //ai_player->angle = ((rand() % 180) - 90) * (3.14f / 180.0f); // Angle aléatoire
+            ai_player->angle = ((rand() % 180) - 90) * (3.14f / 180.0f); // Angle aléatoire
         }
     }
 }
@@ -132,6 +132,8 @@ int main() {
 	sfTexture* barreTexture2;
     sfTexture* fondGaucheTexture;
     sfTexture* fondDroiteTexture;
+    sfSprite* menuSprite;
+    sfTexture* menuTexture;
 
 
 
@@ -143,6 +145,9 @@ int main() {
     barreTexture = sfTexture_createFromFile("..//Ressources//Textures//barretimer.png", NULL);
     barre2 = sfSprite_create();
     barreTexture2 = sfTexture_createFromFile("..//Ressources//Textures//barretimer.png", NULL);
+     menuSprite= sfSprite_create();
+     menuTexture = sfTexture_createFromFile("..//Ressources//Textures//play.png", NULL);
+
 
     float time_elapsed = 0;
     float generation_interval = 10.0f; // Une nouvelle ligne toutes les 5 seconds
