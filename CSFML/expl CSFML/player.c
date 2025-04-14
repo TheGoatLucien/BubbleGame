@@ -119,6 +119,8 @@ void add_random_bubble_line(player_t* player) { //pour ajouter la ligne de fond
     }
 }
 void reset_bubble_states(player_t* player) {
+    player->falling_bubbles = NULL; // pour réinitialiser proprement
+
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             if (player->grid[i][j]) {
@@ -433,7 +435,14 @@ int flood_fill(bubble_t* grid[ROWS][COLS], int row, int col, int color, int visi
     for (int i = 0; i < 6; i++) {
         int newRow = row + offsets[i][0];
         int newCol = col + offsets[i][1];
-        flood_fill(grid, newRow, newCol, color, visited, cluster, count);
+        if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS) {
+            if (!visited[newRow][newCol] &&
+                grid[newRow][newCol] != NULL &&
+                grid[newRow][newCol]->color == color) {
+                flood_fill(grid, newRow, newCol, color, visited, cluster, count);
+            }
+        }
+
     }
 
     return *count;
@@ -669,6 +678,7 @@ attach: {
         if (*chrono1 > 60.0f) *chrono1 = 60.0f;
 		if (*chrono2 < 0.0f) *chrono2 = 0.0f;
 
+        reset_bubble_states(player); // nettoie les flags avant de recalculer
         apply_fall_logic_mathematically(player);  // suspension
     }
    
