@@ -20,6 +20,8 @@ void draw_bubble(bubble_t* bubble, sfRenderWindow* window) {
     sfCircleShape_setRadius(shape, 16);
     sfCircleShape_setOrigin(shape, (sfVector2f) { 16, 16 });
     sfCircleShape_setPosition(shape, bubble->pos);
+    /*sfTexture* shapeTexture;
+        shapeTexture = sfTexture_createFromFile("..//Ressources//Textures//boule.png", NULL);*/
 
     // Définir la couleur en fonction de la couleur de la bulle
     sfColor color;
@@ -38,6 +40,8 @@ void draw_bubble(bubble_t* bubble, sfRenderWindow* window) {
 	else {
 		color.a = 255;
 	}
+ 
+   /* sfCircleShape_setTexture(shape, shapeTexture, sfTrue);*/
 
     sfCircleShape_setFillColor(shape, color);
     sfRenderWindow_drawCircleShape(window, shape, NULL);
