@@ -18,6 +18,8 @@ void initTools()
 	srand(time(NULL));
 	defaultFont = sfFont_createFromFile("../Ressources/Font/Planes_ValMore.ttf");
 	//defaultFont = sfFont_createFromFile(FONT_PATH"Square.ttf");
+
+
 }
 
 sfFont* getDefaultFont()

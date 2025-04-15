@@ -1,7 +1,10 @@
 #include "bubble.h"
+#include "tools.h"
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+
+sfTexture* bubble_texture = NULL;
 
 bubble_t* create_bubble(sfVector2f start, float angle) {
     bubble_t* b = malloc(sizeof(bubble_t));
@@ -14,12 +17,17 @@ bubble_t* create_bubble(sfVector2f start, float angle) {
     return b;
 }
 void draw_bubble(bubble_t* bubble, sfRenderWindow* window) {
-    if (!bubble) return;
+   
 
-    sfCircleShape* shape = sfCircleShape_create();
-    sfCircleShape_setRadius(shape, 16);
-    sfCircleShape_setOrigin(shape, (sfVector2f) { 16, 16 });
-    sfCircleShape_setPosition(shape, bubble->pos);
+    sfSprite* sprite = sfSprite_create();
+    bubble_texture = sfTexture_createFromFile("../Ressources/Textures/bouleA.png", NULL);
+    if (!bubble_texture) {
+        printf("Erreur chargement texture bulle !\n");
+    }
+    if (!bubble || !bubble_texture) return;
+    sfSprite_setTexture(sprite, bubble_texture, sfTrue);
+    sfSprite_setOrigin(sprite, (sfVector2f) { 16, 16 }); // si ta texture fait 32x32 px
+    sfSprite_setPosition(sprite, bubble->pos);
     /*sfTexture* shapeTexture;
         shapeTexture = sfTexture_createFromFile("..//Ressources//Textures//boule.png", NULL);*/
 
@@ -42,10 +50,10 @@ void draw_bubble(bubble_t* bubble, sfRenderWindow* window) {
 	}
  
    /* sfCircleShape_setTexture(shape, shapeTexture, sfTrue);*/
+    sfSprite_setColor(sprite, color); // Teinte la texture selon la couleur
 
-    sfCircleShape_setFillColor(shape, color);
-    sfRenderWindow_drawCircleShape(window, shape, NULL);
-    sfCircleShape_destroy(shape);
+    sfRenderWindow_drawSprite(window, sprite, NULL);
+    sfSprite_destroy(sprite);
 }
 
 
