@@ -36,9 +36,6 @@ int simulate_match(bubble_t* grid[ROWS][COLS], int row, int col, int color) {
 // Fonction pour gérer le comportement de l'IA
 void ai_play(player_t* ai_player, player_t* opponent, int level) {
     static float ai_timer = 0;
-    static int need_new_random_angle = 1; // nouveau tir aléatoire si pas de match
-    static float random_angle = 0;
-
     ai_timer += getDeltaTime();
     float decision_time = 1.0f / level;
 
@@ -69,17 +66,13 @@ void ai_play(player_t* ai_player, player_t* opponent, int level) {
             float target_x = gridOriginX + best_col * H_SPACING + BUBBLE_RADIUS;
             float target_y = 100.0f + best_row * V_SPACING + BUBBLE_RADIUS;
             ai_player->angle = atan2(target_y - ai_player->launcher_pos.y, target_x - ai_player->launcher_pos.x);
-            need_new_random_angle = 1; // on réinitialise
         }
         else {
-            if (need_new_random_angle) {
-                random_angle = ((rand() % 140) - 70) * (3.14f / 180.0f); // entre -70° et +70°
-                need_new_random_angle = 0;
-            }
+            // **Générer un nouvel angle aléatoire pour chaque tir raté**
+            float random_angle = ((rand() % 140) - 70) * (3.14f / 180.0f);
             ai_player->angle = random_angle;
         }
     }
-
 }
 
 
