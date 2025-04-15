@@ -443,8 +443,6 @@ int show_pause_menu(sfRenderWindow* window, sfTexture* iconTexture) {
 			}
 			if (event.type == sfEvtMouseMoved) {
 				sfVector2i mousePos = { event.mouseMove.x, event.mouseMove.y };
-				printf("%d pour 1\n", mousePos.x);
-				printf("%d pour 1\n", mousePos.y);
 					if (mousePos.x >= 700 && mousePos.x <= 780) {
 						if (mousePos.y >= 415 && mousePos.y <= 460) {
 							
