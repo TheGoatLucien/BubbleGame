@@ -75,8 +75,7 @@
               "ViewState": "AgIAACoBAAAAAAAAAAAqwD8BAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2025-04-07T18:48:22.227Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -100,8 +99,7 @@
               "RelativeToolTip": "expl CSFML\\loading.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-04-11T13:17:33.053Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-11T13:17:33.053Z"
             },
             {
               "$type": "Document",
@@ -111,7 +109,7 @@
               "RelativeDocumentMoniker": "expl CSFML\\main.c",
               "ToolTip": "C:\\Users\\l.nzeutom\\Desktop\\BubbleGame\\CSFML\\expl CSFML\\main.c",
               "RelativeToolTip": "expl CSFML\\main.c",
-              "ViewState": "AgIAADQAAAAAAAAAAAAIwEAAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAAEwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2025-01-08T09:15:09.456Z",
               "EditorCaption": ""
@@ -126,8 +124,7 @@
               "RelativeToolTip": "expl CSFML\\menu.c",
               "ViewState": "AgIAAHkBAAAAAAAAAAASwLwBAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-04-07T12:26:17.091Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-07T12:26:17.091Z"
             },
             {
               "$type": "Document",
@@ -163,8 +160,7 @@
               "RelativeToolTip": "expl CSFML\\loading.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-04-11T13:21:45.732Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-11T13:21:45.732Z"
             },
             {
               "$type": "Document",
@@ -176,8 +172,7 @@
               "RelativeToolTip": "expl CSFML\\player.h",
               "ViewState": "AgIAABMAAAAAAAAAAAAkwB8AAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-04-07T18:50:29.516Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-07T18:50:29.516Z"
             },
             {
               "$type": "Document",
