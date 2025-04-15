@@ -53,3 +53,4 @@ int flood_fill(bubble_t* grid[ROWS][COLS], int row, int col, int color, int visi
 
 void draw_bubble_animations(player_t* player, sfRenderWindow* window);
 void update_bubble_animations(player_t* player, float deltaTime);
+void show_victory_panel(sfRenderWindow* window, int winner);

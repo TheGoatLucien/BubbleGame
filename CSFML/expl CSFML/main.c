@@ -68,12 +68,15 @@ void ai_play(player_t* ai_player, player_t* opponent, int level) {
             ai_player->angle = atan2(target_y - ai_player->launcher_pos.y, target_x - ai_player->launcher_pos.x);
         }
         else {
-            // **Générer un nouvel angle aléatoire pour chaque tir raté**
-            float random_angle = ((rand() % 140) - 70) * (3.14f / 180.0f);
-            ai_player->angle = random_angle;
+            // Générer un **nouvel angle aléatoire** à CHAQUE tir raté
+            float variation = rand_float(-20.0f, 20.0f) * (3.14f / 180.0f);
+            float base_angle = ((rand() % 140) - 70) * (3.14f / 180.0f);
+            ai_player->angle = base_angle + variation;
         }
     }
 }
+
+
 
 
 float chrono_p1 = 60.0f;
