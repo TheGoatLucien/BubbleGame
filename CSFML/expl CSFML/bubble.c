@@ -54,6 +54,7 @@ void draw_bubble(bubble_t* bubble, sfRenderWindow* window) {
 
     sfRenderWindow_drawSprite(window, sprite, NULL);
     sfSprite_destroy(sprite);
+    sfTexture_destroy(bubble_texture);
 }
 
 

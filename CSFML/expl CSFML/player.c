@@ -4,6 +4,9 @@
 #include <string.h>
 #include "audio.h"
 
+
+sfTexture* bubble_textureB = NULL;
+sfTexture* bubble_textureC= NULL;
 void update_attachment_status(bubble_t* grid[ROWS][COLS], int attach[ROWS][COLS]) {
     // Initialiser attach à -1
     for (int i = 0; i < ROWS; i++) {
@@ -299,11 +302,14 @@ void draw_aim_line(sfVector2f origin, float angle, player_t* player, sfRenderWin
     float pulse = 2 * sinf(time * 3);
     float radius = 16 + pulse;
 
-    sfCircleShape* preview = sfCircleShape_create();
-    sfCircleShape_setRadius(preview, radius);
-    sfCircleShape_setOrigin(preview, (sfVector2f) { radius, radius });
-    sfCircleShape_setPosition(preview, collision_pos);
-
+    sfSprite* preview = sfSprite_create();
+    bubble_textureB = sfTexture_createFromFile("../Ressources/Textures/bouleA.png", NULL);
+    if (!bubble_textureB) {
+        printf("Erreur chargement texture bulle !\n");
+    }
+    sfSprite_setTexture(preview, bubble_textureB, sfTrue);
+    sfSprite_setOrigin(preview, (sfVector2f) { 16, 16 });
+    sfSprite_setPosition(preview, collision_pos);
     sfColor color;
     switch (player->next_bubble->color) {
     case 1: color = sfRed; break;
@@ -313,9 +319,10 @@ void draw_aim_line(sfVector2f origin, float angle, player_t* player, sfRenderWin
     default: color = sfWhite; break;
     }
     color.a = 128;
-    sfCircleShape_setFillColor(preview, color);
-    sfRenderWindow_drawCircleShape(window, preview, NULL);
-    sfCircleShape_destroy(preview);
+    sfSprite_setColor(preview, color);
+    sfRenderWindow_drawSprite(window, preview, NULL);
+    sfSprite_destroy(preview);
+    sfTexture_destroy(bubble_textureB);
 }
 
 
@@ -372,11 +379,14 @@ void draw_player(player_t* player, sfRenderWindow* window) {
         draw_bubble(player->current, window);
     }
     else {  
-        sfCircleShape* preview = sfCircleShape_create();
-        sfCircleShape_setRadius(preview, 16);
-        sfCircleShape_setOrigin(preview, (sfVector2f) { 16, 16 });
-        sfCircleShape_setPosition(preview, player->launcher_pos);
-
+        sfSprite* preview = sfSprite_create();
+        bubble_textureC = sfTexture_createFromFile("../Ressources/Textures/bouleA.png", NULL);
+        if (!bubble_textureC) {
+            printf("Erreur chargement texture bulle !\n");
+        }
+        sfSprite_setTexture(preview, bubble_textureC, sfTrue);
+        sfSprite_setOrigin(preview, (sfVector2f) { 16, 16 });
+        sfSprite_setPosition(preview, player->launcher_pos);
         // Utiliser la couleur de la prochaine bulle
         sfColor color;
         switch (player->next_bubble->color) {
@@ -387,9 +397,10 @@ void draw_player(player_t* player, sfRenderWindow* window) {
         case 4: color = sfYellow; break;
         default: color = sfWhite; break;
         }
-        sfCircleShape_setFillColor(preview, color);
-        sfRenderWindow_drawCircleShape(window, preview, NULL);
-        sfCircleShape_destroy(preview);
+        sfSprite_setColor(preview, color);
+        sfRenderWindow_drawSprite(window, preview, NULL);
+        sfSprite_destroy(preview);
+        sfTexture_destroy(bubble_textureC);
     }
     // Bulles en chute libre
     bubble_t* fall = player->falling_bubbles;
