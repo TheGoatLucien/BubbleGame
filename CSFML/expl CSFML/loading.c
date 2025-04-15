@@ -12,7 +12,7 @@ void show_loading_screen(sfRenderWindow* window) {
     sfText_setFont(text, font);
     sfText_setCharacterSize(text, 28);
     sfText_setColor(text, sfWhite);
-    sfText_setString(text, "Le saviez-vous ?\nLe premier jeu puzzle game est faite en 1980.");
+    sfText_setString(text, "Le saviez-vous ?\nLe premier puzzle Bubble se crea en 1986.");
     sfFloatRect textBounds = sfText_getLocalBounds(text);
     sfText_setPosition(text, (sfVector2f) { (WINDOWS_WIDHT - textBounds.width) / 2, 150 });
 
@@ -22,7 +22,7 @@ void show_loading_screen(sfRenderWindow* window) {
     sfRectangleShape_setFillColor(loadingBar, sfColor_fromRGB(50, 200, 255));
     sfRectangleShape_setPosition(loadingBar, (sfVector2f) { WINDOWS_WIDHT / 4, 300 });
 
-    float duration = 1.0f;  // 5 secondes
+    float duration = 5.0f;  // 5 secondes
     float maxWidth = WINDOWS_WIDHT / 2;
 
     while (sfClock_getElapsedTime(clock).microseconds / 1000000.0f < duration) {
