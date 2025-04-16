@@ -37,11 +37,12 @@ int simulate_match(bubble_t* grid[ROWS][COLS], int row, int col, int color) {
 void ai_play(player_t* ai_player, player_t* opponent, int level) {
     static float ai_timer = 0;
     ai_timer += getDeltaTime();
-    float decision_time = 1.0f / level;
+    float decision_time = 1.0f / level; // Ajuste la rapidité de décision en fonction du niveau
 
     if (ai_timer >= decision_time) {
         ai_timer = 0;
 
+        // Sélection d'une nouvelle bulle à tirer
         if (ai_player->current == NULL) {
             ai_player->current = ai_player->next_bubble;
             ai_player->current->active = 1;
@@ -50,31 +51,54 @@ void ai_play(player_t* ai_player, player_t* opponent, int level) {
         }
 
         int best_row = -1, best_col = -1;
+        int max_cluster_size = 0;
+
+        // Exploration de toutes les positions possibles pour trouver le meilleur endroit où tirer
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
-                if (simulate_match(opponent->grid, row, col, ai_player->current->color)) {
-                    best_row = row;
-                    best_col = col;
-                    break;
+                if (opponent->grid[row][col] == NULL) { // Vérifier que la case est vide
+                    int visited[ROWS][COLS] = { 0 };
+                    bubble_t* cluster[ROWS * COLS] = { 0 };
+                    int count = 0;
+
+                    // Simuler l'ajout de la bulle
+                    opponent->grid[row][col] = malloc(sizeof(bubble_t));
+                    opponent->grid[row][col]->color = ai_player->current->color;
+
+                    // Vérifier combien de bulles seront connectées avec ce placement
+                    flood_fill(opponent->grid, row, col, ai_player->current->color, visited, cluster, &count);
+
+                    // Retirer la bulle simulée
+                    free(opponent->grid[row][col]);
+                    opponent->grid[row][col] = NULL;
+
+                    // Sélectionner la meilleure option (zone où il y a le plus de connexion possible)
+                    if (count > max_cluster_size) {
+                        max_cluster_size = count;
+                        best_row = row;
+                        best_col = col;
+                    }
                 }
             }
-            if (best_row != -1) break;
         }
 
+        // Définition de l'angle du tir en fonction du meilleur placement trouvé
+        float gridOriginX = ai_player->launcher_pos.x - (COLS * H_SPACING) / 2;
+
         if (best_row != -1 && best_col != -1) {
-            float gridOriginX = ai_player->launcher_pos.x - (COLS * H_SPACING) / 2;
             float target_x = gridOriginX + best_col * H_SPACING + BUBBLE_RADIUS;
             float target_y = 100.0f + best_row * V_SPACING + BUBBLE_RADIUS;
             ai_player->angle = atan2(target_y - ai_player->launcher_pos.y, target_x - ai_player->launcher_pos.x);
         }
         else {
-            // Générer un **nouvel angle aléatoire** à CHAQUE tir raté
-            float variation = rand_float(-20.0f, 20.0f) * (3.14f / 180.0f);
+            // Stratégie alternative : si aucun bon placement n'a été trouvé, utiliser un angle aléatoire
             float base_angle = ((rand() % 140) - 70) * (3.14f / 180.0f);
+            float variation = rand_float(-15.0f, 15.0f) * (3.14f / 180.0f);
             ai_player->angle = base_angle + variation;
         }
     }
 }
+
 
 
 
