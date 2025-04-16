@@ -403,52 +403,47 @@ void draw_player(player_t* player, sfRenderWindow* window) {
 }
 
 int flood_fill(bubble_t* grid[ROWS][COLS], int row, int col, int color, int visited[ROWS][COLS], bubble_t** cluster, int* count) {
-    // Vérification des limites et conditions de correspondance
+    // Vérifier que les indices sont dans les limites de la grille
     if (row < 0 || row >= ROWS || col < 0 || col >= COLS)
         return 0;
+
+    // Vérifier que la bulle est de la bonne couleur et non visitée
     if (visited[row][col] || !grid[row][col] || grid[row][col]->color != color)
         return 0;
 
+    // Marquer la bulle comme visitée
     visited[row][col] = 1;
     cluster[(*count)++] = grid[row][col];
 
-    // Dépendant de la parité de la ligne, les voisins diffèrent :
-    // Pour les lignes paires (index 0, 2, 4, …)
-    int offsetsEven[6][2] = {
-        {0, -1},   // Gauche
-        {0, 1},    // Droite
-        {-1, 0},   // Haut
-        {-1, -1},  // Haut gauche
-        {1, 0},    // Bas
-        {1, -1}    // Bas gauche
-    };
-    // Pour les lignes impaires (index 1, 3, 5, …)
-    int offsetsOdd[6][2] = {
-        {0, -1},   // Gauche
-        {0, 1},    // Droite
-        {-1, 0},   // Haut
-        {-1, 1},   // Haut droite
-        {1, 0},    // Bas
-        {1, 1}     // Bas droite
-    };
-
+    // Définition des voisins selon la disposition hexagonale
+    int offsetsEven[6][2] = { {0, -1}, {0, 1}, {-1, 0}, {-1, -1}, {1, 0}, {1, -1} };
+    int offsetsOdd[6][2] = { {0, -1}, {0, 1}, {-1, 0}, {-1, 1}, {1, 0}, {1, 1} };
     int (*offsets)[2] = (row % 2 == 0) ? offsetsEven : offsetsOdd;
 
+    // Vérifier les voisins et éviter les interruptions par d'autres couleurs
     for (int i = 0; i < 6; i++) {
         int newRow = row + offsets[i][0];
         int newCol = col + offsets[i][1];
+
+        // Vérifier que le voisin est bien dans la grille
         if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS) {
-            if (!visited[newRow][newCol] &&
-                grid[newRow][newCol] != NULL &&
-                grid[newRow][newCol]->color == color) {
-                flood_fill(grid, newRow, newCol, color, visited, cluster, count);
+            if (!visited[newRow][newCol] && grid[newRow][newCol] != NULL) {
+                // Vérifier que la bulle voisine n'est pas séparée par une autre couleur
+                if (grid[newRow][newCol]->color == color) {
+                    // Vérifier si entre row/col et newRow/newCol il y a une bulle d'une couleur différente
+                    int midRow = (row + newRow) / 2;
+                    int midCol = (col + newCol) / 2;
+                    if (grid[midRow][midCol] == NULL || grid[midRow][midCol]->color == color) {
+                        flood_fill(grid, newRow, newCol, color, visited, cluster, count);
+                    }
+                }
             }
         }
-
     }
 
     return *count;
 }
+
 
 void update_bonus_animation(player_t* player, sfRenderWindow* window) {
     if (player->bonus_animation) {
