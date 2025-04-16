@@ -565,18 +565,24 @@ void update_bubbles(player_t* player, player_t *player2,float* chrono1, float* c
 
 attach: {
     float gridOriginX = player->launcher_pos.x - (COLS * H_SPACING) / 2;
+    // Calcul de la ligne et de la colonne où la bulle doit être placée
     int row = (int)round((player->current->pos.y - 100.0f) / V_SPACING);
     int col = (int)round((player->current->pos.x - gridOriginX - ((row % 2 == 0) ? 0 : H_SPACING / 2)) / H_SPACING);
+
+    // Vérifie que les indices calculés restent dans les limites de la grille
 
     row = fClamp(row, 0, ROWS - 1);
     col = fClamp(col, 0, COLS - 1);
 
-    int placed = 0;
+    int placed = 0;// Indicateur de placement réussi
+
+    // Vérifie si l'emplacement est vide dans la grille pour placer la bulle
 
     if (!player->grid[row][col]) {
         placed = 1;
     }
-    else {
+    else { // Si l'emplacement est occupé, chercher un voisin libre
+        
         int dx[6] = { -1, -1, 0, 0, 1, 1 };
         int dy_even[6] = { 0, 1, -1, 1, 0, 1 };
         int dy_odd[6] = { -1, 0, -1, 1, -1, 0 };
@@ -588,6 +594,7 @@ attach: {
 
             if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS &&
                 !player->grid[newRow][newCol]) {
+                // Ajuster la position de la bulle en fonction du placement hexagonal
 
                 float offsetX = (newRow % 2 == 0) ? 0 : H_SPACING / 2;
                 player->current->pos.x = gridOriginX + offsetX + newCol * H_SPACING + BUBBLE_RADIUS;
@@ -601,6 +608,7 @@ attach: {
             }
         }
     }
+    // Si aucun emplacement valide trouvé, la bulle est détruite (empêche les bugs de placement)
 
     if (!placed) {
         destroy_bubble(player->current);
@@ -612,14 +620,16 @@ attach: {
     player->grid[row][col] = player->current;
     player->current = NULL;
     play_sound_hit();
-    // Détection de grappe
+    // Détection de groupe de bulles pour vérifier les matches
     int visited[ROWS][COLS] = { 0 };
     bubble_t* cluster[ROWS * COLS] = { 0 };
     int count = 0;
     flood_fill(player->grid, row, col, player->grid[row][col]->color, visited, cluster, &count);
+    // Si 3 bulles ou plus sont connectées, elles sont supprimées et des bonus sont appliqués
 
     if (count >= 3) {
         play_sound_match(); // son du match
+        // Supprimer les bulles du groupe
 
         for (int i = 0; i < count; i++) {
             bubble_t* b = cluster[i];
@@ -638,6 +648,7 @@ attach: {
                 }
             }
         }
+        // Mise à jour du score et gestion du temps
 
 
         player->score += count;        // score
@@ -655,8 +666,9 @@ attach: {
         anim->alpha = 255;
         player->bonus_animation = anim;
 
-		*chrono2 -= 5.0f;              //  perte chrono pour le joueur2
-        //BONUS VISUEL
+		*chrono2 -= 5.0f;              // // Pénalité pour le joueur 2
+        
+        // Affichage du bonus visuel "-5s"
         bonus_animation_t* anim1 = malloc(sizeof(bonus_animation_t));
         anim1->text = sfText_create();
         sfText_setFont(anim1->text, getDefaultFont());
@@ -674,10 +686,12 @@ attach: {
 
 
 
-
+        // Éviter des valeurs trop extrêmes de chronomètre
 
         if (*chrono1 > 60.0f) *chrono1 = 60.0f;
 		if (*chrono2 < 0.0f) *chrono2 = 0.0f;
+
+        // Nettoyage des états des bulles avant de recalculer la suspension
 
         reset_bubble_states(player); // nettoie les flags avant de recalculer
         apply_fall_logic_mathematically(player);  // suspension
