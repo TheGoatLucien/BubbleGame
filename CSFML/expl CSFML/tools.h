@@ -43,7 +43,7 @@ typedef enum {
 	GAME,
 	OPTION
 }GameState;
-GameState gameState;
+GameState gameState; //etat de jeu
 
 
 int fClamp(int value, int min, int max);

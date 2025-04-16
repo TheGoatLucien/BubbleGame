@@ -170,7 +170,8 @@ void update_player(player_t* player, sfEvent event, int left, int right, int sho
     float delta = getDeltaTime();
     float rotationSpeed = 1.0f;
 
-    if (sfKeyboard_isKeyPressed(left)) player->angle -= rotationSpeed * delta;
+    //deplacements du joeur
+    if (sfKeyboard_isKeyPressed(left)) player->angle -= rotationSpeed * delta; 
     if (sfKeyboard_isKeyPressed(right)) player->angle += rotationSpeed * delta;
 
     if (player->angle < -2.7f) player->angle = -2.7f;
@@ -350,8 +351,9 @@ void draw_player(player_t* player, sfRenderWindow* window) {
     sfRenderWindow_drawRectangleShape(window, midWall, NULL);
     sfRectangleShape_destroy(midWall);*/
 
+    // Dessiner la ligne de visée qui indique la trajectoire de la bulle tirée
     draw_aim_line(player->launcher_pos, player->angle, player, window);
-
+    // Dessiner le lanceur du joueur
     sfCircleShape* launcher = sfCircleShape_create();
     sfCircleShape_setRadius(launcher, 20);
     sfCircleShape_setOrigin(launcher, (sfVector2f) { 20, 20 });
@@ -359,7 +361,7 @@ void draw_player(player_t* player, sfRenderWindow* window) {
     sfCircleShape_setPosition(launcher, player->launcher_pos);
     sfRenderWindow_drawCircleShape(window, launcher, NULL);
     sfCircleShape_destroy(launcher);
-
+    // Dessiner les bulles sur la grille du joueur
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             if (player->grid[i][j]) {
@@ -367,7 +369,7 @@ void draw_player(player_t* player, sfRenderWindow* window) {
             }
         }
     }
-
+    // Dessiner la bulle actuellement en tir
     if (player->current) {
         draw_bubble(player->current, window);
     }

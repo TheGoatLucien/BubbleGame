@@ -348,7 +348,7 @@ int is_quit_button_clicked(sfVector2i mousePos) {
 }
 
 
-void show_countdown(sfRenderWindow* window) {
+void show_countdown(sfRenderWindow* window) { //decompte
 	sfFont* font = getDefaultFont();
 	sfText* text = sfText_create();
 	sfText_setFont(text, font);
@@ -381,7 +381,7 @@ void show_countdown(sfRenderWindow* window) {
 
 
 
-int show_pause_menu(sfRenderWindow* window, sfTexture* iconTexture) {
+int show_pause_menu(sfRenderWindow* window, sfTexture* iconTexture) { //menu pause
 	sfFont* font = getDefaultFont();
 
 	// Fond semi-transparent
@@ -485,96 +485,3 @@ int show_pause_menu(sfRenderWindow* window, sfTexture* iconTexture) {
 	return 0;
 }
 
-//int show_pause_menu(sfRenderWindow* window, sfTexture* iconTexture) {
-//
-//	sfSprite* icon = sfSprite_create();
-//	sfSprite_setTexture(icon, iconTexture, sfTrue);
-//	sfSprite_setPosition(icon, (sfVector2f) { 700, 70 });
-//	sfSprite_setScale(icon, (sfVector2f) { 0.4, 0.4 });
-//	sfFont* font = getDefaultFont();
-//
-//	sfText* continuer = sfText_create();
-//	sfText_setFont(continuer, font);
-//	sfText_setString(continuer, "Continuer");
-//	sfText_setCharacterSize(continuer,40);
-//	sfText_setPosition(continuer, (sfVector2f) { 700, 400 });
-//
-//	sfText* quitter = sfText_create();
-//	sfText_setFont(quitter, font);
-//	sfText_setString(quitter, "Quitter");
-//	sfText_setCharacterSize(quitter,40);
-//	sfText_setPosition(quitter, (sfVector2f) { 700, 470 });
-//
-//	while (sfRenderWindow_isOpen(window)) {
-//		sfEvent event;
-//		while (sfRenderWindow_pollEvent(window, &event)) {
-//			if (event.type == sfEvtClosed) {
-//				sfRenderWindow_close(window);
-//				return 0;
-//			}
-//
-//
-//
-//			if (event.type == sfEvtMouseButtonPressed) {
-//				sfVector2f mouse = { event.mouseButton.x, event.mouseButton.y };
-//
-//				sfFloatRect contBounds = sfText_getGlobalBounds(continuer);
-//				sfFloatRect quitBounds = sfText_getGlobalBounds(quitter);
-//
-//				if (sfFloatRect_contains(&contBounds, mouse.x, mouse.y)) {
-//				
-//					// Reprendre le jeu
-//					sfSprite_destroy(icon);
-//					sfText_destroy(continuer);
-//					sfText_destroy(quitter);
-//					return 1; // continuer
-//				}
-//
-//				else if (sfFloatRect_contains(&quitBounds, mouse.x, mouse.y)) {
-//					
-//					sfSprite_destroy(icon);
-//					sfText_destroy(continuer);
-//					sfText_destroy(quitter);
-//					return 0; // quitter
-//				}
-//				else {
-//					sfText_setColor(continuer, sfWhite);
-//					sfText_setColor(quitter, sfWhite);
-//				}
-//			
-//
-//			}
-//			if (event.type == sfEvtMouseMoved) {
-//				sfVector2i mousePos = { event.mouseMove.x, event.mouseMove.y };
-//					if (mousePos.x >= 700 && mousePos.x <= 780) {
-//						if (mousePos.y >= 415 && mousePos.y <= 460) {
-//							
-//							sfText_setColor(continuer, sfGreen);
-//							sfText_setColor(quitter, sfWhite);
-//						}
-//						else if (mousePos.y >= 470 && mousePos.y <= 520) {
-//							
-//							sfText_setColor(quitter, sfRed);
-//							sfText_setColor(continuer, sfWhite);
-//						}
-//						else {
-//							sfText_setColor(continuer, sfWhite);
-//							sfText_setColor(quitter, sfWhite);
-//						}
-//
-//
-//					}
-//				
-//			
-//
-//			}
-//		}
-//		sfRenderWindow_clear(window, sfBlack); // 150 pour semi-transparence
-//		sfRenderWindow_drawSprite(window, icon, NULL);
-//		sfRenderWindow_drawText(window, continuer, NULL);
-//		sfRenderWindow_drawText(window, quitter, NULL);
-//		sfRenderWindow_display(window);
-//	}
-//
-//	return 0;
-//}

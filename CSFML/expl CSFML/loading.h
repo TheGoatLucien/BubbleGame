@@ -4,7 +4,7 @@
 #include <SFML/Graphics.h>
 #include <SFML/System.h>
 
-// Fonction à appeler depuis le main quand on passe du menu au jeu
-void show_loading_screen(sfRenderWindow* window);
-int ask_ia_level(sfRenderWindow* window);
-// LOADING_SCREEN_H
+
+void show_loading_screen(sfRenderWindow* window); //ecran de chargement
+int ask_ia_level(sfRenderWindow* window); // fonction pour demander le niveau de l'IA
+

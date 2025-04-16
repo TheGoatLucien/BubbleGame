@@ -12,7 +12,7 @@ static sfSound* shoot_sound = NULL;
 static sfSound* hit_sound = NULL;
 static sfSound* match_sound = NULL;
 
-void init_audio() {
+void init_audio() {  //init des Audio
     menu_music = sfMusic_createFromFile("../Ressources/Musics/Inmenu.ogg");
     game_music = sfMusic_createFromFile("../Ressources/Musics/Ingame.ogg");
 
@@ -45,22 +45,22 @@ void destroy_audio() {
     sfSoundBuffer_destroy(match_buffer);
 }
 
-void play_menu_music() {
+void play_menu_music() {//pour jouer la musique au menu
     sfMusic_stop(game_music);
     sfMusic_play(menu_music);
 }
 
-void play_game_music() {
+void play_game_music() { //pour jouer la musique dans le jeu
     sfMusic_stop(menu_music);
     sfMusic_play(game_music);
 }
 
-void stop_music() {
+void stop_music() { //stop
     sfMusic_stop(menu_music);
     sfMusic_stop(game_music);
 }
 
-void play_sound_click() { sfSound_play(click_sound); }
-void play_sound_shoot() { sfSound_play(shoot_sound); }
-void play_sound_hit() { sfSound_play(hit_sound); }
-void play_sound_match() { sfSound_play(match_sound); }
+void play_sound_click() { sfSound_play(click_sound); } // les clicks
+void play_sound_shoot() { sfSound_play(shoot_sound); } //les shoots
+void play_sound_hit() { sfSound_play(hit_sound); } // les colisions
+void play_sound_match() { sfSound_play(match_sound); } //sons de match

@@ -11,6 +11,6 @@ typedef struct bubble {
     struct bubble* next;
 } bubble_t;
 
-bubble_t* create_bubble(sfVector2f start, float angle);
-void draw_bubble(bubble_t* b, sfRenderWindow* window);
+bubble_t* create_bubble(sfVector2f start, float angle);  //init des bulles
+void draw_bubble(bubble_t* b, sfRenderWindow* window); //dessin
 void destroy_bubble(bubble_t* b);
