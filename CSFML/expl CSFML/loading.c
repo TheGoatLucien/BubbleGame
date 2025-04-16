@@ -12,7 +12,7 @@ void show_loading_screen(sfRenderWindow* window) {
     sfText_setFont(text, font);
     sfText_setCharacterSize(text, 28);
     sfText_setColor(text, sfWhite);
-    sfText_setString(text, "Le saviez-vous ?\nLe premier puzzle Bubble se crea en 1986.");
+    sfText_setString(text, "Le saviez-vous ?\nLe premier puzzle Bubble a ete publie en 1986.");
     sfFloatRect textBounds = sfText_getLocalBounds(text);
     sfText_setPosition(text, (sfVector2f) { (WINDOWS_WIDHT - textBounds.width) / 2, 150 });
 

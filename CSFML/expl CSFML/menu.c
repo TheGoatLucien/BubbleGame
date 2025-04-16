@@ -381,92 +381,101 @@ void show_countdown(sfRenderWindow* window) {
 
 
 
-
 int show_pause_menu(sfRenderWindow* window, sfTexture* iconTexture) {
-
-	sfSprite* icon = sfSprite_create();
-	sfSprite_setTexture(icon, iconTexture, sfTrue);
-	sfSprite_setPosition(icon, (sfVector2f) { 700, 70 });
-	sfSprite_setScale(icon, (sfVector2f) { 0.4, 0.4 });
 	sfFont* font = getDefaultFont();
 
+	// Fond semi-transparent
+	sfRectangleShape* overlay = sfRectangleShape_create();
+	sfRectangleShape_setSize(overlay, (sfVector2f) { WINDOWS_WIDHT, WINDOWS_HEIGHT });
+	sfRectangleShape_setFillColor(overlay, sfColor_fromRGBA(0, 0, 0, 150));
+
+	// Panneau central blanc
+	sfRectangleShape* panel = sfRectangleShape_create();
+	sfVector2f size = { 600, 300 };
+	sfVector2f pos = { (WINDOWS_WIDHT - size.x) / 2, (WINDOWS_HEIGHT - size.y) / 2 };
+	sfRectangleShape_setSize(panel, size);
+	sfRectangleShape_setPosition(panel, pos);
+	sfRectangleShape_setFillColor(panel, sfWhite);
+
+	// Icône pause (centrée en haut du panneau)
+	sfSprite* icon = sfSprite_create();
+	sfSprite_setTexture(icon, iconTexture, sfTrue);
+	sfSprite_setScale(icon, (sfVector2f) { 0.4f, 0.4f });
+	sfSprite_setPosition(icon, (sfVector2f) { pos.x + size.x / 2 - 64, pos.y - 64 });
+
+	// Texte "Continuer"
 	sfText* continuer = sfText_create();
 	sfText_setFont(continuer, font);
 	sfText_setString(continuer, "Continuer");
-	sfText_setCharacterSize(continuer,40);
-	sfText_setPosition(continuer, (sfVector2f) { 700, 400 });
+	sfText_setCharacterSize(continuer,36);
+	sfText_setFillColor(continuer, sfBlack);
+	sfText_setPosition(continuer, (sfVector2f) { pos.x + 200, pos.y + 100 });
 
+	// Texte "Quitter"
 	sfText* quitter = sfText_create();
 	sfText_setFont(quitter, font);
 	sfText_setString(quitter, "Quitter");
-	sfText_setCharacterSize(quitter,40);
-	sfText_setPosition(quitter, (sfVector2f) { 700, 470 });
+	sfText_setCharacterSize(quitter,36);
+	sfText_setFillColor(quitter, sfBlack);
+	sfText_setPosition(quitter, (sfVector2f) { pos.x + 215, pos.y + 170 });
 
 	while (sfRenderWindow_isOpen(window)) {
 		sfEvent event;
+		sfFloatRect contBounds = sfText_getGlobalBounds(continuer);
+		sfFloatRect quitBounds = sfText_getGlobalBounds(quitter);
 		while (sfRenderWindow_pollEvent(window, &event)) {
 			if (event.type == sfEvtClosed) {
 				sfRenderWindow_close(window);
 				return 0;
 			}
 
-
-
 			if (event.type == sfEvtMouseButtonPressed) {
 				sfVector2f mouse = { event.mouseButton.x, event.mouseButton.y };
 
-				sfFloatRect contBounds = sfText_getGlobalBounds(continuer);
-				sfFloatRect quitBounds = sfText_getGlobalBounds(quitter);
-
 				if (sfFloatRect_contains(&contBounds, mouse.x, mouse.y)) {
-				
-					// Reprendre le jeu
-					sfSprite_destroy(icon);
 					sfText_destroy(continuer);
 					sfText_destroy(quitter);
-					return 1; // continuer
+					sfSprite_destroy(icon);
+					sfRectangleShape_destroy(panel);
+					sfRectangleShape_destroy(overlay);
+					return 1;
 				}
 
-				else if (sfFloatRect_contains(&quitBounds, mouse.x, mouse.y)) {
-					
-					sfSprite_destroy(icon);
+				if (sfFloatRect_contains(&quitBounds, mouse.x, mouse.y)) {
 					sfText_destroy(continuer);
 					sfText_destroy(quitter);
-					return 0; // quitter
+					sfSprite_destroy(icon);
+					sfRectangleShape_destroy(panel);
+					sfRectangleShape_destroy(overlay);
+					return 0;
+				}
+			}
+
+			if (event.type == sfEvtMouseMoved) {
+				sfVector2i mouse = { event.mouseMove.x, event.mouseMove.y };
+				if (sfFloatRect_contains(&contBounds, mouse.x, mouse.y)) {
+					sfText_setFillColor(continuer, sfGreen);
+					sfText_setScale(continuer, (sfVector2f) { 1.1f, 1.1f });
 				}
 				else {
-					sfText_setColor(continuer, sfWhite);
-					sfText_setColor(quitter, sfWhite);
+					sfText_setFillColor(continuer, sfBlack);
+					sfText_setScale(continuer, (sfVector2f) { 1.f, 1.f });
 				}
-			
 
-			}
-			if (event.type == sfEvtMouseMoved) {
-				sfVector2i mousePos = { event.mouseMove.x, event.mouseMove.y };
-					if (mousePos.x >= 700 && mousePos.x <= 780) {
-						if (mousePos.y >= 415 && mousePos.y <= 460) {
-							
-							sfText_setColor(continuer, sfGreen);
-							sfText_setColor(quitter, sfWhite);
-						}
-						else if (mousePos.y >= 470 && mousePos.y <= 520) {
-							
-							sfText_setColor(quitter, sfRed);
-							sfText_setColor(continuer, sfWhite);
-						}
-						else {
-							sfText_setColor(continuer, sfWhite);
-							sfText_setColor(quitter, sfWhite);
-						}
-
-
-					}
-				
-			
-
+				if (sfFloatRect_contains(&quitBounds, mouse.x, mouse.y)) {
+					sfText_setFillColor(quitter, sfRed);
+					sfText_setScale(quitter, (sfVector2f) { 1.1f, 1.1f });
+				}
+				else {
+					sfText_setFillColor(quitter, sfBlack);
+					sfText_setScale(quitter, (sfVector2f) { 1.f, 1.f });
+				}
 			}
 		}
-		sfRenderWindow_clear(window, sfBlack); // 150 pour semi-transparence
+
+		sfRenderWindow_clear(window, sfBlack);
+		sfRenderWindow_drawRectangleShape(window, overlay, NULL);
+		sfRenderWindow_drawRectangleShape(window, panel, NULL);
 		sfRenderWindow_drawSprite(window, icon, NULL);
 		sfRenderWindow_drawText(window, continuer, NULL);
 		sfRenderWindow_drawText(window, quitter, NULL);
@@ -475,3 +484,97 @@ int show_pause_menu(sfRenderWindow* window, sfTexture* iconTexture) {
 
 	return 0;
 }
+
+//int show_pause_menu(sfRenderWindow* window, sfTexture* iconTexture) {
+//
+//	sfSprite* icon = sfSprite_create();
+//	sfSprite_setTexture(icon, iconTexture, sfTrue);
+//	sfSprite_setPosition(icon, (sfVector2f) { 700, 70 });
+//	sfSprite_setScale(icon, (sfVector2f) { 0.4, 0.4 });
+//	sfFont* font = getDefaultFont();
+//
+//	sfText* continuer = sfText_create();
+//	sfText_setFont(continuer, font);
+//	sfText_setString(continuer, "Continuer");
+//	sfText_setCharacterSize(continuer,40);
+//	sfText_setPosition(continuer, (sfVector2f) { 700, 400 });
+//
+//	sfText* quitter = sfText_create();
+//	sfText_setFont(quitter, font);
+//	sfText_setString(quitter, "Quitter");
+//	sfText_setCharacterSize(quitter,40);
+//	sfText_setPosition(quitter, (sfVector2f) { 700, 470 });
+//
+//	while (sfRenderWindow_isOpen(window)) {
+//		sfEvent event;
+//		while (sfRenderWindow_pollEvent(window, &event)) {
+//			if (event.type == sfEvtClosed) {
+//				sfRenderWindow_close(window);
+//				return 0;
+//			}
+//
+//
+//
+//			if (event.type == sfEvtMouseButtonPressed) {
+//				sfVector2f mouse = { event.mouseButton.x, event.mouseButton.y };
+//
+//				sfFloatRect contBounds = sfText_getGlobalBounds(continuer);
+//				sfFloatRect quitBounds = sfText_getGlobalBounds(quitter);
+//
+//				if (sfFloatRect_contains(&contBounds, mouse.x, mouse.y)) {
+//				
+//					// Reprendre le jeu
+//					sfSprite_destroy(icon);
+//					sfText_destroy(continuer);
+//					sfText_destroy(quitter);
+//					return 1; // continuer
+//				}
+//
+//				else if (sfFloatRect_contains(&quitBounds, mouse.x, mouse.y)) {
+//					
+//					sfSprite_destroy(icon);
+//					sfText_destroy(continuer);
+//					sfText_destroy(quitter);
+//					return 0; // quitter
+//				}
+//				else {
+//					sfText_setColor(continuer, sfWhite);
+//					sfText_setColor(quitter, sfWhite);
+//				}
+//			
+//
+//			}
+//			if (event.type == sfEvtMouseMoved) {
+//				sfVector2i mousePos = { event.mouseMove.x, event.mouseMove.y };
+//					if (mousePos.x >= 700 && mousePos.x <= 780) {
+//						if (mousePos.y >= 415 && mousePos.y <= 460) {
+//							
+//							sfText_setColor(continuer, sfGreen);
+//							sfText_setColor(quitter, sfWhite);
+//						}
+//						else if (mousePos.y >= 470 && mousePos.y <= 520) {
+//							
+//							sfText_setColor(quitter, sfRed);
+//							sfText_setColor(continuer, sfWhite);
+//						}
+//						else {
+//							sfText_setColor(continuer, sfWhite);
+//							sfText_setColor(quitter, sfWhite);
+//						}
+//
+//
+//					}
+//				
+//			
+//
+//			}
+//		}
+//		sfRenderWindow_clear(window, sfBlack); // 150 pour semi-transparence
+//		sfRenderWindow_drawSprite(window, icon, NULL);
+//		sfRenderWindow_drawText(window, continuer, NULL);
+//		sfRenderWindow_drawText(window, quitter, NULL);
+//		sfRenderWindow_display(window);
+//	}
+//
+//	return 0;
+//}
